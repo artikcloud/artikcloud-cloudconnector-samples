@@ -3,8 +3,8 @@ A sample CloudConnector for [SAMI](https://www.samsungsami.io/) that can be used
 Install
 =======
 
-* Pre-required: [JDK]() already installed. 
-* Every commands of the doc (below) should be launch from the this project directory (the folder with the file build.gradle).
+* Pre-required: [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) already installed. 
+* Every commands of the doc (below) should be launched from this project directory (the folder with the file build.gradle).
 * The command '../gradlew' will download tools the first time.
 
 Usages
