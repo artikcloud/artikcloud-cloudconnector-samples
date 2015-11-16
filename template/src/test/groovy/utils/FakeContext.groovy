@@ -20,7 +20,7 @@ class FakeContext implements Context {
         10L
     }
     Map<String, String> parameters(){
-        ["k":"v"]
+        ["endpoint":"http://127.0.0.1:9001/"]
     }
     List<String> scope(){
         ["all"]

@@ -9,65 +9,37 @@ import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
 import com.samsung.sami.cloudconnector.api.*
+import utils.FakeContext
 
 class MyCloudConnectorSpec extends Specification {
 
-    def sut = new MyCloudConnector()
+		def sut = new MyCloudConnector()
 
-    def ctx = new Context() {
-      String clientId(){
-        "clientId"
-      }
-      String clientSecret(){
-        "clientSecret"
-      }
-      String cloudId(){
-        "com.sample.cloud"
-      }
-      void debug(Object obj){
-         println(obj)
-      }
-      long now(){
-        10L
-      }
-      Map<String, String> parameters(){
-        ["k":"v"]
-      }
-      List<String> scope(){
-        ["all"]
-      }
-      RequestDefTools requestDefTools() { new RequestDefTools(){
-        java.util.Iterator<String> listFilesFromMultipartFormData(RequestDef req) { [] }
+		def ctx = new FakeContext()
 
-        Option<String> readFileFromMultipartFormData(RequestDef req, String key) { Option.apply(null)}
+		def "reject Notification without NotificationId"() {
+			when:
+			def req = new RequestDef("https://foo/cloudconnector/dt00/thirdpartynotification")
+			def res = sut.onNotification(ctx, req)
+			then:
+			res.isBad()
+		}
 
-        List<String> getDataFromContent(String content, String key){ []}
-      }}
-    }
+		def "accept valid Notification"() {
+			when:
+			def did = 'xxxx'
+			def req = new RequestDef('https://foo/cloudconnector/dt00/thirdpartynotification')
+				.withHeaders(['notificationId': did])
+				.withContent('{"messages":["m1", "m2"]}', 'application/json')
+			def res = sut.onNotification(ctx, req)
 
-    def "reject Notification without NotificationId"() {
-  		when:
-  		def req = new RequestDef("https://foo/cloudconnector/dt00/thirdpartynotification")
-  		def res = sut.onNotification(ctx, req)
-  		then:
-  		res.isBad()
-    }
-
-    def "accept valid Notification"() {
-  		when:
-  		def did = 'xxxx'
-  		def req = new RequestDef('https://foo/cloudconnector/dt00/thirdpartynotification')
-  			.withHeaders(['notificationId': did])
-  			.withContent('{"messages":["m1", "m2"]}', 'application/json')
-  		def res = sut.onNotification(ctx, req)
-
-  		then:
-    		res.isGood()
-  		res.get() == new NotificationResponse([
-  			new ThirdPartyNotification(new BySamiDeviceId(did), [
-  				new RequestDef("${MyCloudConnector.API_ENDPOINT_URL}/messages/m1"),
-  				new RequestDef("${MyCloudConnector.API_ENDPOINT_URL}/messages/m2")
-  			])
-  		])
-    }
+			then:
+				res.isGood()
+			res.get() == new NotificationResponse([
+				new ThirdPartyNotification(new BySamiDeviceId(did), [
+					new RequestDef("${ctx.parameters()['endpoint']}/messages/m1"),
+					new RequestDef("${ctx.parameters()['endpoint']}/messages/m2")
+				])
+			])
+		}
 }
