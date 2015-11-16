@@ -1,0 +1,12 @@
+{
+    "Type" : "SubscriptionConfirmation",
+    "MessageId" : "165545c9-xxxx-472c-8df2-xxxxxxxxxxx",
+    "Token" : "xxxx",
+    "TopicArn" : "arn:aws:sns:us-east-1:123456789012:MyTopic",
+    "Message" : "You have chosen to subscribe to the topic...",
+    "SubscribeURL" : "http://SecreturlToConfirmSubscription",
+    "Timestamp" : "2012-04-26T20:45:04.751Z",
+    "SignatureVersion" : "1",
+    "Signature" : "EXAMPLEpH+xxxxx+xxxxx=",
+    "SigningCertURL" : "xxxxxx"
+}

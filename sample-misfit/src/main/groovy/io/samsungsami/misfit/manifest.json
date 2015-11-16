@@ -1,0 +1,259 @@
+{
+  "fields": [
+    {
+      "name": "device",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "deviceType",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false
+        },
+        {
+          "name": "serialNumber",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false
+        },
+        {
+          "name": "firmwareVersion",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false
+        },
+        {
+          "name": "batteryLevel",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.PERCENT",
+          "isCollection": false
+        },
+        {
+          "name": "lastSyncTime",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "SI.SECOND",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "goals",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "date",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false
+        },
+        {
+          "name": "points",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "isCollection": false
+        },
+        {
+          "name": "targetPoints",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false
+        }
+      ]
+    },
+    {
+      "name": "sessions",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "activityType",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false
+        },
+        {
+          "name": "startTime",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "the time the activity started"
+        },
+        {
+          "name": "duration",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "length of the activity"
+        },
+        {
+          "name": "points",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "isCollection": false
+        },
+        {
+          "name": "steps",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false
+        },
+        {
+          "name": "calories",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": "StandardUnits.KILO_CALORIE",
+          "isCollection": false
+        },
+        {
+          "name": "distance",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": "NonSI.MILE",
+          "isCollection": false,
+          "description": "total distance user covered for the activity"
+        }
+      ]
+    },
+    {
+      "name": "sleeps",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "autoDetected",
+          "type": "CUSTOM",
+          "valueClass": "Boolean",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "startTime",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "duration",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "sleepDetails",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "datetime",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "value",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "summary",
+      "children": [
+        {
+          "name": "date",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "points",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "isCollection": false,
+          "description": "total points in that time range",
+          "tags": []
+        },
+        {
+          "name": "steps",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "total steps in that time range",
+          "tags": []
+        },
+        {
+          "name": "calories",
+          "type": "CALORIES",
+          "valueClass": "Double",
+          "unit": "StandardUnits.KILO_CALORIE",
+          "isCollection": false,
+          "description": "total calories in that time range",
+          "tags": []
+        },
+        {
+          "name": "activityCalories",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": "StandardUnits.KILO_CALORIE",
+          "isCollection": false,
+          "description": "activity-related calories in that time range",
+          "tags": []
+        },
+        {
+          "name": "distance",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": "NonSI.MILE",
+          "isCollection": false,
+          "description": "total distance travelled in that time range",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "messageFormat": "json",
+  "actions": []
+}

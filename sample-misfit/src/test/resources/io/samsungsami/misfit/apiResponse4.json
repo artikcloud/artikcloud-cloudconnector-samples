@@ -1,0 +1,16 @@
+{
+    "id": "51a4189acf12e53f80000003",
+    "autoDetected": false,
+    "startTime": "2014-05-19T23:26:54+07:00",
+    "duration": 0,
+    "sleepDetails": [
+        {
+            "datetime": "2014-05-19T23:26:54+07:00",
+            "value": 2
+        },
+        {
+            "datetime": "2014-05-19T23:59:22+07:00",
+            "value": 1
+        }
+    ]
+}

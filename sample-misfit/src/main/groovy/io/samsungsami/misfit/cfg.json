@@ -1,0 +1,10 @@
+{
+    "authorizationUrl":"https://api.misfitwearables.com/auth/dialog/authorize",
+    "accessTokenUrl":"https://api.misfitwearables.com/auth/tokens/exchange",
+    "clientId":"aaaa",
+    "clientSecret":"bbbb",
+    "authType" : "OAuth2",
+    "scope":[ "public", "tracking", "sessions", "sleeps" ],
+    "statusAcceptNotification":200,
+    "accessTokenMethod": "post"
+}
