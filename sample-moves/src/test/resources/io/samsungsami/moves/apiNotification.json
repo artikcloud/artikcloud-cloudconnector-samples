@@ -1,0 +1,33 @@
+{
+    "userId": 23138311640030064,
+    "storylineUpdates": [
+        {
+            "reason": "DataUpload",
+            "startTime": "20121312T072747Z",
+            "endTime": "20121212T234417-0200",
+            "lastSegmentType": "place",
+            "lastSegmentStartTime": "20121213T082747Z"
+        },
+        {
+            "reason": "ActivityUpdate",
+            "startTime": "20121212T072747Z",
+            "endTime": "20121212T073247Z"
+        },
+        {
+            "reason": "PlaceUpdate",
+            "startTime": "20121212T082747Z",
+            "endTime": "20121212T093247Z"
+        },
+        {
+            "reason": "PlaceRename",
+            "placeId": 123456
+        },
+        {
+            "reason": "DataUpload",
+            "startTime": "20141312T072747Z",
+            "endTime": "20141213T093247Z",
+            "lastSegmentType": "place",
+            "lastSegmentStartTime": "20141213T082747Z"
+        }
+    ]
+}

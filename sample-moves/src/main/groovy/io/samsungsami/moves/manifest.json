@@ -1,0 +1,50 @@
+{
+  "fields": [
+    {
+      "children": [
+        {
+          "name": "activity",
+          "type": "CUSTOM",
+          "valueClass": "STRING"
+        },
+        {
+          "name": "group",
+          "type": "CUSTOM",
+          "valueClass": "STRING"
+        },
+        {
+          "name": "duration",
+          "type": "CUSTOM",
+          "valueClass": "LONG"
+        },
+        {
+          "name": "calories",
+          "type": "CUSTOM",
+          "valueClass": "LONG"
+        },
+        {
+          "name": "steps",
+          "type": "CUSTOM",
+          "valueClass": "LONG"
+        },
+        {
+          "name": "distance",
+          "type": "CUSTOM",
+          "valueClass": "LONG"
+        }
+      ],
+      "name": "summary"
+    },
+    {
+      "name": "caloriesIdle",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "StandardUnits.KILO_CALORIE",
+      "isCollection": false,
+      "description": "daily idle burn in kcal. Available if user has at least once enabled calories",
+      "tags": []
+    }
+  ],
+  "messageFormat": "json",
+  "actions": []
+}

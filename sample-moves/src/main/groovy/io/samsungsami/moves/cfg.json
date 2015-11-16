@@ -1,0 +1,13 @@
+{
+    "authorizationUrl":"https://api.moves-app.com/oauth/v1/authorize",
+    "accessTokenUrl":"https://api.moves-app.com/oauth/v1/access_token",
+    "clientId":"aaaa",
+    "clientSecret":"bbbb",
+    "authType" : "OAuth2",
+    "scope":[ "default", "activity", "location" ],
+    "accessTokenUrlMapper":{
+        "external_id":"user_id"
+    },
+    "statusAcceptNotification":200,
+    "accessTokenMethod": "post"
+}
