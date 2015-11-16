@@ -1,0 +1,10 @@
+.metadata
+.DS_Store
+bin/
+target/
+build/
+.gradle
+
+.classpath
+.project
+.settings
