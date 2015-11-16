@@ -1,0 +1,332 @@
+{
+  "fields": [
+    {
+      "name": "id",
+      "type": "ID",
+      "valueClass": "String",
+      "unit": null,
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "type",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "created_time",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "link",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "distance",
+      "type": "DISTANCE",
+      "valueClass": "Double",
+      "unit": "SI.METRE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "caption",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "created_time",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "text",
+          "type": "TEXT",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "likes",
+      "children": [
+        {
+          "name": "count",
+          "type": "COUNT",
+          "valueClass": "Long",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "images",
+      "children": [
+        {
+          "name": "low_resolution",
+          "children": [
+            {
+              "name": "url",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "width",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "height",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            }
+          ]
+        },
+        {
+          "name": "thumbnail",
+          "children": [
+            {
+              "name": "url",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "width",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "height",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "standard_resolution",
+      "children": [
+        {
+          "name": "url",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "width",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.PIXEL",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "height",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.PIXEL",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "tags",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": true,
+      "tags": [],
+      "metaData": []
+    },
+    {
+      "name": "location",
+      "children": [
+        {
+          "name": "latitude",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "longitude",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "street_address",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "videos",
+      "children": [
+        {
+          "name": "low_resolution",
+          "children": [
+            {
+              "name": "url",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "width",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "height",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            }
+          ]
+        },
+        {
+          "name": "standard_resolution",
+          "children": [
+            {
+              "name": "url",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "width",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "height",
+              "type": "CUSTOM",
+              "valueClass": "Integer",
+              "unit": "NonSI.PIXEL",
+              "isCollection": false,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "comments",
+      "children": [
+        {
+          "name": "count",
+          "type": "COUNT",
+          "valueClass": "Long",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "children": [
+        {
+          "name": "id",
+          "type": "ID",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "username",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "full_name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "profile_picture",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "messageFormat": "json",
+  "actions": []
+}

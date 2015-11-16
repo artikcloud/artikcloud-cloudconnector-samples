@@ -1,0 +1,12 @@
+{
+    "authorizationUrl":"https://api.instagram.com/oauth/authorize",
+    "accessTokenUrl":"https://api.instagram.com/oauth/access_token",
+    "clientId":"aaaa",
+    "clientSecret":"bbbb",
+    "authType" : "OAuth2",
+    "statusAcceptNotification":200,
+    "accessTokenMethod": "post",
+    "parameters":{
+        "samiUrlBase": "https://api.samsungsami.io/v1.1/cloudconnectors/"
+    }
+}
