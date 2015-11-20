@@ -111,4 +111,5 @@ It is possible to customize ports, hostname, certificate by editing the file [sr
 # FAQ
 
 1. When is signAndPrepare() in CloudConnector Groovy code called? Is it called when each user clicks "Authorize" button on the device of that type in the User Portal?
+
   > No, "Authorize" button start the authentication/authorization process that is configurable via json/form. From apidoc, signAndPrepare(...) is "call automatically on every API request to the 3rd party cloud. You can use this method to complete request with authorisation data, ..."
