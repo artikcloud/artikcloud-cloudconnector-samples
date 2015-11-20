@@ -108,6 +108,8 @@ If you keep the package 'com.sample': run `../gradlew runTestServer` to start th
 
 It is possible to customize ports, hostname, certificate by editing the file [src/test/groovy/utils/MyCloudConnectorRun.groovy](src/test/groovy/utils/MyCloudConnectorRun.groovy).
 
+You can configure logging in [src/test/resources/logback-test.xml](src/test/resources/logback-test.xml).
+
 
 # FAQ
 
