@@ -39,10 +39,10 @@ The developer could take a look into sibling directory sample-xxx to see how som
   * start subscribe of a device http://localhost:9080/cloudconnectors/0000/start_subscription
   * update the conf on 3rd party cloud to use your local server
     * redirect uri and notification uri are logged at the start of the server and should be like :
-      ```
-      redirect uri: http://localhost:9080/cloudconnectors/0000/auth
-      notification uri: http://localhost:9080/cloudconnectors/0000/thirdpartynotifications
-      ```
+     ```
+     redirect uri: http://localhost:9080/cloudconnectors/0000/auth
+     notification uri: http://localhost:9080/cloudconnectors/0000/thirdpartynotifications
+     ```
     * to receive notification your server should be accessible via internet (eg: redirect port on your router to your localhost, use ssh tunnel (forward port))
   * generate notification change on the 3rd party cloud
   * log of test server should have line with "0000: queuing event Event(" for every messages that should be forwarded to sami
@@ -85,7 +85,8 @@ Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
     ...
 }
 ```
-* unit test, and so some integration test before submitting
+* made unit test, and do some integration test before submitting
+* in unit test, use text file from src/test/resources/<package> to store json,... and read content with utils.Tools.readFile()
 * if you like type checking, uncomments the class annotation `//@CompileStatic` (in this case json manipulation will be more verbose)
 
 
