@@ -20,6 +20,7 @@ import org.joda.time.format.ISODateTimeFormat
 //@CompileStatic
 class MyCloudConnector extends CloudConnector {
 	static final mdateFormat = DateTimeFormat.forPattern("yyyy-MM-dd").withZoneUTC()
+	static final udateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss z")
 	static final String endpoint = "https://api.misfitwearables.com/move/resource/v1/user/"
 
 	JsonSlurper slurper = new JsonSlurper()
@@ -60,7 +61,7 @@ class MyCloudConnector extends CloudConnector {
 			if (kind == "profiles") {
 				null
 			} else {
-			    def sub
+				def sub
 				switch(kind) {
 					case "devices" : sub = "/device/"; break
 					case "goals" : sub = "/activity/goals/"; break
@@ -69,8 +70,8 @@ class MyCloudConnector extends CloudConnector {
 				}
 				def reqs = [new RequestDef(endpoint + extId + sub + objId)]
 				if (kind == 'goals') {
-					def today = mdateFormat.print(new DateTime(ctx.now()))
-					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : today, "end_date" : today, "detail": "true"])
+					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
+					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : date, "end_date" : date, "detail": "true"])
 				}
 				new ThirdPartyNotification(new ByExternalDeviceId(extId), reqs)
 			}
@@ -158,6 +159,8 @@ class MyCloudConnector extends CloudConnector {
 			DateTime.parse(json.startTime, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
 		} else if (json.datetime){
 			DateTime.parse(json.datetime, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
+		} else if (json.updatedAt){
+			DateTime.parse(json.updatedAt, udateFormat).getMillis()
 		} else {
 			defaultTs
 		}

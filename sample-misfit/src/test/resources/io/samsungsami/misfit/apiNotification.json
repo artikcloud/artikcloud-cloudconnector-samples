@@ -2,7 +2,7 @@
     "Type": "Notification",
     "MessageId": "2860c564-624b-52ed-a445-8e2b6275b0fa",
     "TopicArn": "arn:aws:sns:us-east-1:819895241319:resource-thirdparty1",
-    "Message": "[ { \"type\": \"profiles\", \"action\": \"created\", \"id\": \"1234\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 12:00:00 UTC\" }, { \"type\": \"goals\", \"action\": \"deleted\", \"id\": \"abcdef12345\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 13:00:00 UTC\" }, { \"type\": \"goals\", \"action\": \"updated\", \"id\": \"abcdef123456\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 13:00:00 UTC\" }, { \"type\": \"sleeps\", \"action\": \"created\", \"id\": \"12345sleep\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 12:00:00 UTC\" } ]",
+    "Message": "[ { \"type\": \"profiles\", \"action\": \"created\", \"id\": \"1234\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 12:00:00 UTC\" }, { \"type\": \"goals\", \"action\": \"deleted\", \"id\": \"abcdef12345\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 13:00:00 UTC\" }, { \"type\": \"goals\", \"action\": \"updated\", \"id\": \"abcdef123456\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-02-03 13:00:00 UTC\" }, { \"type\": \"sleeps\", \"action\": \"created\", \"id\": \"12345sleep\", \"ownerId\": \"externalID054\", \"updatedAt\": \"2014-01-01 12:00:00 UTC\" } ]",
     "Timestamp": "2014-01-14T09:06:06.756Z",
     "SignatureVersion": "1",
     "Signature": "xxxxx/xxxxxx/xxxx==",
