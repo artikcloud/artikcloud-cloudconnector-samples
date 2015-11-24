@@ -56,11 +56,13 @@ class MyCloudConnectorSpec extends Specification {
         res.get() == new NotificationResponse([
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef12345"),
-                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-01-01", "end_date": "2014-01-01", "detail": "true"])
+                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-01-01", "end_date": "2014-01-01", "detail": "true"]),
+                new RequestDef(apiEndpoint + "/device")
             ]),
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef123456"),
-                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-02-03", "end_date": "2014-02-03", "detail": "true"])
+                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-02-03", "end_date": "2014-02-03", "detail": "true"]),
+                new RequestDef(apiEndpoint + "/device")
             ]),
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/sleeps/12345sleep")
@@ -115,5 +117,16 @@ class MyCloudConnectorSpec extends Specification {
         then:
         res5.isGood()
         cmpEvents(res5.get(), [event05])
+    }
+
+    def "fetch device"(){
+        when:
+        def request = new RequestDef(apiEndpoint + "/device")
+        def response = new Response(HttpURLConnection.HTTP_OK, "application/json; charset=utf-8", readFile(this, "apiResponseDevice01.json"))
+        def event01 = new Event(1433690072000L, readFile(this, "apiResponseDevice01event01.json"))
+        def res = sut.onFetchResponse(ctx, request, device, response)
+        then:
+        res.isGood()
+        cmpEvents(res.get(), [event01])
     }
 }

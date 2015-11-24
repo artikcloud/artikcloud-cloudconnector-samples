@@ -72,6 +72,7 @@ class MyCloudConnector extends CloudConnector {
 				if (kind == 'goals') {
 					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
 					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : date, "end_date" : date, "detail": "true"])
+					reqs = reqs + new RequestDef(endpoint + extId + "/device")
 				}
 				new ThirdPartyNotification(new ByExternalDeviceId(extId), reqs)
 			}
@@ -98,7 +99,7 @@ class MyCloudConnector extends CloudConnector {
 	def String findGroup(RequestDef req) {
 		def group
 		def url = req.url
-		if (url.indexOf("/device/") > 0) group = "device"
+		if (url.indexOf("/device") > 0) group = "device"
 		if (url.indexOf("/activity/goals/") > 0) group = "goals"
 		if (url.indexOf("/activity/sessions/") > 0) group = "sessions"
 		if (url.indexOf("/activity/sleeps/") > 0) group = "sleeps"
@@ -161,6 +162,8 @@ class MyCloudConnector extends CloudConnector {
 			DateTime.parse(json.datetime, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
 		} else if (json.updatedAt){
 			DateTime.parse(json.updatedAt, udateFormat).getMillis()
+		} else if (json.lastSyncTime){
+			(json.lastSyncTime as long) * 1000L
 		} else {
 			defaultTs
 		}
