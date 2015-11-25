@@ -1,26 +1,26 @@
-Sami CloudConnector SDK
+SAMI CloudConnector SDK and Examples
 -----------------------
 
-
-How to create a CloudConnector
+Background
 ==============================
 
-1. Create a [Device Type on SAMI](https://developer.samsungsami.io/sami/sami-documentation/developer-user-portals.html#creating-a-device-type) with a Manifest
-2. Create an Application on 3rd party cloud. Use the following url
-  * redirect uri : `https://api.samsungsami.io/v1.1/cloudconnectors/${devide_type_id}/auth`
-  * notification uri : `https://api.samsungsami.io/v1.1/cloudconnectors/${devide_type_id}/thirdpartynotifications`
-3. Read the 3rd party cloud API doc
-4. Create a new project by coping and adapting the template (stay under the same parent directory to share libs and build tools)
-5. Submit the groovy and the configuration as CloudConnector definition for the Device Type (via the Web UI)
+A device can send their data directly to SAMI via [API calls](https://developer.samsungsami.io/sami/sami-documentation/sending-and-receiving-data.html). However, some devices already send their data into their own cloud. To support this case, SAMI provides a new way for a device to send data. SAMI uses the 3rd party cloud, instead of the device, as the data source. 
 
+A developer builds a Cloud Connector to achieve it. SAMI pulls data from the Cloud for each individual device once the owner of the device (a SAMI user) gives the permission. 
 
-How to deploy a CloudConnector
+ * Learn a [high level overview]() of the Cloud Connector concept. TODO by ywu: to add the link.
+ * [Cloud Connector Tutorial]() explains the workflow and code using Moves as an example. TODO by ywu: to add the link.
+
+CloudConnector SDK, template, and examples
 ==============================
 
-**TODO**
+You write Cloud Connector Groovy code using CloudConnector SDK.
 
-How to use a CloudConnector
-===========================
+This repository contains:
 
-1. Create a Device of the device Type with the CloudConnector
-2. "Authorize" (blue button on the devices list) the device to connect to 3rd party cloud (via the CloudConnector)
+ 1. libs: SDK libraries
+ 2. apidoc: Cloud Connector SDK API documenation
+ 3. template: a template project. You can build and test your own Cloud Connector code based on it.
+ 4. sample-xxxx: Cloud Connector examples. The examples have been tested and work in production.
+
+sample-xxxx has the same structures as template folder. You can compile and test sample Cloud Connector by following the instructions in template/README.

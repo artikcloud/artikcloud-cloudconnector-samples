@@ -67,7 +67,7 @@ You can compile the template project without changing any code. However, the Clo
 MyCloudConnector is a derived class that extends `com.samsung.sami.cloudconnector.api.CloudConnector`. Check out the following documentations to learn how to code it.
 
  * [High level explainations of CloudConnector methods]() (link to Section "Cloud Connector Groovy code" at documenation "Cloud Connector Overview" //TODO by ywu)
- * [Moves Cloud Connector code explained](TODO by ywu link to the corresponding documentation sites)
+ * [Moves Cloud Connector code explained]()(TODO by ywu link to the corresponding documentation sites)
  * [CloudConnector API Doc]()(TODO by David <-- add link), which lists functions and structures, and explains goals and usages.
 
 ### Best practices
