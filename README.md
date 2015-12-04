@@ -4,12 +4,12 @@ SAMI CloudConnector SDK and Examples
 Background
 ==============================
 
-A device can send their data directly to SAMI via [API calls](https://developer.samsungsami.io/sami/sami-documentation/sending-and-receiving-data.html). However, some devices already send their data into their own cloud. To support this case, SAMI provides a new way for a device to send data. SAMI uses the 3rd party cloud, instead of the device, as the data source. 
+A device can send their data directly to SAMI via [API calls](https://developer.samsungsami.io/sami/sami-documentation/sending-and-receiving-data.html). However, some devices already send data to a third-party cloud. In this case, SAMI can use the device's cloud, rather than the device, as the data source. You can build what we call a Cloud Connector to bridge SAMI to the third-party cloud. SAMI can then retrieve the device's data sent to that cloud.
 
-A developer builds a Cloud Connector to achieve it. SAMI pulls data from the Cloud for each individual device once the owner of the device (a SAMI user) gives the permission. 
+This repository hosts Cloud Connector SDK. Developers develop Cloud Connectors using the SDK. 
 
- * Learn a [high level overview]() of the Cloud Connector concept. TODO by ywu: to add the link.
- * [Cloud Connector Tutorial]() explains the workflow and code using Moves as an example. TODO by ywu: to add the link.
+ * [Using Cloud Connectors](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html) gives the overview of the Cloud Connector concept.
+ * [Your first Cloud Connector](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html) explains the developer workflow and Cloud Connector code using Moves as an example.
 
 CloudConnector SDK, template, and examples
 ==============================
