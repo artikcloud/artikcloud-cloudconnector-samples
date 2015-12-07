@@ -117,7 +117,14 @@ There are more unit test examples in samples projects, for example, how to compa
 
 ### Integration Testing
 
-If keeping the package 'com.sample', you run `../gradlew runTestServer` to start the server (see Usages section). Otherwise, you have to replace `com.sample` by the right package name in the file `build.gradle`.
+If keeping the package 'com.sample', you run `../gradlew runTestServer` to start the server (see Usages section). Otherwise, you have to replace `com.sample` by the right package name in the `task runTestServer` of the file `build.gradle`.
+```
+task runTestServer(type:JavaExec) {
+  main = System.getProperty("exec.mainClass") ?: "utils.MyCloudConnectorRun"
+  args = ["com.sample"]
+  classpath = sourceSets.test.runtimeClasspath
+}
+```
 
 It is possible to customize ports, hostname, certificate by editing the file [src/test/groovy/utils/MyCloudConnectorRun.groovy](src/test/groovy/utils/MyCloudConnectorRun.groovy).
 
