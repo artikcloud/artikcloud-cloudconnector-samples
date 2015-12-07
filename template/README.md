@@ -129,3 +129,42 @@ task runTestServer(type:JavaExec) {
 It is possible to customize ports, hostname, certificate by editing the file [src/test/groovy/utils/MyCloudConnectorRun.groovy](src/test/groovy/utils/MyCloudConnectorRun.groovy).
 
 You can configure logging in [src/test/resources/logback-test.xml](src/test/resources/logback-test.xml).
+
+#### Enable HTTS/SSL
+
+If third party cloud require https for authentication and notification, then you have to customize `utils/MyCloudConnectorRun.groovy`.
+
+1. Select a domain/host name that you can used (eg. my.domain.com). **Don't forget to register it into your /etc/hosts or your DNS'registar**
+1. Enable https port by setting a no-null value for httpsPort parameter (eg. 9083). If you try to connect to https://my.domain.com:9083/ a self-signed certificate will be generated and used.
+
+  ```
+  def srvCfg = SimpleHttpServer.makeServerConfig('my.domain.com', 9080, 9083, null, null, null, null)
+  ```
+1. If third party cloud doen't accept self-signed certificate (it's often the case, because it's a security failure), then you have to acquire a SSL certificate from an authority, or since end of 2015 you can acquire it with [Let's Encrypt](https://letsencrypt.org/howitworks/) (free)
+
+  ```
+  # install letsencrypt
+  # generate a certificate from the server (my.domain.com)
+  DOMAIN=my.domain.com
+  sudo ./letsencrypt-auto -d $DOMAIN certonly --standalone --standalone-supported-challenges
+  sudo tar -czvf ../$DOMAIN.tar.gz /etc/letsencrypt/archive/$DOMAIN
+  ```
+1. Store the certificate in a keystore (usable by TestServer)
+
+  ```
+  cd sami-cloudconnector-sdk/<my_cloudconnector>
+  tar -xzvf $DOMAIN.tar.gz
+  cd etc/letsencrypt/archive/$DOMAIN
+  # convert certificate chain + private key to the PKCS#12 file format, select a password of at least 6 characters
+  openssl pkcs12 -export -out keystore.pkcs12 -in fullchain1.pem -inkey privkey1.pem
+  # convert PKCS#12 file into Java keystore format, use the same password than previously for keystore (source and destination), else you'll have Exception like "java.security.UnrecoverableKeyException: Cannot recover key"
+  keytool -importkeystore -srckeystore keystore.pkcs12 -srcstoretype pkcs12 -destkeystore keystore.jks
+  # don't need the PKCS#12 file anymore
+  rm keystore.pkcs12
+  ```
+1. Edit MyCloudConnectorRun.groovy to use the keystore with the certificate (don't forget to change the domain name, the path, the password)
+
+  ```
+  def srvCfg = SimpleHttpServer.makeServerConfig('my.domain.com', 9080, 9083, "etc/letsencrypt/archive/my.domain.com/keystore.jks", null, "keyStorePassword", null)
+  ```
+1. Try it https://my.domain.com:9083/
