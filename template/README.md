@@ -117,7 +117,9 @@ There are more unit test examples in samples projects, for example, how to compa
 
 ### Integration Testing
 
-If keeping the package 'com.sample', you run `../gradlew runTestServer` to start the server (see Usages section). Otherwise, you have to replace `com.sample` by the right package name in the `task runTestServer` of the file `build.gradle`.
+If you change the package name of `MyCloudConnector.groovy` from `com.sample` to something else (for example, `io.samsungsami.moves`), you will have to modify `build.gradle` file to use the correct package name before running `../gradlew runTestServer`. 
+
+Open `build.gradle` in an editor, and replace `com.sample` in the following code snippet by the correct package name (for example, `io.samsungsami.moves`). 
 ```
 task runTestServer(type:JavaExec) {
   main = System.getProperty("exec.mainClass") ?: "utils.MyCloudConnectorRun"
