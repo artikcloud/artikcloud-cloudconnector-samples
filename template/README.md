@@ -146,7 +146,7 @@ If third party cloud require https for authentication and notification, then you
   # install letsencrypt
   # generate a certificate from the server (my.domain.com)
   DOMAIN=my.domain.com
-  sudo ./letsencrypt-auto -d $DOMAIN certonly --standalone --standalone-supported-challenges
+  sudo ./letsencrypt-auto -d $DOMAIN certonly --standalone
   sudo tar -czvf ../$DOMAIN.tar.gz /etc/letsencrypt/archive/$DOMAIN
   ```
 1. Store the certificate in a keystore (usable by TestServer)
