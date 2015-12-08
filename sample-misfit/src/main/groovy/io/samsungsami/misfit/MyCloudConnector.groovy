@@ -27,7 +27,17 @@ class MyCloudConnector extends CloudConnector {
 
 	@Override
 	def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
-		new Good(req.addHeaders(["access_token": info.credentials.token]))
+		switch (phase){
+			case Phase.undef:
+			case Phase.subscribe:
+			case Phase.unsubscribe:
+			case Phase.fetch:
+			case Phase.refreshToken:
+				new Good(req.addHeaders(["access_token": info.credentials.token]))
+				break
+			default:
+				super.signAndPrepare(ctx, req, info, phase)
+		}
 	}
 
 	@Override

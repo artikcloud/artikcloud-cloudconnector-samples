@@ -26,7 +26,7 @@ class MyCloudConnectorSpec extends Specification {
     def apiEndpoint = "https://api.misfitwearables.com/move/resource/v1/user/" + extId
     def device = new DeviceInfo("deviceId", Option.apply(extId), new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option())
 
-    def "add accessToken into requests about device, with Credentials"() {
+    def "add accessToken into requests about device, with Credentials if Phase is undef"() {
         when:
         def req0 = new RequestDef("$apiEndpoint/xxxxxx")
         def res = sut.signAndPrepare(ctx, req0, device, Phase.undef)

@@ -73,9 +73,19 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
-        def reqWithToken = req.addQueryParams(["access_token" : info.credentials().token()])
-        def signHash = generateSignature(reqWithToken, ctx.clientSecret())
-        return new Good(reqWithToken.addQueryParams(["sig" : signHash]))
+        switch (phase){
+            case Phase.undef:
+            case Phase.subscribe:
+            case Phase.unsubscribe:
+            case Phase.fetch:
+            case Phase.refreshToken:
+                def reqWithToken = req.addQueryParams(["access_token" : info.credentials().token()])
+                def signHash = generateSignature(reqWithToken, ctx.clientSecret())
+                return new Good(reqWithToken.addQueryParams(["sig" : signHash]))
+                break
+            default:
+                super.signAndPrepare(ctx, req, info, phase)
+        }
     }
 
     /**
