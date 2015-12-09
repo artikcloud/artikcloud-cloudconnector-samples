@@ -11,7 +11,7 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import scala.Option
 
-import com.samsung.sami.cloudconnector.api.*
+import com.samsung.sami.cloudconnector.api_v1.*
 
 import static java.net.HttpURLConnection.*
 

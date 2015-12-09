@@ -4,7 +4,7 @@ import org.scalactic.*
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import scala.Option
-import com.samsung.sami.cloudconnector.api.*
+import com.samsung.sami.cloudconnector.api_v1.*
 import static java.net.HttpURLConnection.*
 
 //@CompileStatic
@@ -16,7 +16,7 @@ class MyCloudConnector extends CloudConnector {
     JsonSlurper slurper = new JsonSlurper()
 
     @Override
-    def Or<Option<RequestDef>, Failure> setup(Context ctx) {
+    def Or<Option<RequestDef>, Failure> initialize(Context ctx) {
         def req = new RequestDef(API_URL+ "/subscriptions/")
             .withMethod(HttpMethod.Post)
             .withBodyParams([
@@ -29,13 +29,7 @@ class MyCloudConnector extends CloudConnector {
             ])
             .withContent("", "multipart/form-data")
         ctx.debug("setup request" + req)
-        return new Good(Option.apply(req))
-    }
-
-    @Override
-    def Or<Boolean, Failure> onSetupResponse(Context ctx, RequestDef req, Response res) {
-        ctx.debug("setup response" + res)
-        return new Good(Option.apply(true))
+        return new Good([req])
     }
 
     @Override

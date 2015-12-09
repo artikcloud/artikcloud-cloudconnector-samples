@@ -10,7 +10,7 @@ import org.scalactic.*
 import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api.*
+import com.samsung.sami.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import utils.FakeContext
 import static utils.Tools.*

@@ -8,7 +8,7 @@ import org.scalactic.*
 import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api.*
+import com.samsung.sami.cloudconnector.api_v1.*
 import utils.FakeContext
 
 class MyCloudConnectorSpec extends Specification {
