@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>OauthHelper - com.samsung.sami.cloudconnector.api.OauthHelper</title>
-          <meta name="description" content="OauthHelper - com.samsung.sami.cloudconnector.api.OauthHelper" />
-          <meta name="keywords" content="OauthHelper com.samsung.sami.cloudconnector.api.OauthHelper" />
+          <title>DeviceSelector - com.samsung.sami.cloudconnector.api_v1.DeviceSelector</title>
+          <meta name="description" content="DeviceSelector - com.samsung.sami.cloudconnector.api v1.DeviceSelector" />
+          <meta name="keywords" content="DeviceSelector com.samsung.sami.cloudconnector.api v1.DeviceSelector" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
-            var hash = 'com.samsung.sami.cloudconnector.api.OauthHelper';
+            var hash = 'com.samsung.sami.cloudconnector.api_v1.DeviceSelector';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,12 +28,12 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img alt="Class" src="../../../../../lib/class_big.png" />
-        <p id="owner"><a href="../../../../package.html" class="extype" name="com">com</a>.<a href="../../../package.html" class="extype" name="com.samsung">samsung</a>.<a href="../../package.html" class="extype" name="com.samsung.sami">sami</a>.<a href="../package.html" class="extype" name="com.samsung.sami.cloudconnector">cloudconnector</a>.<a href="package.html" class="extype" name="com.samsung.sami.cloudconnector.api">api</a></p>
-        <h1>OauthHelper</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="package.html" class="extype" name="com.samsung.sami.cloudconnector.api">package api</a>
+        <img alt="Trait" src="../../../../../lib/trait_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="com">com</a>.<a href="../../../package.html" class="extype" name="com.samsung">samsung</a>.<a href="../../package.html" class="extype" name="com.samsung.sami">sami</a>.<a href="../package.html" class="extype" name="com.samsung.sami.cloudconnector">cloudconnector</a>.<a href="package.html" class="extype" name="com.samsung.sami.cloudconnector.api_v1">api_v1</a></p>
+        <h1>DeviceSelector</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="com.samsung.sami.cloudconnector.api_v1">package api_v1</a>
           </div></span></h3><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -41,18 +41,21 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">OauthHelper</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">DeviceSelector</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="ByExternalDeviceId.html" class="extype" name="com.samsung.sami.cloudconnector.api_v1.ByExternalDeviceId">ByExternalDeviceId</a>, <a href="BySamiDeviceId.html" class="extype" name="com.samsung.sami.cloudconnector.api_v1.BySamiDeviceId">BySamiDeviceId</a>, <a href="NoDeviceSelector$.html" class="extype" name="com.samsung.sami.cloudconnector.api_v1.NoDeviceSelector">NoDeviceSelector</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -69,7 +72,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="com.samsung.sami.cloudconnector.api.OauthHelper"><span>OauthHelper</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="com.samsung.sami.cloudconnector.api_v1.DeviceSelector"><span>DeviceSelector</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -86,27 +89,7 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="com.samsung.sami.cloudconnector.api.OauthHelper#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():com.samsung.sami.cloudconnector.api.OauthHelper"></a>
-      <a id="&lt;init&gt;:OauthHelper"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">OauthHelper</span><span class="params">()</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@&lt;init&gt;():com.samsung.sami.cloudconnector.api.OauthHelper" title="Permalink" target="_top">
-        <img src="../../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li></ol>
-            </div>
+        
 
         
 
@@ -126,7 +109,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -143,7 +126,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@##():Int" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@##():Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -160,7 +143,7 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -177,7 +160,7 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -194,7 +177,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@clone():Object" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@clone():Object" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -217,7 +200,7 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -234,7 +217,7 @@
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -251,7 +234,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -274,7 +257,7 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -291,7 +274,7 @@
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -308,7 +291,7 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -325,7 +308,7 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -342,7 +325,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@notify():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -359,7 +342,7 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -376,7 +359,7 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -393,7 +376,7 @@
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@toString():String" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@toString():String" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -410,7 +393,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@wait():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -433,7 +416,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -456,7 +439,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api.OauthHelper@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#com.samsung.sami.cloudconnector.api_v1.DeviceSelector@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
