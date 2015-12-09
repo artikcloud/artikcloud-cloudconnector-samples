@@ -41,7 +41,7 @@ You can perform manual integration testing on an HTTP (HTTPS) local server. The 
 
  * Edit [src/main/groovy/com/sample/cfg.json](src/main/groovy/com/sample/cfg.json) to setup the authentication from your local test server to the third party cloud. The information in cfg.json is pretty much the same as the information provided in [Cloud Authentication UI](https://developer-staging.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#set-authentication-parameters) at the SAMI Developer Portal. Here you will have to use cfg.json instead of the UI to do that. You can consult the following resources to learn how to write cfg.json
     * [cfg.json.sample](src/main/groovy/com/sample/cfg.json.sample) explains each JSON key.
-    * sample-xxx/src/main/groovy/<package>/cfg.json is for each example cloud 
+    * sample-xxx/src/main/groovy/\<package\>/cfg.json is for each example cloud 
  * Test the CloudConnector on a local HTTP server.
     * To receive notification, your local server should be accessible via internet (for example, use a server accessible from the outside or use ssh tunnel with port forwarding)
     * You can customize the port of the local server (9080 by default for http and 9083 for https) by editing [utils.MyCloudConnectorRun](src/test/groovy/utils/MyCloudConnectorRun.groovy)
@@ -79,27 +79,19 @@ MyCloudConnector is a derived class that extends `com.samsung.sami.cloudconnecto
 
 ### Tips
 
-* Use Context to retrieve configuration data such as clientId, clientSecret or your custom parameters:
+* Using custom parameters in your Cloud Connector Groovy code improves the flexibility of your code. Please consult [About custom parameters](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-custom-parameters) to learn what is a cumstom parameter and how to use it. Per the doc, you add custom parameters in CUSTOM PARAMETERS table in Connector Code tab in the Developer Portal. When performing unit and integration testing locally, your Groovy code cannot access the custom parameters since the table is not accessbile locally. In order to pass the testing, you edit src/main/groovy/com/sample/cfg.json. Specifically, add all custom parameters in CUSTOM PARAMETERS table to `parameters` JSON object in cfg.json as follows:
+
 ```
 {
   ...
     "parameters": {
       "myUrl": "http://www.foo.com/bar",
-      "numberOfSomething": "10",
+      "myNumber": "10",
     },
   ...
 }
 ```
-  Those parameters will be sent to you groovy code in Context. You can access these parameter as the following example:
-```
-@Override
-Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
-    ...
-    ctx.parameters()["myUrl"]...
-    ctx.parameters()["numberOfSomething"]...
-    ...
-}
-```
+
 * Perform unit and integration testing before submitting the Groovy Code in SAMI Developer Portal. This will increase the probability that the code is approved by SAMI and it works as you expected. 
 * If you want to do type checking, uncomments the class annotation `//@CompileStatic`. Then, json manipulation will be more verbose.
 
