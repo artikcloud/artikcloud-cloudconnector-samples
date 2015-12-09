@@ -20,8 +20,8 @@ class MyCloudConnector extends CloudConnector {
         def req = new RequestDef(API_URL+ "/subscriptions/")
             .withMethod(HttpMethod.Post)
             .withBodyParams([
-              'client_id':'9b26e76362c448db808fd604015eb8c3',
-              'client_secret':'67a1670e71874d36a4e9c1052d74dd9d',
+              'client_id': ctx.clientId(),
+              'client_secret': ctx.clientSecret(),
               'object':'user',
               'aspect':'media',
               'verify_token':'myVerifyToken',
