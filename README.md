@@ -1,4 +1,4 @@
-SAMI CloudConnector SDK, template, and examples
+SAMI CloudConnector SDK and examples
 ==============================
 
 Background
