@@ -1,7 +1,4 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of com.samsung.sami.cloudconnector.api_v1.CloudConnector
+
 package io.samsungsami.fitbit
 
 import scala.Option
