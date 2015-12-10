@@ -33,6 +33,16 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
+    def Or<Map<String, String>, Failure> onInitializeResponse(Context ctx, RequestDef req, Response res) {
+        ctx.debug(res)
+        if (res.status() == HTTP_OK) {
+            new Good(Empty.map())
+        } else {
+            new Bad(new Failure("failed to register subscription url :" + res.toString()))
+        }
+    }
+
+    @Override
     def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
         return new Good([new RequestDef(PROFILE_URL)])
     }
