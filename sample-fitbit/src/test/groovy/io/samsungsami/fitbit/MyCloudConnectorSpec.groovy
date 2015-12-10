@@ -49,7 +49,10 @@ class MyCloudConnectorSpec extends Specification {
 		res.isGood()
 		res.get() == new NotificationResponse([
 				new ThirdPartyNotification(new BySamiDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json"),]),
-				new ThirdPartyNotification(new BySamiDeviceId("id2"), [new RequestDef(apiEndpoint + "activities/date/2011-03-01.json"),]),
+				new ThirdPartyNotification(new BySamiDeviceId("id2"), [
+						new RequestDef(apiEndpoint + "activities/date/2011-03-01.json"),
+						new RequestDef(apiEndpoint + "activities/heart/date/2011-03-01/1d.json")
+				]),
 		])
 	}
 

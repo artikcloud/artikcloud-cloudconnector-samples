@@ -128,15 +128,20 @@ class MyCloudConnector extends CloudConnector {
             default:
                 throw new Exception("Invalid collectionType" + collectionType)
         }
-        return (baseUrl(ctx) + endpoint + "/date/" + date + ".json")
+        def urlEndpoints = [baseUrl(ctx) + endpoint + "/date/" + date + ".json"]
+        if (collectionType == "activities"){
+            def heartRateEndpoint = (baseUrl(ctx) + "activities/heart/date/" + date  + "/1d.json")
+            return urlEndpoints + heartRateEndpoint
+        }
+        return urlEndpoints
     }
 
     def createNotificationFromResult(Context ctx, java.lang.Object e) {
         String did = e.subscriptionId.substring("sami-".length());
         String collectionType = e.collectionType;
         String date = e.date;
-        RequestDef requestsToDo = new RequestDef(apiEndpoint(ctx, collectionType, date))
-        new ThirdPartyNotification(new BySamiDeviceId(did), [requestsToDo])
+        def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep)}
+        new ThirdPartyNotification(new BySamiDeviceId(did), requestsToDo)
     }
 
     def Or<NotificationResponse, Failure> answerToChallengeRequest(RequestDef req, String verifyCode){
