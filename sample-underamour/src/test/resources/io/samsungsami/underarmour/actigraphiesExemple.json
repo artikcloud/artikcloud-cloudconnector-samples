@@ -1,0 +1,511 @@
+{
+	"_embedded":{
+  "actigraphies": [
+    {
+      "aggregates": {
+        "distance": {
+          "sum": 61
+        },
+        "bodymass": {
+          "latest": 80.75
+        },
+        "bmi": {
+          "latest": 23
+        },
+        "fat_mass_percent": {
+          "latest": 29.5
+        },
+        "heart_rate_resting": {
+          "latest": 54
+        },
+        "active_time": {
+          "sum": 180
+        },
+        "energy_expended": {
+          "sum": 13995
+        },
+        "sleep": {
+          "sum": 23424
+        },
+        "steps": {
+          "sum": 78
+        },
+        "target_net_energy": {
+          "latest": 6819920
+        },
+        "energy_consumed": {
+          "sum": 4228517,
+          "details": {
+            "lunch": {
+              "sum": 1589920
+            },
+            "breakfast": {
+              "sum": 836800
+            },
+            "snack": {
+              "sum": 292880
+            },
+            "dinner": {
+              "sum": 1508917
+            }
+          }
+        },
+        "nutrients_consumed": {
+          "carbohydrates": {
+            "sum": "0.086527",
+            "details": {
+              "lunch": {
+                "sum": "0.042"
+              },
+              "breakfast": {
+                "sum": "0.038"
+              },
+              "snack": {
+                "sum": "0.005"
+              },
+              "dinner": {
+                "sum": "0.001527"
+              }
+            }
+          },
+          "fats": {
+            "sum": "0.056306",
+            "details": {
+              "lunch": {
+                "sum": "0.024"
+              },
+              "breakfast": {
+                "sum": "0.004"
+              },
+              "snack": {
+                "sum": "0.001"
+              },
+              "dinner": {
+                "sum": "0.027306"
+              }
+            }
+          },
+          "protein": {
+            "sum": "0.050042",
+            "details": {
+              "lunch": {
+                "sum": "0.006"
+              },
+              "breakfast": {
+                "sum": "0.008"
+              },
+              "snack": {
+                "sum": "0.011"
+              },
+              "dinner": {
+                "sum": "0.025042"
+              }
+            }
+          }
+        }
+      },
+      "metrics": {
+        "distance": [
+          {
+            "start_datetime_utc": "2014-04-16T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "aggregates": {
+              "sum": 61
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397633400,
+                  41
+                ],
+                [
+                  1397634300,
+                  0
+                ],
+                [
+                  1397635200,
+                  0
+                ],
+                [
+                  1397656800,
+                  20
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "energy_expended": [
+          {
+            "start_datetime_utc": "2014-04-16T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "aggregates": {
+              "sum": 13995.4801196916
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397633400,
+                  9510.2320079788
+                ],
+                [
+                  1397634300,
+                  0
+                ],
+                [
+                  1397635200,
+                  0
+                ],
+                [
+                  1397656800,
+                  4485.2481117128
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "steps": [
+          {
+            "start_datetime_utc": "2014-04-16T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "aggregates": {
+              "sum": 78
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397633400,
+                  54
+                ],
+                [
+                  1397634300,
+                  0
+                ],
+                [
+                  1397635200,
+                  0
+                ],
+                [
+                  1397656800,
+                  24
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "sleep": [
+          {
+            "start_datetime_utc": "2014-04-16T01:09:26+00:00",
+            "end_datetime_utc": "2014-04-16T08:08:10+00:00",
+            "sum": 23424,
+            "details": {
+              "awake": {
+                "sum": 550
+              },
+              "deep_sleep": {
+                "sum": 10105
+              },
+              "light_sleep": {
+                "sum": 13319
+              },
+              "time_to_sleep": {
+                "sum": 273
+              },
+              "times_awakened": {
+                "sum": 1
+              }
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397610566,
+                  1
+                ],
+                [
+                  1397610866,
+                  2
+                ],
+                [
+                  1397611766,
+                  3
+                ],
+                [
+                  1397645066,
+                  1
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "_links": {
+        "user": [
+          {
+            "href": "/v7.1/user/123/",
+            "id": "123"
+          }
+        ]
+      },
+      "date": "2014-04-16",
+      "start_datetime_utc": "2014-04-16T07:00:00+00:00",
+      "end_datetime_utc": "2014-04-17T06:59:59+00:00",
+      "timezones": [
+        [
+          946684800,
+          "America/Chicago"
+        ]
+      ]
+    },
+    {
+      "aggregates": {
+        "distance": {
+          "sum": 1498
+        },
+        "bodymass": {
+          "latest": 80
+        },
+        "bmi": {
+          "latest": 22
+        },
+        "fat_mass_percent": {
+          "latest": 29.5
+        },
+        "heart_rate_resting": {
+          "latest": 50
+        },
+        "active_time": {
+          "sum": 3060
+        },
+        "energy_expended": {
+          "sum": 365342
+        },
+        "sleep": {
+          "sum": 0
+        },
+        "steps": {
+          "sum": 1799
+        },
+        "target_net_energy": {
+          "latest": 6819920
+        },
+        "energy_consumed": {
+          "sum": 4228517,
+          "details": {
+            "lunch": {
+              "sum": 1589920
+            },
+            "breakfast": {
+              "sum": 836800
+            },
+            "snack": {
+              "sum": 292880
+            },
+            "dinner": {
+              "sum": 1508917
+            }
+          }
+        },
+        "nutrients_consumed": {
+          "carbohydrates_consumed": {
+            "sum": "0.086527",
+            "details": {
+              "lunch": {
+                "sum": "0.042"
+              },
+              "breakfast": {
+                "sum": "0.038"
+              },
+              "snack": {
+                "sum": "0.005"
+              },
+              "dinner": {
+                "sum": "0.001527"
+              }
+            }
+          },
+          "fats_consumed": {
+            "sum": "0.056306",
+            "details": {
+              "lunch": {
+                "sum": "0.024"
+              },
+              "breakfast": {
+                "sum": "0.004"
+              },
+              "snack": {
+                "sum": "0.001"
+              },
+              "dinner": {
+                "sum": "0.027306"
+              }
+            }
+          },
+          "protein_consumed": {
+            "sum": "0.050042",
+            "details": {
+              "lunch": {
+                "sum": "0.006"
+              },
+              "breakfast": {
+                "sum": "0.008"
+              },
+              "snack": {
+                "sum": "0.011"
+              },
+              "dinner": {
+                "sum": "0.025042"
+              }
+            }
+          }
+        }
+      },
+      "metrics": {
+        "distance": [
+          {
+            "start_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-18T07:00:00+00:00",
+            "aggregates": {
+              "sum": 1498
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397749500,
+                  113
+                ],
+                [
+                  1397750400,
+                  0
+                ],
+                [
+                  1397751300,
+                  0
+                ],
+                [
+                  1397798100,
+                  33
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "energy_expended": [
+          {
+            "start_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-18T07:00:00+00:00",
+            "aggregates": {
+              "sum": 365342.6945275458
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397749500,
+                  24551.7116289252
+                ],
+                [
+                  1397750400,
+                  0
+                ],
+                [
+                  1397751300,
+                  0
+                ],
+                [
+                  1397798100,
+                  7581.4079022325
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "steps": [
+          {
+            "start_datetime_utc": "2014-04-17T07:00:00+00:00",
+            "end_datetime_utc": "2014-04-18T07:00:00+00:00",
+            "aggregates": {
+              "sum": 1799
+            },
+            "time_series": {
+              "epoch_values": [
+                [
+                  1397749500,
+                  135
+                ],
+                [
+                  1397750400,
+                  0
+                ],
+                [
+                  1397751300,
+                  0
+                ],
+                [
+                  1397798100,
+                  42
+                ]
+              ],
+              "interval": 900
+            }
+          }
+        ],
+        "sleep": []
+      },
+      "_links": {
+        "user": [
+          {
+            "href": "/v7.1/user/123/",
+            "id": "123"
+          }
+        ]
+      },
+      "date": "2014-04-17",
+      "start_datetime_utc": "2014-04-17T07:00:00+00:00",
+      "end_datetime_utc": "2014-04-18T06:59:59+00:00",
+      "timezones": [
+        [
+          946684800,
+          "America/Chicago"
+        ]
+      ],
+      "workouts": [
+        {
+          "aggregates": {
+            "details": {
+              "distance": {
+                "sum": 12877.93850112
+              },
+              "energy_expended": {
+                "sum": 5230000
+              },
+              "steps": {
+                "sum": 0
+              }
+            }
+          },
+          "end_datetime_utc": "2014-04-18T02:24:26+00:00",
+          "name": "Last Run",
+          "start_datetime_utc": "2014-04-18T01:07:19+00:00",
+          "_links": {
+            "self": [
+              {
+                "href": "/v7.1/workout/134/",
+                "id": "134"
+              }
+            ],
+            "activity_type": [
+              {
+                "href": "/v7.1/activity_type/16/",
+                "id": "16"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+}

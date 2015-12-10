@@ -1,0 +1,15 @@
+{
+  "authType" : "OAuth2",
+  "clientId":"aaaa",
+  "clientSecret":"bbbb",
+  "authorizationUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize/",
+  "accessTokenUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/access_token/",
+  "scope":[ "read" ],
+  "statusAcceptNotification":202,
+  "accessTokenMethod": "post",
+  "parameters": {
+    "endPointUrl": "https://api.ua.com",
+    "notificationCallback": "https://test0.alchim31.net:9083/cloudconnectors/0000/thirdpartynotifications",
+    "sharedSecret": "SAMI shared $ecret"
+  }
+}

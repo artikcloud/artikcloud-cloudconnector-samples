@@ -3,8 +3,12 @@
 bin/
 target/
 build/
+etc/
 .gradle
 
 .classpath
 .project
 .settings
+.pem
+.jks
+.pkcs12
