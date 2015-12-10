@@ -9,6 +9,7 @@
   "statusAcceptNotification":200,
   "scope":[],
   "parameters": {
-    "baseUrl": "https://api.fitbit.com/1/user/-/"
+    "baseUrl": "https://api.fitbit.com/1/user/-/",
+    "endpointVerificationCode" : "ccc"
   }
 }

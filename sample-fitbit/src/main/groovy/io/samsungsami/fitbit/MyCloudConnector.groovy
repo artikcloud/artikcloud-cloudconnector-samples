@@ -123,8 +123,20 @@ class MyCloudConnector extends CloudConnector {
         new ThirdPartyNotification(new BySamiDeviceId(did), [requestsToDo])
     }
 
+    def Or<NotificationResponse, Failure> answerToChallengeRequest(RequestDef req, String verifyCode){
+        if (!(req.queryParams().containsKey("verify")))
+            return new Bad(Failure("An incomplete callback verification arrived : " + req))
+
+        if (req.queryParams().get("verify") == verifyCode)
+            return new Good(new NotificationResponse([], new Response(HTTP_NO_CONTENT, "text/plain", "")))
+
+        return new Good(new NotificationResponse([], new Response(HTTP_NOT_FOUND, "text/plain", "")))
+    }
+
     @Override
     def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
+        if(inReq.queryParams().containsKey("verify"))
+            return answerToChallengeRequest(inReq, ctx.parameters().get("endpointVerificationCode"))
         if (inReq.contentType().startsWith("application/json")) {
             def json = slurper.parseText(inReq.content)
             return new Good(new NotificationResponse(json.collect { e -> createNotificationFromResult(ctx, e) }))
