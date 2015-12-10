@@ -1,0 +1,17 @@
+[
+    {
+        "collectionType": "foods",
+        "date": "2010-03-01",
+        "ownerId": "228S74",
+        "ownerType": "user",
+        "subscriptionId": "sami-id1"
+    },
+    {
+        "collectionType": "activities",
+        "date": "2011-03-01",
+        "ownerId": "184X36",
+        "ownerType": "user",
+        "subscriptionId": "sami-id2"
+    }
+]
+

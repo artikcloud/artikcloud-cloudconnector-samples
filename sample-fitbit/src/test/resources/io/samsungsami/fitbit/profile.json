@@ -1,0 +1,30 @@
+{
+    "user":{
+        "aboutMe":"I live in San Francisco.",
+        "avatar":"http://www.fitbit.com/images/profile/defaultProfile_100_male.gif",
+        "avatar150":"http://www.fitbit.com/images/profile/defaultProfile_150_male.gif",
+        "city":"San Francisco",
+        "country":"US",
+        "dateOfBirth":"1970-02-18",
+        "displayName":"Fitbit U.",
+        "distanceUnit":"METRIC",
+        "encodedId":"257V3V",
+        "fullName":"Fitbit User",
+        "gender":"MALE",
+        "glucoseUnit":"METRIC",
+        "height":176.75,
+        "heightUnit":"METRIC",
+        "nickname":"",
+        "locale":"en_GB",
+        "memberSince":"2010-02-07",
+        "offsetFromUTCMillis":-25200000,
+        "startDayOfWeek":"MONDAY",
+        "state":"CA",
+        "strideLengthRunning":0,
+        "strideLengthWalking":0,
+        "timezone":"America/Los_Angeles",
+        "waterUnit":"METRIC",
+        "weight":80.55,
+        "weightUnit":"METRIC"
+    }
+}
