@@ -1,13 +1,11 @@
 {
-  "authorizationUrl":"https://www.fitbit.com/oauth/authorize",
-  "accessTokenUrl":"https://api.fitbit.com/oauth/access_token",
-  "requestTokenUrl":"https://api.fitbit.com/oauth/request_token",
+  "authorizationUrl": "https://www.fitbit.com/oauth2/authorize",
+  "accessTokenUrl":"https://api.fitbit.com/oauth2/token",
   "clientId":"aaa",
   "clientSecret":"bbb",
-  "authType" : "OAuth1",
-  "use10a" : true,
+  "authType" : "OAuth2",
   "statusAcceptNotification":200,
-  "scope":[],
+  "scope":["activity", "heartrate", "location", "nutrition", "profile", "settings", "sleep", "social", "weight"],
   "parameters": {
     "baseUrl": "https://api.fitbit.com/1/user/-/",
     "endpointVerificationCode" : "ccc"

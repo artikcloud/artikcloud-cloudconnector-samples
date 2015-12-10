@@ -31,6 +31,16 @@ class MyCloudConnectorSpec extends Specification {
 		res.get() == Option.apply(device.withUserData("America/Los_Angeles"))
 	}
 
+
+	def "computeAuthHeader should compute the good hash (Oauth2 basic header)"() {
+		when:
+		//the Base64 encoded string, Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ=, is decoded as "client_id:client secret"
+		def expectedResult =  "Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ="
+		def res = sut.computeAuthHeader("client_id", "client secret")
+		then:
+		res == expectedResult
+	}
+
 	def "build requests on notification"(){
 		when:
 		def req = new RequestDef("").withMethod(HttpMethod.Post).withContent(readFile(this, "apiNotification.json"), "application/json")

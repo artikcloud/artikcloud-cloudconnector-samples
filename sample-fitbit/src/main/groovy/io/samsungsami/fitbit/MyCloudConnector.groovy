@@ -8,12 +8,11 @@ import static java.net.HttpURLConnection.*
 import org.scalactic.*
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import groovy.transform.CompileStatic
-import groovy.transform.ToString
+import java.nio.charset.StandardCharsets
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import com.samsung.sami.cloudconnector.api_v1.*
-import org.joda.time.format.ISODateTimeFormat
+import org.apache.commons.codec.binary.Base64;
 
 //TODO implement unsubscription (it's a workaround for https://samihub.atlassian.net/browse/SAMI-3607)
 class MyCloudConnector extends CloudConnector {
@@ -83,15 +82,32 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
+    /**
+     * The Authorization header must be set to Basic followed by a space,
+     * then the Base64 encoded string of your application's client id and secret concatenated with a colon.
+     * For example, the Base64 encoded string, Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ=, is decoded as "client_id:client secret".
+     */
+    def computeAuthHeader(String clientId, String clientSecret) {
+        def secret = (clientId + ":" + clientSecret).getBytes(StandardCharsets.UTF_8)
+        return new String(Base64.encodeBase64(secret), StandardCharsets.UTF_8)
+    }
 
     @Override
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
-        return new Good(req.withSignature(new SignatureDataForOAuth(
-                ctx.clientId(),
-                ctx.clientSecret(),
-                info.credentials().token(),
-                info.credentials().secret()
-        )))
+        switch (phase) {
+            case Phase.refreshToken:
+            case Phase.getOauth2Token:
+                def authHeader = computeAuthHeader(ctx.clientId(), ctx.clientSecret())
+                return new Good(req.withHeaders(["Authorization": "Basic " + authHeader]))
+            case Phase.undef:
+            case Phase.subscribe:
+            case Phase.unsubscribe:
+            case Phase.fetch:
+                return new Good(req.addHeaders(["Authorization": "Bearer " + info.credentials.token]))
+                break
+            default:
+                super.signAndPrepare(ctx, req, info, phase)
+        }
     }
 
     def apiEndpoint(Context ctx, String collectionType, String date) {
