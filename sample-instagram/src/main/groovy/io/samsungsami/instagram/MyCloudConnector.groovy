@@ -75,7 +75,7 @@ class MyCloudConnector extends CloudConnector {
             case Phase.refreshToken:
                 def reqWithToken = req.addQueryParams(["access_token" : info.credentials().token()])
                 def signHash = generateSignature(reqWithToken, ctx.clientSecret())
-                return new Good(reqWithToken.addQueryParams(["sig" : signHash]))
+                new Good(reqWithToken.addQueryParams(["sig" : signHash]))
                 break
             default:
                 super.signAndPrepare(ctx, req, info, phase)
