@@ -171,7 +171,7 @@ class MyCloudConnector extends CloudConnector {
 		} else if (json.datetime){
 			DateTime.parse(json.datetime, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
 		} else if (json.updatedAt){
-			DateTime.parse(json.updatedAt, udateFormat).getMillis()
+			DateTime.parse(json.updatedAt, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
 		} else if (json.lastSyncTime){
 			(json.lastSyncTime as long) * 1000L
 		} else {
