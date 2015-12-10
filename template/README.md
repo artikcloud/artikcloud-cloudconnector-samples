@@ -79,7 +79,7 @@ MyCloudConnector is a derived class that extends `com.samsung.sami.cloudconnecto
 
 ### Tips
 
-* Using custom parameters in your Cloud Connector Groovy code improves the flexibility of your code. Please consult [About custom parameters](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-custom-parameters) to learn what is a cumstom parameter and how to use it. Per the doc, you add custom parameters in CUSTOM PARAMETERS table in Connector Code tab in the Developer Portal. When performing unit and integration testing locally, your Groovy code cannot access the custom parameters since the table is not accessbile locally. In order to pass the testing, you edit src/main/groovy/com/sample/cfg.json. Specifically, add all custom parameters in CUSTOM PARAMETERS table to `parameters` JSON object in cfg.json as follows:
+* Using custom parameters in your Cloud Connector Groovy code improves the flexibility of your code. Please consult [About custom parameters](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-custom-parameters) to learn what is a custom parameter and how to use it. Per the doc, you add custom parameters in CUSTOM PARAMETERS table in Connector Code tab in the Developer Portal. When performing unit and integration testing locally, your Groovy code cannot access the custom parameters since the table is not accessbile locally. In order to pass the testing, you edit src/main/groovy/com/sample/cfg.json. Specifically, add all custom parameters in CUSTOM PARAMETERS table to `parameters` JSON object in cfg.json as follows:
 
 ```
 {
