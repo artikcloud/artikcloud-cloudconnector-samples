@@ -16,7 +16,7 @@ class MyCloudConnector extends CloudConnector {
     JsonSlurper slurper = new JsonSlurper()
 
     @Override
-    def Or<Option<RequestDef>, Failure> initialize(Context ctx) {
+    def Or<List<RequestDef>, Failure> initialize(Context ctx) {
         def req = new RequestDef(API_URL+ "/subscriptions/")
             .withMethod(HttpMethod.Post)
             .withBodyParams([
