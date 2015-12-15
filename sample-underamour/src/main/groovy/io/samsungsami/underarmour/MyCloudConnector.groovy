@@ -27,9 +27,10 @@ class MyCloudConnector extends CloudConnector {
             case Phase.unsubscribe:
             case Phase.fetch:
             case Phase.refreshToken:
-            default:
                 new Good(req.addHeaders(["Api-Key": ctx.clientId(), "Authorization": "Bearer " + info.credentials.token]))
-                //super.signAndPrepare(ctx, req, info, phase)
+                break
+            default:
+                super.signAndPrepare(ctx, req, info, phase)
         }
     }
 
