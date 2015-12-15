@@ -20,4 +20,4 @@ What are included in this repository?
  3. template: a template project. You can build and test your own Cloud Connector code based on it.
  4. sample-xxxx: Cloud Connector examples. The examples have been tested and work in production.
 
-sample-xxxx has the same structures as template folder. You can compile and test sample Cloud Connector by following the instructions in template/README.
+sample-xxxx has the same structures as template folder. You can compile and test sample Cloud Connector by following the instructions in [template/README.md](template/README.md).
