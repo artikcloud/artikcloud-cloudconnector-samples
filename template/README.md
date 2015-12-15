@@ -66,7 +66,7 @@ You can perform manual integration testing on an HTTP (HTTPS) local server. The 
 
 MyCloudConnector is a derived class that extends [CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector). Check out the following documentations to learn how to code it.
 
- * [High level view of the methods of CloudConnector class](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#define-the-cloud-connection)
+ * [High level view of the methods of CloudConnector class](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-the-cloud-connector-groovy-code)
  * [Moves Cloud Connector code explained](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html#implementation-details)
  * [CloudConnector API Doc](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/), which lists functions and structures, and explains goals and usages.
 
