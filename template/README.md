@@ -39,7 +39,7 @@ You can compile the template project without changing any code. However, the Clo
 ### Integration testing in the local environment:
 You can perform manual integration testing on an HTTP (HTTPS) local server. The local server provides the minimal runtime environment to run the Cloud Connector. On this server, you can test authentication and fetching data from the third party cloud before uploading your Cloud Connector code to SAMI Developer Portal.
 
- * Edit [src/main/groovy/com/sample/cfg.json](src/main/groovy/com/sample/cfg.json) to setup the authentication from your local test server to the third party cloud. The information in cfg.json is pretty much the same as the information provided in [Cloud Authentication UI](https://developer-staging.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#set-authentication-parameters) at the SAMI Developer Portal. Here you will have to use cfg.json instead of the UI to do that. You can consult the following resources to learn how to write cfg.json
+ * Edit [src/main/groovy/com/sample/cfg.json](src/main/groovy/com/sample/cfg.json) to setup the authentication from your local test server to the third party cloud. The information in cfg.json is pretty much the same as the information provided in [Cloud Authentication UI](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#set-authentication-parameters) at the SAMI Developer Portal. Here you will have to use cfg.json instead of the UI to do that. You can consult the following resources to learn how to write cfg.json
     * [cfg.json.sample](src/main/groovy/com/sample/cfg.json.sample) explains each JSON key.
     * sample-xxx/src/main/groovy/\<package\>/cfg.json is for each example cloud 
  * Test the CloudConnector on a local HTTP server.
@@ -64,9 +64,9 @@ You can perform manual integration testing on an HTTP (HTTPS) local server. The 
 
 # Notes for MyCloudConnector.groovy
 
-MyCloudConnector is a derived class that extends `[CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector)`. Check out the following documentations to learn how to code it.
+MyCloudConnector is a derived class that extends [CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector). Check out the following documentations to learn how to code it.
 
- * [High level view of the methods of CloudConnector class](https://developer-staging.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#define-the-cloud-connection)
+ * [High level view of the methods of CloudConnector class](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#define-the-cloud-connection)
  * [Moves Cloud Connector code explained](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html#implementation-details)
  * [CloudConnector API Doc](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/), which lists functions and structures, and explains goals and usages.
 
