@@ -78,6 +78,7 @@ class MyCloudConnector extends CloudConnector {
 					case "sessions" : sub = "/activity/sessions/"; break
 					case "sleeps" : sub = "/activity/sleeps/"; break
 				}
+
 				def reqs = [new RequestDef(endpoint + extId + sub + objId)]
 				if (kind == 'goals') {
 					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
@@ -100,9 +101,9 @@ class MyCloudConnector extends CloudConnector {
 				} else if (res.contentType.startsWith("application/json")) {
 					return new Good(parseSingleEntry(slurper.parseText(content), findGroup(req), ctx.now()))
 				}
-				return new Bad(new Failure("unsupported response ${res} ... ${res.contentType} .. ${res.contentType.startsWith("application/json")}"))
+				return new Bad(new Failure("unsupported response ${res} ... ${res.contentType} .. ${res.contentType.startsWith("application/json")} for ${req.method} ${req.url}"))
 			default:
-				return new Bad(new Failure("http status : ${res.status} is not OK (${HTTP_OK})"))
+				return new Bad(new Failure("http status : ${res.status} is not OK (${HTTP_OK}) for ${req.method} ${req.url}"))
 		}
 	}
 
