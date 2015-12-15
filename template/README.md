@@ -19,7 +19,7 @@ You can compile the template project without changing any code. However, the Clo
  * Edit [src/main/groovy/com/sample/MyCloudConnector.groovy](src/main/groovy/com/sample/MyCloudConnector.groovy)
     * Overwrite necessary methods to process subscription, notifications, and data fetching from the third party cloud
     * Use the following libraries in Groovy code :
-     * [sami-cloudconnector-api](https://github.com/samsungsamiio/sami-cloudconnector-sdk/tree/master/apidoc)
+     * [sami-cloudconnector-api](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/)
      * [joda-time 2.3](http://www.joda.org/joda-time/apidocs/index.html) for date and time manipulation
      * [commons-codec 1.10](https://commons.apache.org/proper/commons-codec/archives/1.10/apidocs/index.html)
      * [scalactic 2.2.4](http://www.scalactic.org/), which provides a few helper constructs including classes [Or, Good, Bad](http://www.scalactic.org/user_guide/OrAndEvery)
@@ -64,11 +64,11 @@ You can perform manual integration testing on an HTTP (HTTPS) local server. The 
 
 # Notes for MyCloudConnector.groovy
 
-MyCloudConnector is a derived class that extends `com.samsung.sami.cloudconnector.api.CloudConnector`. Check out the following documentations to learn how to code it.
+MyCloudConnector is a derived class that extends `[CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector)`. Check out the following documentations to learn how to code it.
 
  * [High level view of the methods of CloudConnector class](https://developer-staging.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#define-the-cloud-connection)
  * [Moves Cloud Connector code explained](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html#implementation-details)
- * [CloudConnector API Doc](https://github.com/samsungsamiio/sami-cloudconnector-sdk/tree/master/apidoc), which lists functions and structures, and explains goals and usages.
+ * [CloudConnector API Doc](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/), which lists functions and structures, and explains goals and usages.
 
 ### Best practices
 

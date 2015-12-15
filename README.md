@@ -10,7 +10,7 @@ This repository hosts Cloud Connector SDK. You write Cloud Connector Groovy code
 
  * [Using Cloud Connectors](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html) gives the overview of the Cloud Connector concept.
  * [Your first Cloud Connector](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html) explains the developer workflow and Cloud Connector code using Moves as an example.
-
+ * [CloudConnector API Doc](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/), which lists functions and structures, and explains goals and usages.
 
 What are included in this repository?
 -----------------------
