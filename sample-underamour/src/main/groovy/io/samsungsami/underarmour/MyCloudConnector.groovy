@@ -102,9 +102,9 @@ class MyCloudConnector extends CloudConnector {
                     def actigraphiesJson = json._embedded?.actigraphies ?: []
                     def events = actigraphiesJson?.collectMany{ actigraphie ->
                         extractMetrics(actigraphie, ts) +
-                          extractWorkouts(actigraphie, ts)
+                                extractAggregates(actigraphie, ts) +
+                                extractWorkouts(actigraphie, ts)
                     }
-                    //JsonOutput.toJson
                     return new Good(events)
                 }
                 return new Bad(new Failure("unsupported response ${res} ... ${res.contentType} .. ${res.contentType.startsWith(CT_JSON)}"))
@@ -114,34 +114,82 @@ class MyCloudConnector extends CloudConnector {
     }
 
     private def extractMetrics(jsonNode, long ts) {
+        def type = "metric"
         def steps = jsonNode?.metrics?.steps ?: []
-        steps.collectMany { stepsInfo ->
+        def stepEvents = steps.collectMany { stepsInfo ->
             def startTime = new DateTime(stepsInfo.start_datetime_utc)
             def endTime = new DateTime(stepsInfo.end_datetime_utc)
             stepsInfo.time_series.epoch_values.collect { tsAndCount ->
                 if (tsAndCount.size == 2) {
-                    new Event(ts, '''{"steps":{''' + writeStep("metric", tsAndCount[1], startTime, endTime) + ''', "timestamp":''' + tsAndCount[0] + "}}")
+                    new Event(ts, '''{"steps":{''' + writeStep(type, tsAndCount[1], startTime, endTime) + ''', "timestamp":''' + tsAndCount[0] + "}}")
                 }
             }
         }
+        def sleeps = jsonNode?.metrics?.sleep ?: []
+        def sleepEvents = sleeps.collectMany { sleepsInfo ->
+            def startTime = new DateTime(sleepsInfo.start_datetime_utc)
+            def endTime = new DateTime(sleepsInfo.end_datetime_utc)
+            def sleepSum = sleepsInfo?.sum
+            def lightSleep = sleepsInfo?.details?.light_sleep?.sum
+            def deepSleep = sleepsInfo?.details?.deep_sleep?.sum
+            def awake = sleepsInfo?.details?.awake?.sum
+            [new Event(ts, '''{"sleep":{''' + writeSleep(type, awake, sleepSum, lightSleep, deepSleep, startTime, endTime) + "}}")]
+        }
+        stepEvents + sleepEvents
+    }
+
+    private def extractAggregates(jsonNode, long ts) {
+        def type = "aggregates"
+        def startTime = new DateTime(jsonNode.start_datetime_utc)
+        def endTime = new DateTime(jsonNode.end_datetime_utc)
+        def heartRateResting = jsonNode?.aggregates?.heart_rate_resting?.latest ?: -42
+        if (heartRateResting != -42)
+            [new Event(ts, '''{"heartrate":{''' + writeHeartRate(type, heartRateResting, startTime, endTime) + "}}")]
+        else
+            []
     }
 
     private def extractWorkouts(jsonNode, long ts) {
+        def type = "workout"
         def workouts = jsonNode?.workouts ?: []
         workouts.collectMany { workoutsInfo ->
             def startTime = new DateTime(workoutsInfo.start_datetime_utc)
             def endTime = new DateTime(workoutsInfo.end_datetime_utc)
             def steps = workoutsInfo?.aggregates?.details?.steps?.sum ?: 0
             if (steps != 0){
-                [new Event(ts, '''{"steps":{''' + writeStep("workout", steps , startTime, endTime) + "}}")]
+                [new Event(ts, '''{"steps":{''' + writeStep(type, steps , startTime, endTime) + "}}")]
             } else {
                 []
             }
         }
     }
 
+
+    // write functions to write Js String
+
+    private def writeSleep(String type, Integer awake, Integer sum, Integer light, Integer deep, DateTime start, DateTime end){
+        writeType(type) + ''', "awake":''' + awake + ''', "sleep-sum":''' + sum +
+                ''', "light-sleep":''' + light + ''', "deep-sleep":''' + deep +
+                writeDates(start, end)
+    }
+
+    private def writeHeartRate(String type, Integer heartRateResting, DateTime start, DateTime end){
+        writeType(type) + ''', "heartrate-resting":''' + heartRateResting + ", " + writeDates(start, end)
+    }
+
     private def writeStep(String type, Integer count, DateTime start, DateTime end){
-        '''"type":"''' + type + '''", "count":''' + count +
-                ''', "startDate":''' + start.getMillis() + ''', "endDate":''' + end.getMillis()
+        writeType(type) + ", " + writeCount(count) + ", " + writeDates(start, end)
+    }
+
+    private def writeType(String type){
+        '''"type":"''' + type + '''"'''
+    }
+
+    private def writeCount(Integer count){
+        '''"count":''' + count
+    }
+
+    private def writeDates(DateTime start, DateTime end){
+        '''"startDate":''' + start.getMillis() + ''', "endDate":''' + end.getMillis()
     }
 }
