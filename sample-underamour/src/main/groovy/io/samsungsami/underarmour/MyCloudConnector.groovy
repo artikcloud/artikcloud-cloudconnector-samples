@@ -121,7 +121,7 @@ class MyCloudConnector extends CloudConnector {
             def endTime = new DateTime(stepsInfo.end_datetime_utc)
             stepsInfo.time_series.epoch_values.collect { tsAndCount ->
                 if (tsAndCount.size == 2) {
-                    new Event(ts, '''{"steps":{''' + writeStep(type, tsAndCount[1], startTime, endTime) + ''', "timestamp":''' + tsAndCount[0] + "}}")
+                    new Event(ts, '''{"steps":{''' + writeStep(type, tsAndCount[1], startTime, endTime) + ''', "timestamp":''' + Math.round(tsAndCount[0] / 1000) + "}}")
                 }
             }
         }
@@ -129,11 +129,11 @@ class MyCloudConnector extends CloudConnector {
         def sleepEvents = sleeps.collectMany { sleepsInfo ->
             def startTime = new DateTime(sleepsInfo.start_datetime_utc)
             def endTime = new DateTime(sleepsInfo.end_datetime_utc)
-            def sleepSum = sleepsInfo?.sum
+            def totalSleep = sleepsInfo?.sum
             def lightSleep = sleepsInfo?.details?.light_sleep?.sum
             def deepSleep = sleepsInfo?.details?.deep_sleep?.sum
             def awake = sleepsInfo?.details?.awake?.sum
-            [new Event(ts, '''{"sleep":{''' + writeSleep(type, awake, sleepSum, lightSleep, deepSleep, startTime, endTime) + "}}")]
+            [new Event(ts, '''{"sleep":{''' + writeSleep(type, awake, totalSleep, lightSleep, deepSleep, startTime, endTime) + "}}")]
         }
         stepEvents + sleepEvents
     }
@@ -168,13 +168,13 @@ class MyCloudConnector extends CloudConnector {
     // write functions to write Js String
 
     private def writeSleep(String type, Integer awake, Integer sum, Integer light, Integer deep, DateTime start, DateTime end){
-        writeType(type) + ''', "awake":''' + awake + ''', "sleep-sum":''' + sum +
-                ''', "light-sleep":''' + light + ''', "deep-sleep":''' + deep +
+        writeType(type) + ''', "awake":''' + awake + ''', "totalSleep":''' + sum +
+                ''', "lightSleep":''' + light + ''', "deepSleep":''' + deep +
                 writeDates(start, end)
     }
 
     private def writeHeartRate(String type, Integer heartRateResting, DateTime start, DateTime end){
-        writeType(type) + ''', "heartrate-resting":''' + heartRateResting + ", " + writeDates(start, end)
+        writeType(type) + ''', "resting":''' + heartRateResting + ", " + writeDates(start, end)
     }
 
     private def writeStep(String type, Integer count, DateTime start, DateTime end){

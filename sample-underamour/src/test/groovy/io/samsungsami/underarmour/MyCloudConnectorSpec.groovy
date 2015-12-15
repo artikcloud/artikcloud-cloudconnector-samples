@@ -128,22 +128,22 @@ class MyCloudConnectorSpec extends Specification {
 					'''+ msg + '''
 			}''')
 		def res = sut.onFetchResponse(ctx, req, null , fetchedResponse)
-		def expectedSleepEvent = new Event(1425251540687,'''{"sleep":{"type":"metric", "awake":550, "sleep-sum":23424, "light-sleep":13319, "deep-sleep":10105"startDate":1397610566000, "endDate":1397635690000}}''')
+		def expectedSleepEvent = new Event(1425251540687,'''{"sleep":{"type":"metric", "awake":550, "totalSleep":23424, "lightSleep":13319, "deepSleep":10105"startDate":1397610566000, "endDate":1397635690000}}''')
 		def expectedHeartRate = [
-				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "heartrate-resting":54, "startDate":1397631600000, "endDate":1397717999000}}'''),
-				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "heartrate-resting":50, "startDate":1397718000000, "endDate":1397804399000}}''')
+				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "resting":54, "startDate":1397631600000, "endDate":1397717999000}}'''),
+				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "resting":50, "startDate":1397718000000, "endDate":1397804399000}}''')
 		]
 		def expectedEvents = [
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":54, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397633400}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397634300}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397635200}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":24, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397656800}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":54, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397633}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397634}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397635}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":24, "startDate":1397631600000, "endDate":1397718000000, "timestamp":1397657}}'''),
 				expectedSleepEvent,
 				expectedHeartRate[0],
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":135, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397749500}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397750400}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397751300}}'''),
-				new Event(1425251540687,'''{"steps":{"type":"metric", "count":42, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397798100}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":135, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397750}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397750}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":0, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397751}}'''),
+				new Event(1425251540687,'''{"steps":{"type":"metric", "count":42, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397798}}'''),
 				expectedHeartRate[1]
 		]
 
