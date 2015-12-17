@@ -98,7 +98,7 @@ MyCloudConnector is a derived class that extends [CloudConnector](http://samsung
 
 ### Unit Tests
 
-Both the samples and the template use [Spock framework](http://spockframework.github.io/spock/docs/1.0/index.html) for unit tests. It is a Groovy framework that reports in-equality more friendly than JUnit. However, you can use your favorite framework to do your own unit tests.
+Both the samples and the template use [Spock framework](http://spockframework.github.io/spock/docs/1.0/index.html) for unit tests. It is a Groovy framework that reports inequality more easily than JUnit does. However, you can use your favorite framework to do your own unit tests.
 
 The class `utils.FakeContext` provides a default Context implementation, which you can use and customize in your tests.
 
