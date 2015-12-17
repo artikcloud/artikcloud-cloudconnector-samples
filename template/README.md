@@ -1,23 +1,24 @@
-This is a template project. Based on it, you can write a cloud connector custom code, configure parameters, and perform both unit and integration testing. 
+This is a template project. Based on it, you can write custom Cloud Connector code, configure parameters, and perform both unit and integration testing. 
 
-Consult sibling directories sample-xxx for examples of the Cloud Connector. These Cloud Connectors have been tested and work in production. For example, you can connect a device of type "moves" in the SAMI [User Portal](https://portal.samsungsami.io).
+Refer to the sibling directories sample-xxx for examples of the Cloud Connector. These Cloud Connectors have been tested and work in production. For example, you can connect a device of type "moves" in the SAMI [User Portal](https://portal.samsungsami.io).
 
 # Install
 
-* Pre-required: [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) already installed. 
-* Sync the repository that contains the Cloud Connector SDK and the template from [github](https://github.com/samsungsamiio/sami-cloudconnector-sdk).
+* Pre-requisite: [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) already installed. 
+* Sync the repository that contains the Cloud Connector SDK and the template from [GitHub](https://github.com/samsungsamiio/sami-cloudconnector-sdk).
 
-Each command mentioned in this document should be launched from the current project directory, which contains build.gradle file. 
+Each command mentioned in this document should be launched from the current project directory, which contains the `build.gradle` file. 
 
 When running '../gradlew XXXX' commands in Section "Usages", `gradlew` will download the required tools and libraries on demand.
 
 # Usages
 
 ### Code & compile Groovy code:
-You can compile the template project without changing any code. However, the Cloud Connector built from it is useless since it does not do any real operation.
+
+You can compile the template project without changing any code. However, the Cloud Connector built from the template does not perform any real operations.
 
  * Edit [src/main/groovy/com/sample/MyCloudConnector.groovy](src/main/groovy/com/sample/MyCloudConnector.groovy)
-    * Overwrite necessary methods to process subscription, notifications, and data fetching from the third party cloud
+    * Overwrite necessary methods to process subscription, notifications, and data fetching from the third-party cloud
     * Use the following libraries in Groovy code :
      * [sami-cloudconnector-api](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/)
      * [joda-time 2.3](http://www.joda.org/joda-time/apidocs/index.html) for date and time manipulation
@@ -31,22 +32,22 @@ You can compile the template project without changing any code. However, the Clo
 ### Unit test
 
  * Edit [src/test/groovy/com/sample/MyCloudConnectorSpec.groovy](src/test/groovy/com/sample/MyCloudConnectorSpec.groovy)
- * Run unit test. Make sure to provide 'cleanTest' in the command to force run. Otherwise gradlew skip running test if the code was not changed since last time the command runs:
+ * Run unit test. Make sure to provide 'cleanTest' in the command to force run. Otherwise `gradlew` skips running test if the code was not changed since the command was last run:
   ```
   ../gradlew cleanTest test
   ```
 
 ### Integration testing in the local environment:
-You can perform manual integration testing on an HTTP (HTTPS) local server. The local server provides the minimal runtime environment to run the Cloud Connector. On this server, you can test authentication and fetching data from the third party cloud before uploading your Cloud Connector code to SAMI Developer Portal.
+You can perform manual integration testing on an HTTP (HTTPS) local server. The local server provides the minimal runtime environment to run the Cloud Connector. On this server, you can test authentication and fetching data from the third-party cloud before uploading your Cloud Connector code to the SAMI [Developer Portal](https://devportal.samsungsami.io/).
 
- * Edit [src/main/groovy/com/sample/cfg.json](src/main/groovy/com/sample/cfg.json) to setup the authentication from your local test server to the third party cloud. The information in cfg.json is pretty much the same as the information provided in [Cloud Authentication UI](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#set-authentication-parameters) at the SAMI Developer Portal. Here you will have to use cfg.json instead of the UI to do that. You can consult the following resources to learn how to write cfg.json
+ * Edit [src/main/groovy/com/sample/cfg.json](src/main/groovy/com/sample/cfg.json) to set up the authentication from your local test server to the third-party cloud. The information in cfg.json is pretty much the same as the information provided in [Cloud Authentication UI](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#set-authentication-parameters) at the SAMI Developer Portal. Here you will have to use cfg.json instead of the UI to do that. You can refer to the following resources to learn how to write cfg.json:
     * [cfg.json.sample](src/main/groovy/com/sample/cfg.json.sample) explains each JSON key.
-    * sample-xxx/src/main/groovy/\<package\>/cfg.json is for each example cloud 
- * Test the CloudConnector on a local HTTP server.
-    * To receive notification, your local server should be accessible via internet (for example, use a server accessible from the outside or use ssh tunnel with port forwarding)
-    * You can customize the port of the local server (9080 by default for http and 9083 for https) by editing [utils.MyCloudConnectorRun](src/test/groovy/utils/MyCloudConnectorRun.groovy)
-    * Temporarily update the configurations on the 3rd party cloud to use your local server for authentication and notification.
-    * Run the test server (device type is hardcoded to 0000)
+    * sample-xxx/src/main/groovy/\<package\>/cfg.json is for each example cloud.
+ * Test the Cloud Connector on a local HTTP server.
+    * To receive notifications, your local server should be accessible via Internet (for example, use a server accessible from the outside or use ssh tunnel with port forwarding).
+    * You can customize the port of the local server (9080 by default for HTTP and 9083 for HTTPS) by editing [utils.MyCloudConnectorRun](src/test/groovy/utils/MyCloudConnectorRun.groovy).
+    * Temporarily update the configurations on the third-party cloud to use your local server for authentication and notification.
+    * Run the test server (device type is hardcoded to 0000).
   ```
   ../gradlew runTestServer
   ```
@@ -55,31 +56,31 @@ You can perform manual integration testing on an HTTP (HTTPS) local server. The 
      redirect uri: http://localhost:9080/cloudconnectors/0000/auth
      notification uri: http://localhost:9080/cloudconnectors/0000/thirdpartynotifications
      ```
-    * Start subscribing of a device by loading http://localhost:9080/cloudconnectors/0000/start_subscription in your browser.
-    * Follow instructions displayed on the web page.
-    * Generate new data in the 3rd party application, which triggers the notification from the 3rd party cloud to your local test server.
+    * Start subscribing to a device by loading http://localhost:9080/cloudconnectors/0000/start_subscription in your browser.
+    * Follow the instructions displayed on the web page.
+    * Generate new data in the third-party application, which triggers the notification from the third-party cloud to your local test server.
     * In the console, the test server should print a line with "0000: queuing event Event(" for each event generated by MyCloudConnector. One event is for one SAMI message.
 
-*After finishing your integration testing, you should change the configuration on the 3rd party cloud to use SAMI instead of your local test server for authentication and notification.*
+*After finishing your integration testing, you should change the configuration on the third-party cloud to use SAMI instead of your local test server for authentication and notification.*
 
 # Notes for MyCloudConnector.groovy
 
-MyCloudConnector is a derived class that extends [CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector). Check out the following documentations to learn how to code it.
+MyCloudConnector is a derived class that extends [CloudConnector](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/#com.samsung.sami.cloudconnector.api_v1.CloudConnector). Check out the following documentation articles to learn how to code it.
 
- * [High level view of the methods of CloudConnector class](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-the-cloud-connector-groovy-code)
+ * [High-level view of the methods of CloudConnector class](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-the-cloud-connector-groovy-code)
  * [Moves Cloud Connector code explained](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html#implementation-details)
  * [CloudConnector API Doc](http://samsungsamiio.github.io/sami-cloudconnector-sdk/apidoc/), which lists functions and structures, and explains goals and usages.
 
 ### Best practices
 
  * CloudConnector should be stateless. So it should not have instance data, but you can use final constants.
- * All methods return [Or\<T, Failure\>](http://doc.scalatest.org/2.2.4/index.html#org.scalactic.Or) instead of a value of type T. `Or` is a `Good` or `Bad` instance depending on if the execution of the method succeeds or runs into an error. Create `Good` or `Bad` instance as following: 
+ * All methods return [Or\<T, Failure\>](http://doc.scalatest.org/2.2.4/index.html#org.scalactic.Or) instead of a value of type T. `Or` is a `Good` or `Bad` instance depending on whether the execution of the method succeeds or runs into an error. Create `Good` or `Bad` instance as follows: 
     * `new Good(t)`, where t is an instance of `T`.
     * `new Bad(new Failure('this is an error message, put error details here'))`.
 
 ### Tips
 
-* Using custom parameters in your Cloud Connector Groovy code improves the flexibility of your code. Please consult [About custom parameters](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-custom-parameters) to learn what is a custom parameter and how to use it. Per the doc, you add custom parameters in CUSTOM PARAMETERS table in Connector Code tab in the Developer Portal. When performing unit and integration testing locally, your Groovy code cannot access the custom parameters since the table is not accessbile locally. In order to pass the testing, you edit src/main/groovy/com/sample/cfg.json. Specifically, add all custom parameters in CUSTOM PARAMETERS table to `parameters` JSON object in cfg.json as follows:
+* Using custom parameters in your Cloud Connector Groovy code improves the flexibility of your code. Please refer to [About custom parameters](https://developer.samsungsami.io/sami/sami-documentation/using-cloud-connectors.html#about-custom-parameters) to learn about custom parameters and how to use them. Per the doc, you add custom parameters to the CUSTOM PARAMETERS table in the Connector Code tab in the Developer Portal. When performing unit and integration testing locally, your Groovy code cannot access custom parameters since the table is not accessbile locally. In order to pass the testing, you edit src/main/groovy/com/sample/cfg.json. Specifically, add all custom parameters in CUSTOM PARAMETERS table to `parameters` JSON object in cfg.json as follows:
 
 ```
 {
@@ -92,26 +93,26 @@ MyCloudConnector is a derived class that extends [CloudConnector](http://samsung
 }
 ```
 
-* Perform unit and integration testing before submitting the Groovy Code in SAMI Developer Portal. This will increase the probability that the code is approved by SAMI and it works as you expected. 
-* If you want to do type checking, uncomments the class annotation `//@CompileStatic`. Then, json manipulation will be more verbose.
+* Perform unit and integration testing before submitting the Groovy Code in the SAMI Developer Portal. This will increase the probability that the code is approved by SAMI and it works as you expected. 
+* If you want to do type checking, uncomments the class annotation `//@CompileStatic`. Then, JSON manipulation will be more verbose.
 
 ### Unit Tests
 
-Both samples and the template use [Spock framework](http://spockframework.github.io/spock/docs/1.0/index.html) for unit test. It is a groovy framework that reports in-equality more friendly than JUnit. However, you can use your favorite framework to do your own unit tests.
+Both the samples and the template use [Spock framework](http://spockframework.github.io/spock/docs/1.0/index.html) for unit tests. It is a Groovy framework that reports in-equality more friendly than JUnit. However, you can use your favorite framework to do your own unit tests.
 
-The class `utils.FakeContext` provides a default Context implementation, which that you can use and customize in your tests.
+The class `utils.FakeContext` provides a default Context implementation, which you can use and customize in your tests.
 
-The class `utils.Tools` provides helper functions, for example, comparing list of events.
+The class `utils.Tools` provides helper functions, e.g. for comparing list of events.
 
-You can create text files under src/test/resources/<package> to store json and csv et al. The unit test calls utils.Tools.readFile() to read the content from these files.
+You can create text files under src/test/resources/<package> to store JSON and CSV, etc. The unit test calls utils.Tools.readFile() to read the content from these files.
 
-There are more unit test examples in samples projects, for example, how to compare Json and Events and how to read text file et al.
+There are more unit test examples in the sample projects, e.g., how to compare JSON and Events, how to read text file, etc.
 
 ### Integration Testing
 
 If you change the package name of `MyCloudConnector.groovy` from `com.sample` to something else (for example, `io.samsungsami.moves`), you will have to modify `build.gradle` file to use the correct package name before running `../gradlew runTestServer`. 
 
-Open `build.gradle` in an editor, and replace `com.sample` in the following code snippet by the correct package name (for example, `io.samsungsami.moves`). 
+Open `build.gradle` in an editor, and replace `com.sample` in the following code snippet with the correct package name (for example, `io.samsungsami.moves`). 
 ```
 task runTestServer(type:JavaExec) {
   main = System.getProperty("exec.mainClass") ?: "utils.MyCloudConnectorRun"
@@ -126,15 +127,15 @@ You can configure logging in [src/test/resources/logback-test.xml](src/test/reso
 
 #### Enable HTTS/SSL
 
-If third party cloud require https for authentication and notification, then you have to customize `utils/MyCloudConnectorRun.groovy`.
+If the third-party cloud requires HTTPS for authentication and notification, then you have to customize `utils/MyCloudConnectorRun.groovy`.
 
-1. Select a domain/host name that you can used (eg. my.domain.com). **Don't forget to register it into your /etc/hosts or your DNS'registar**
-1. Enable https port by setting a no-null value for httpsPort parameter (eg. 9083). If you try to connect to https://my.domain.com:9083/ a self-signed certificate will be generated and used.
+1. Select a domain/host name that you can use (e.g., my.domain.com). **Don't forget to register it into your /etc/hosts or your DNS' registrar**
+1. Enable HTTPS port by setting a no-null value for httpsPort parameter (eg. 9083). If you try to connect to https://my.domain.com:9083/ a self-signed certificate will be generated and used.
 
   ```
   def srvCfg = SimpleHttpServer.makeServerConfig('my.domain.com', 9080, 9083, null, null, null, null)
   ```
-1. If third party cloud doen't accept self-signed certificate (it's often the case, because it's a security failure), then you have to acquire a SSL certificate from an authority, or since end of 2015 you can acquire it with [Let's Encrypt](https://letsencrypt.org/howitworks/) (free)
+1. If the third-party cloud doesn't accept self-signed certificate (often the case, because it's a security failure), then you have to acquire an SSL certificate from an authority, or you can (since the end of 2015) acquire it with [Let's Encrypt](https://letsencrypt.org/howitworks/) (free).
 
   ```
   # install letsencrypt
@@ -156,7 +157,7 @@ If third party cloud require https for authentication and notification, then you
   # don't need the PKCS#12 file anymore
   rm keystore.pkcs12
   ```
-1. Edit MyCloudConnectorRun.groovy to use the keystore with the certificate (don't forget to change the domain name, the path, the password)
+1. Edit `MyCloudConnectorRun.groovy` to use the keystore with the certificate (don't forget to change the domain name, the path, and the password).
 
   ```
   def srvCfg = SimpleHttpServer.makeServerConfig('my.domain.com', 9080, 9083, "etc/letsencrypt/archive/my.domain.com/keystore.jks", null, "keyStorePassword", null)
