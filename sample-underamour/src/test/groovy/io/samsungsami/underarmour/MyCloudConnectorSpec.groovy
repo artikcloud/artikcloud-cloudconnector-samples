@@ -68,7 +68,30 @@ class MyCloudConnectorSpec extends Specification {
 		res.isGood()
 		res.get() == Option.apply(info.withUserData(JsonOutput.toJson(["subscriptionId":42])))
 	}
+/*
+	def "unsubscripe webhook"() {
+		when:
+		def info = new DeviceInfo("", Option.apply(null), null, "", Option.apply(null))
+				.withUserData(JsonOutput.toJson(["subscriptionId":42]))
+		def res =sut.unsubscribe(ctx, info)
 
+		then:
+		res.isGood()
+		res.get() == [new RequestDef("${ctx.parameters()['endPointUrl']}/v7.1/webhook/42")
+							  .withMethod(HttpMethod.Put)
+							  .withContent(JsonOutput.toJson(["status": "disabled"]), "application/json")]
+	}
+
+	def "fail when can't unsubscripe webhook"() {
+		when:
+		def info = new DeviceInfo("", Option.apply(null), null, "", Option.apply(null))
+				.withUserData(JsonOutput.toJson(["The answer":42]))
+		def res =sut.unsubscribe(ctx, info)
+
+		then:
+		res.isBad()
+	}
+*/
 
     def "accept valid Notification"() {
   		when:
