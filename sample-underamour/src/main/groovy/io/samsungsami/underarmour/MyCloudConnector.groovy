@@ -184,17 +184,17 @@ class MyCloudConnector extends CloudConnector {
 
     // write functions to write Js String
 
-    private def writeSleep(String type, Integer awake, Integer sum, Integer light, Integer deep, DateTime start, DateTime end){
+    private def writeSleep(String type, BigDecimal awake, BigDecimal sum, BigDecimal light, BigDecimal deep, DateTime start, DateTime end){
         writeType(type) + ''', "awake":''' + awake + ''', "totalSleep":''' + sum +
                 ''', "lightSleep":''' + light + ''', "deepSleep":''' + deep +
                 writeDates(start, end)
     }
 
-    private def writeHeartRate(String type, Integer heartRateResting, DateTime start, DateTime end){
+    private def writeHeartRate(String type, BigDecimal heartRateResting, DateTime start, DateTime end){
         writeType(type) + ''', "resting":''' + heartRateResting + ", " + writeDates(start, end)
     }
 
-    private def writeStep(String type, Integer count, DateTime start, DateTime end){
+    private def writeStep(String type, BigDecimal count, DateTime start, DateTime end){
         writeType(type) + ", " + writeCount(count) + ", " + writeDates(start, end)
     }
 
@@ -202,7 +202,7 @@ class MyCloudConnector extends CloudConnector {
         '''"type":"''' + type + '''"'''
     }
 
-    private def writeCount(Integer count){
+    private def writeCount(BigDecimal count){
         '''"count":''' + count
     }
 
