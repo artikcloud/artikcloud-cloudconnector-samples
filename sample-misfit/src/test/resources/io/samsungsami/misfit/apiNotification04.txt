@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "365edcad-82bc-56e0-ac0c-925c496b300b",
+  "TopicArn" : "arn:aws:sns:us-east-1:819895241319:shine-production-devices-seNwgQaD5bQJxq8s",
+  "Message" : "[{\"type\":\"devices\",\"id\":\"55af57214c51079171123578\",\"ownerId\":\"externalID054\",\"action\":\"updated\",\"updatedAt\":\"2015-12-21T09:42:46Z\"}]",
+  "Timestamp" : "2015-12-21T09:42:47.330Z",
+  "SignatureVersion" : "1",
+  "Signature" : "QamXya57c/huaaqEE+lZlC1sCBmcEQpHJ3/Pjf3mbP1vrefPoOuHHP6pI3wOHswQWpXGARXpMRet+UEJTf9epvjuQKtE3Op+S2awU2noB0tmfbSWkv+XxavQRO9q8wj5f0iunLldm6+2wSFX37+REMJyBgcYTfturt3+XAPBYenZF7OYrhkpON0OuFXlgxe2bbQc34t0OjqbIoFlo0uvSPRLluVtcaLuoh8jUXKhz98Hgglb6JMFW4pKlfSF2ED3Li33Jf3dlvft2TB4K2yaRbLns+G132J+7j32v+7i6anw/KuNRu9cyiUbJ9jlBW86JaSngaYJkcpLLdI61z3roQ==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-bb750dd426d95ee9390147a5624348ee.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:819895241319:shine-production-devices-seNwgQaD5bQJxq8s:c084f493-704a-42e6-af24-5a7d7b3af9f5"
+}

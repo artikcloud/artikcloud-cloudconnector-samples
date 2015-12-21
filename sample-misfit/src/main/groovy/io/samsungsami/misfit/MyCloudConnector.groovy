@@ -53,12 +53,19 @@ class MyCloudConnector extends CloudConnector {
 
 	@Override
 	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-		def json = slurper.parseText(inReq.content)
-		if (json.SubscribeURL) {
-			String url = json.SubscribeURL
-			new Good(new NotificationResponse([new ThirdPartyNotification(Empty.deviceSelector(), [new RequestDef(url)])]))
+		ctx.debug("notification:"  + inReq)
+		if (inReq.content == null || inReq.content.trim() == "") {
+			new Good(new NotificationResponse([]))
 		} else {
-			new Good(new NotificationResponse(extractNotification(ctx, json.Message)))
+			def json = slurper.parseText(inReq.content)
+			if (json.SubscribeURL) {
+				String url = json.SubscribeURL
+				new Good(new NotificationResponse([new ThirdPartyNotification(Empty.deviceSelector(), [new RequestDef(url)])]))
+			} else if (json.Message) {
+				new Good(new NotificationResponse(extractNotification(ctx, json.Message)))
+			} else {
+				new Good(new NotificationResponse([]))
+			}
 		}
 	}
 
@@ -73,17 +80,16 @@ class MyCloudConnector extends CloudConnector {
 			} else {
 				def sub
 				switch(kind) {
-					case "devices" : sub = "/device/"; break
-					case "goals" : sub = "/activity/goals/"; break
-					case "sessions" : sub = "/activity/sessions/"; break
-					case "sleeps" : sub = "/activity/sleeps/"; break
+					case "devices" : sub = "/device"; break
+					case "goals" : sub = "/activity/goals/" + objId; break
+					case "sessions" : sub = "/activity/sessions/" + objId; break
+					case "sleeps" : sub = "/activity/sleeps/" + objId; break
 				}
 
-				def reqs = [new RequestDef(endpoint + extId + sub + objId)]
+				def reqs = [new RequestDef(endpoint + extId + sub)]
 				if (kind == 'goals') {
 					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
 					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : date, "end_date" : date, "detail": "true"])
-					reqs = reqs + new RequestDef(endpoint + extId + "/device")
 				}
 				new ThirdPartyNotification(new ByExternalDeviceId(extId), reqs)
 			}

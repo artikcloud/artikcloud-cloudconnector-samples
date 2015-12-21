@@ -49,25 +49,54 @@ class MyCloudConnectorSpec extends Specification {
 
     def "build requests on notification"(){
         when:
-        def req = new RequestDef("").withMethod(HttpMethod.Post).withContent(readFile(this, "apiNotification.json"), "application/json")
+        def req = new RequestDef("").withMethod(HttpMethod.Post).withContent(readFile(this, "apiNotification.json"), "text/plain") // notification are in json format but send with content-type text/plain
         def res = sut.onNotification(ctx, req)
         then:
         res.isGood()
         res.get() == new NotificationResponse([
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef12345"),
-                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-01-01", "end_date": "2014-01-01", "detail": "true"]),
-                new RequestDef(apiEndpoint + "/device")
+                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-01-01", "end_date": "2014-01-01", "detail": "true"])
             ]),
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef123456"),
-                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-02-03", "end_date": "2014-02-03", "detail": "true"]),
-                new RequestDef(apiEndpoint + "/device")
+                new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-02-03", "end_date": "2014-02-03", "detail": "true"])
             ]),
             new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/sleeps/12345sleep")
             ])
         ])
+    }
+
+    def "build notification for device"() {
+        when:
+        def req = new RequestDef("").withMethod(HttpMethod.Post).withContent(readFile(this, "apiNotification04.txt"), "text/plain")
+        def res = sut.onNotification(ctx, req)
+        then:
+        res.isGood()
+        res.get() == new NotificationResponse([
+            new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
+                new RequestDef(apiEndpoint + "/device")
+            ])
+        ])
+    }
+
+    def "ignore empty notification"() {
+        when:
+        def req = new RequestDef("").withMethod(HttpMethod.Post).withContent("", "application/json")
+        def res = sut.onNotification(ctx, req)
+        then:
+        res.isGood()
+        res.get() == new NotificationResponse([])
+    }
+
+    def "ignore notification about storyline"() {
+        when:
+        def req = new RequestDef("").withMethod(HttpMethod.Post).withContent(readFile(this, "apiNotification02.json"), "application/json")
+        def res = sut.onNotification(ctx, req)
+        then:
+        res.isGood()
+        res.get() == new NotificationResponse([])
     }
 
     def "fetch goals 2"() {
