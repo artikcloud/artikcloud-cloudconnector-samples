@@ -135,7 +135,7 @@ If the third-party cloud requires HTTPS for authentication and notification, the
   ```
   def srvCfg = SimpleHttpServer.makeServerConfig('my.domain.com', 9080, 9083, null, null, null, null)
   ```
-1. If the third-party cloud doesn't accept self-signed certificate (often the case, because it's a security failure), then you have to acquire an SSL certificate from an authority, or you can (since the end of 2015) acquire it with [Let's Encrypt](https://letsencrypt.org/howitworks/) (free).
+1. If the third-party cloud doesn't accept self-signed certificate (often the case, because doing so is a security failure), then you have to acquire an SSL certificate from an authority, or you can (since the end of 2015) acquire it with [Let's Encrypt](https://letsencrypt.org/howitworks/) (free).
 
   ```
   # install letsencrypt
