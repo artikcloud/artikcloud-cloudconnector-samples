@@ -20,26 +20,8 @@ class MyCloudConnectorSpec extends Specification {
 			["endPointUrl":"http://api.ua.com"]
 		}
 	}
-/*
-    def "accept OAuth2"() {
-  		when:
-  		def req = new RequestDef("https://foo/cloudconnector/dt00/thirdpartynotification")
-  		def res = sut.onNotification(ctx, req)
-  		then:
-  		res.isBad()
-    }
 
-
-    def "reject Notification without NotificationId"() {
-  		when:
-  		def req = new RequestDef("https://foo/cloudconnector/dt00/thirdpartynotification")
-  		def res = sut.onNotification(ctx, req)
-  		then:
-  		res.isBad()
-    }
-*/
-
-	def "accept userId subscripe"() {
+	def "accept userId subscribe"() {
 		when:
 		def req = new RequestDef("${ctx.parameters()['endPointUrl']}/v7.1/user/self")
 				.withMethod(HttpMethod.Get)
@@ -52,14 +34,10 @@ class MyCloudConnectorSpec extends Specification {
 		res.get() == Option.apply(info.withExtId("42"))
 	}
 
-	def "accept webhook subscripe"() {
+	def "accept webhook subscribe"() {
 		when:
-		def hookJs = ["callback_url": ctx.parameters()['notificationCallback'] ,
-					  "shared_secret": ctx.parameters()['sharedSecret'] ,
-					  "subscription_type": "application.actigraphies"]
 		def req = new RequestDef("${ctx.parameters()['endPointUrl']}/v7.1/webhook/")
 				.withMethod(HttpMethod.Post)
-				.withContent(JsonOutput.toJson(hookJs), "application/json")
 		def info = new DeviceInfo("", Option.apply(null), null, "", Option.apply(null))
 		def resp = new Response(HttpURLConnection.HTTP_OK, "application/json", '''{"id":42}''')
 		def res =sut.onSubscribeResponse(ctx, req, info, resp)
@@ -68,30 +46,6 @@ class MyCloudConnectorSpec extends Specification {
 		res.isGood()
 		res.get() == Option.apply(info.withUserData(JsonOutput.toJson(["subscriptionId":42])))
 	}
-/*
-	def "unsubscripe webhook"() {
-		when:
-		def info = new DeviceInfo("", Option.apply(null), null, "", Option.apply(null))
-				.withUserData(JsonOutput.toJson(["subscriptionId":42]))
-		def res =sut.unsubscribe(ctx, info)
-
-		then:
-		res.isGood()
-		res.get() == [new RequestDef("${ctx.parameters()['endPointUrl']}/v7.1/webhook/42")
-							  .withMethod(HttpMethod.Put)
-							  .withContent(JsonOutput.toJson(["status": "disabled"]), "application/json")]
-	}
-
-	def "fail when can't unsubscripe webhook"() {
-		when:
-		def info = new DeviceInfo("", Option.apply(null), null, "", Option.apply(null))
-				.withUserData(JsonOutput.toJson(["The answer":42]))
-		def res =sut.unsubscribe(ctx, info)
-
-		then:
-		res.isBad()
-	}
-*/
 
     def "accept valid Notification"() {
   		when:
@@ -147,9 +101,7 @@ class MyCloudConnectorSpec extends Specification {
 		def ts = "2015-03-01T23:12:20.687025+00:00"
 		def msg = readFile(this, "actigraphiesExemple.json")
 		def req = new RequestDef(null).addQueryParams(["underArmourTs":ts])
-		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", '''
-					'''+ msg + '''
-			}''')
+		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def res = sut.onFetchResponse(ctx, req, null , fetchedResponse)
 		def expectedSleepEvent = new Event(1425251540687,'''{"sleep":{"type":"metric", "awake":550, "totalSleep":23424, "lightSleep":13319, "deepSleep":10105"startDate":1397610566000, "endDate":1397635690000}}''')
 		def expectedHeartRate = [
@@ -191,9 +143,7 @@ class MyCloudConnectorSpec extends Specification {
 		def ts = "2015-03-01T23:12:20.687025+00:00"
 		def msg = readFile(this, "actigraphiesWorkouts.json")
 		def req = new RequestDef(null).addQueryParams(["underArmourTs":ts])
-		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", '''
-					'''+ msg + '''
-			}''')
+		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def res = sut.onFetchResponse(ctx, req, null , fetchedResponse)
 		def expectedEvents = [
 				new Event(1425251540687,'''{"steps":{"type":"workout", "count":13729, "startDate":1450085457000, "endDate":1450085697000}}'''),

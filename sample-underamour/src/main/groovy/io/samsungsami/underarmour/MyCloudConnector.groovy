@@ -46,26 +46,9 @@ class MyCloudConnector extends CloudConnector {
                 .withMethod(HttpMethod.Get)
         return new Good([hookReq, userReq])
     }
-/*
-    @Override
-    def Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
-        def userDataJson = slurper.parseText(info.userData().getOrElse("{}"))
-        def webhookId = userDataJson?.subscriptionId ?: ""
-        if (webhookId != "") {
-            def disableHookJs = ["status": "disabled"]
-            def hookReq = new RequestDef("${ctx.parameters()['endPointUrl']}/v7.1/webhook/$webhookId")
-                    .withMethod(HttpMethod.Put)
-                    .withContent(JsonOutput.toJson(disableHookJs), "application/json")
-            new Good([hookReq])
-        }
-        else {
-            new Bad(new Failure("missing subscriptionId in userData"))
-        }
-    }
-*/
+
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
-        //{"status":"active","last_updated":"2015-12-11T10:25:36.326824+00:00","created":"2015-12-11T10:25:36.326801+00:00","subscription_type":"application.actigraphies","last_degraded":null,"client_id":"y48m32964zbng6cbcht79fx6fgyqdj25","shared_secret":"SAMI shared $ecret","_links":{"self":[{"href":"\/v7.1\/webhook\/11421\/","id":"11421"}],"documentation":[{"href":"https:\/\/developer.underarmour.com\/docs\/v71_Webhook"}]},"callback_url":"https:\/\/test0.alchim31.net:9083\/cloudconnectors\/0000\/thirdpartynotifications","id":11421}
         switch (res.status) {
             case HTTP_OK:
                 def json = slurper.parseText(res.content())
