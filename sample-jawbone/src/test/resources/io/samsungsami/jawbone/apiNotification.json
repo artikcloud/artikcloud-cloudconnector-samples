@@ -1,0 +1,21 @@
+{
+    "notification_timestamp": "1372787949",
+    "events": [
+        {
+            "user_xid": "RGaCBFg9CsB83FsEcMY44A",
+            "event_xid": "qzkzPoF6LjwyxHC_TpGsIJGJTS9rxqKR",
+            "type": "move",
+            "action": "creation" ,
+            "timestamp": "1372787849",
+            "secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca"
+        },
+        {
+            "user_xid": "RGaCBFg9CsB83FsEcMY44A",
+            "event_xid": "4lQSlf6UA8f_S9hzOrhyjHp-HnylKDz5",
+            "type": "body",
+            "action": "creation" ,
+            "timestamp": "1372787849",
+            "secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca"
+        }
+    ]
+}
