@@ -1,0 +1,50 @@
+[
+  {
+    "CollectionType": "activity",
+    "MDate": "2010-03-01 13:45:01",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "1234"
+  },
+  {
+    "CollectionType": "bp",
+    "MDate": "2010-03-01 13:45:01",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "1234"
+  },
+  {
+    "CollectionType": "food",
+    "MDate": "2010-03-02 07:39:57",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "1234"
+  },
+  {
+    "CollectionType": "glucose",
+    "MDate": "2010-03-02 07:39:57",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "1234"
+  },
+  {
+    "CollectionType": "sleep",
+    "MDate": "2010-03-01 13:48:31",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "2345"
+  },
+  {
+    "CollectionType": "spo2",
+    "MDate": "2010-03-01 13:48:31",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "2345"
+  },
+  {
+    "CollectionType": "sport",
+    "MDate": "2010-03-01 13:48:31",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "2345"
+  },
+  {
+    "CollectionType": "weight",
+    "MDate": "2010-03-02 07:39:57",
+    "UserID": "05dffbe0dd*****",
+    "SubscriptionId": "1234"
+  }
+]

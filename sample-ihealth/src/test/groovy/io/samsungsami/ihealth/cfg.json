@@ -1,0 +1,48 @@
+{
+    "authorizationUrl":"https://api.ihealthlabs.com:8443/OpenApiV2/OAuthv2/userauthorization/",
+    "accessTokenUrl":"https://api.ihealthlabs.com:8443/OpenApiV2/OAuthv2/userauthorization/",
+    "clientId":"0536458765584e08aef72d371a985082",
+    "clientSecret":"b39beb21940848f892e8a93f66221ada",
+    "authType" : "OAuth2",
+    "scope":[
+      "OpenApiActivity",
+      "OpenApiBG",
+      "OpenApiBP",
+      "OpenApiFood",
+      "OpenApiSleep",
+      "OpenApiSpO2",
+      "OpenApiSport",
+      "OpenApiWeight"
+    ],
+    "authorizationUrlMapper":{
+        "scope":"APIName"
+    },
+    "accessTokenUrlMapper":{
+        "access_token":"AccessToken",
+        "external_id":"UserID",
+        "expires_in":"Expires",
+        "scope":"APIName",
+        "refresh_token":"RefreshToken"
+    },
+    "statusAcceptNotification":200,
+    "parameters":{
+        "endpoint": "https://api.ihealthlabs.com:8443/OpenApiV2",
+        "redirectUri": "http://cloudconnectors.localhost:6661/cloudconnectors/io.samsungsami.ihealth/auth",
+        "activity_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "activity_sv": "bde7f254505345f4bdeeaae96830874a",
+        "bp_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "bp_sv": "ee25227539164b0595997dfc92890047",
+        "food_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "food_sv": "679d4d127f31433e8bda3337c3d55295",
+        "glucose_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "glucose_sv": "d68fbdd0896e4bd0bf50e1525165cb42",
+        "sleep_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "sleep_sv": "1c62955ecca341c4b8d5eb3acac1c1c9",
+        "spo2_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "spo2_sv": "4bbc3290eb8a428ca2908187ced418cd",
+        "sport_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "sport_sv": "1d57d922ab93467c9881e28d97bb06df",
+        "weight_sc": "4fa8c8d8aab9436a902438798e50af2a",
+        "weight_sv": "6b0ebde048634713a8463a3be568361e"
+    }
+}
