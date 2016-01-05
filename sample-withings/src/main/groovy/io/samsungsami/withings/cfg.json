@@ -1,0 +1,18 @@
+{
+  "authorizationUrl":"https://oauth.withings.com/account/authorize",
+  "accessTokenUrl":"https://oauth.withings.com/account/access_token",
+  "requestTokenUrl":"https://oauth.withings.com/account/request_token",
+  "clientId":"4242",
+  "clientSecret":"4242",
+  "authType" : "OAuth1",
+  "use10a" : false,
+  "statusAcceptNotification":200,
+  "scope":[],
+  "accessTokenUrlMapper":{
+    "external_id":"userid"
+  },
+  "parameters": {
+    "notificationBaseUrl": "4242",
+    "formerUrl": "4242"
+  }
+}
