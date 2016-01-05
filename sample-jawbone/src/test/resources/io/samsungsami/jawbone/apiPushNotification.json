@@ -1,0 +1,23 @@
+{
+    "notification_timestamp": "1372787949",
+    "events": [
+        {
+            "action":"enter_sleep_mode",
+            "timestamp":1379364951,
+            "user_xid":"RGaCBFg9CsB83FsEcMY44A",
+            "secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca"
+        },
+        {
+            "action":"exit_sleep_mode",
+            "timestamp":1379464951,
+            "user_xid":"RGaCBFg9CsB83FsEcMY44A",
+            "secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca"
+        },
+        {
+            "action":"enter_stopwatch_mode",
+            "timestamp":1399434951,
+            "user_xid":"RGaCBFg9CsB83FsEcMY44A",
+            "secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca"
+        }
+    ]
+}

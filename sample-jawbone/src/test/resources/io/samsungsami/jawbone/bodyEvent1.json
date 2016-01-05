@@ -1,0 +1,32 @@
+{
+    "meta":  {
+        "user_xid": "0XKM3EPKpEJObJqAMjfiEg",
+        "message": "OK",
+        "code": 200,
+        "time": 1433772845
+    },
+    "data":  {
+        "place_lon": null,
+        "time_updated": 1432027166,
+        "xid": "4lQSlf6UA8fbBjvNH8VQQic1UdEDnV39",
+        "weight": 90,
+        "title": null,
+        "body_fat": 20,
+        "image": "",
+        "bmi": null,
+        "lean_mass": null,
+        "time_created": 1432027154,
+        "note": null,
+        "details":  {
+            "tz": null
+        },
+        "place_lat": null,
+        "waistline": null,
+        "date": 20150519,
+        "shared": false,
+        "weight_delta": -2,
+        "type": "body",
+        "place_acc": 0,
+        "place_name": ""
+    }
+}
