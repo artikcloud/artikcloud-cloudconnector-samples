@@ -61,6 +61,10 @@ class MyCloudConnector extends CloudConnector {
         ])
     }
 
+    @Override
+    Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
+        new Good([new RequestDef(pubsubUrl(ctx, info.did())).withMethod(HttpMethod.Delete)])
+    }
 
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
