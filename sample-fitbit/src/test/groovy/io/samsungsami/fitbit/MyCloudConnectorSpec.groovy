@@ -48,17 +48,17 @@ class MyCloudConnectorSpec extends Specification {
 		then:
 		res.isGood()
 		res.get() == new NotificationResponse([
-				new ThirdPartyNotification(new BySamiDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json"),]),
+				new ThirdPartyNotification(new BySamiDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"]),]),
 				new ThirdPartyNotification(new BySamiDeviceId("id2"), [
-						new RequestDef(apiEndpoint + "activities/date/2011-03-01.json"),
-						new RequestDef(apiEndpoint + "activities/heart/date/2011-03-01/1d.json")
+						new RequestDef(apiEndpoint + "activities/date/2011-03-01.json").withHeaders(["remember_date": "2011-03-01"]),
+						new RequestDef(apiEndpoint + "activities/heart/date/2011-03-01/1d.json").withHeaders(["remember_date": "2011-03-01"])
 				]),
 		])
 	}
 
 	def "fetch activity without user timezone"() {
 		when:
-		def req = new RequestDef(apiEndpoint + "activities/date/2011-03-01.json")
+		def req = new RequestDef(apiEndpoint + "activities/date/2011-03-01.json").withHeaders(["remember_date": "2011-03-01"])
 		def resp = new Response(HttpURLConnection.HTTP_OK, "application/json", readFile(this, "apiActivities.json"))
 		def res = sut.onFetchResponse(ctx, req, device, resp)
 		then:
@@ -71,7 +71,7 @@ class MyCloudConnectorSpec extends Specification {
 
 	def "fetch activity with custom user timezone (America/Los_Angeles)"() {
 		when:
-		def req = new RequestDef(apiEndpoint + "activities/date/2011-03-01.json")
+		def req = new RequestDef(apiEndpoint + "activities/date/2011-03-01.json").withHeaders(["remember_date": "2011-03-01"])
 		def resp = new Response(HttpURLConnection.HTTP_OK, "application/json", readFile(this, "apiActivities.json"))
 		def res = sut.onFetchResponse(ctx, req, device.withUserData("America/Los_Angeles"), resp)
 		then:
@@ -84,7 +84,7 @@ class MyCloudConnectorSpec extends Specification {
 
 	def "fetch food"() {
 		when:
-		def req = new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json")
+		def req = new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"])
 		def resp = new Response(HttpURLConnection.HTTP_OK, "application/json", readFile(this, "apiFoods.json"))
 		def res = sut.onFetchResponse(ctx, req, device, resp)
 		then:

@@ -145,7 +145,7 @@ class MyCloudConnector extends CloudConnector {
         String did = e.subscriptionId.substring("sami-".length());
         String collectionType = e.collectionType;
         String date = e.date;
-        def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep)}
+        def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep).withHeaders(["remember_date": date])}
         new ThirdPartyNotification(new BySamiDeviceId(did), requestsToDo)
     }
 
@@ -184,7 +184,7 @@ class MyCloudConnector extends CloudConnector {
         switch(res.status) {
             case HTTP_OK:
                 def tz
-                def dateStr = req.url().split("/").reverse().head().substring(0, 10) //return YYYY-MM-DD
+                def dateStr = req.headers().get("remember_date")
                 if (info.userData().isEmpty()) {
                     ctx.debug("No user data has been found: using UTC timezone instead of user defined timezone.")
                     tz = DateTimeZone.UTC
