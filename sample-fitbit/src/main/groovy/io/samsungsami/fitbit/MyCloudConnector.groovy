@@ -55,6 +55,7 @@ class MyCloudConnector extends CloudConnector {
     def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
         new Good([
                 new RequestDef(pubsubUrl(ctx, info.did())).
+                        withHeaders(["X-Fitbit-Subscriber-Id": ctx.parameters().get("SubscriberId")]).
                         withContent("", "application/x-www-form-urlencoded; charset=UTF-8").
                         withMethod(HttpMethod.Post),
                 new RequestDef(profileUrl(ctx))

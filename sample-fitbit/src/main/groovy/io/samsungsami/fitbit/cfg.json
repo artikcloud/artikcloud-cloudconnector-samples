@@ -8,6 +8,7 @@
   "scope":["activity", "heartrate", "location", "nutrition", "profile", "settings", "sleep", "social", "weight"],
   "parameters": {
     "baseUrl": "https://api.fitbit.com/1/user/-/",
-    "endpointVerificationCode" : "ccc"
+    "endpointVerificationCode" : "ccc",
+    "SubscriberId" : "2"
   }
 }
