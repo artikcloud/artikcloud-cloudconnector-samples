@@ -205,7 +205,7 @@ class MyCloudConnector extends CloudConnector {
                 return new Bad(new Failure("unsupported response ${res} ... ${res.contentType()}"))
                 break
             default:
-                return new Bad(new Failure("http status : ${res.status()} is not OK (${HTTP_OK})"))
+                return new Bad(new Failure("http status : ${res.status()} is not OK (${HTTP_OK}) : ${res.content()}"))
         }
     }
 }
