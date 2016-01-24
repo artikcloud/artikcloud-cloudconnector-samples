@@ -97,10 +97,17 @@ class MyCloudConnector extends CloudConnector {
         return new String(Base64.encodeBase64(secret), StandardCharsets.UTF_8)
     }
 
+    private def removeScopeFromBody(RequestDef req){
+        req.withBodyParams(req.bodyParams().findAll{ it.key != "scope" }).
+                withQueryParams(req.queryParams().findAll{ it.key != "scope" })
+    }
+
     @Override
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
         switch (phase) {
             case Phase.refreshToken:
+                def authHeader = computeAuthHeader(ctx.clientId(), ctx.clientSecret())
+                return new Good(removeScopeFromBody(req.withHeaders(["Authorization": "Basic " + authHeader])))
             case Phase.getOauth2Token:
                 def authHeader = computeAuthHeader(ctx.clientId(), ctx.clientSecret())
                 return new Good(req.withHeaders(["Authorization": "Basic " + authHeader]))

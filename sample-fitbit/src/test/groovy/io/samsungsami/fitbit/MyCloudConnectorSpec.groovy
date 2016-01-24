@@ -31,6 +31,17 @@ class MyCloudConnectorSpec extends Specification {
 		res.get() == Option.apply(device.withUserData("America/Los_Angeles"))
 	}
 
+	def "signAndPrepare should remove scope from body and query params when refreshing a token"() {
+		when:
+			def refreshTokenReq = new RequestDef(apiEndpoint)
+					.withBodyParams(["test1": "1", "scope" : "scope to be removed", "test2": "2"])
+					.withQueryParams(["test1": "1", "scope" : "scope to be removed", "test2": "2"])
+			def res = sut.signAndPrepare(ctx, refreshTokenReq, device, Phase.refreshToken)
+		then:
+			res.isGood()
+			res.get().bodyParams == ["test1": "1", "test2": "2"]
+			res.get().queryParams == ["test1": "1", "test2": "2"]
+	}
 
 	def "computeAuthHeader should compute the good hash (Oauth2 basic header)"() {
 		when:
