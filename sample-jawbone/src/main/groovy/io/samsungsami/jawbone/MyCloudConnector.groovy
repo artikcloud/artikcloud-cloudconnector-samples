@@ -1,7 +1,3 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of com.samsung.sami.cloudconnector.api.CloudConnector
 package io.samsungsami.jawbone
 
 import com.samsung.sami.cloudconnector.api_v1.*
@@ -85,7 +81,7 @@ class MyCloudConnector extends CloudConnector {
         def PUSH_EVENT = ["enter_sleep_mode", "exit_sleep_mode", "enter_stopwatch_mode", "exit_stopwatch_mode"]
         ctx.debug("json from callback : " + json)
         for(e in json.events){
-            if (e.secret_hash == null || e.secret_hash != jawboneCallbackSecretHash){
+            if ((e.secret_hash == null || e.secret_hash != jawboneCallbackSecretHash) && (json.secret_hash != jawboneCallbackSecretHash)){
                 ctx.debug("Invalid secret hash for callback request $inReq ; expected : $jawboneCallbackSecretHash")
                 return new Bad(new Failure("Invalid secret hash"))
             }
@@ -95,6 +91,7 @@ class MyCloudConnector extends CloudConnector {
 
         def dataToFetch = json.events.findAll { it.containsKey("type") && ACTION_TYPE_MATCHER.keySet().contains(it.type) }.collect { e ->
             new RequestDef(String.format("%s%s/%s", API_ENDPOINT_URL, ACTION_TYPE_MATCHER.get(e.type), e.event_xid))
+                    .addQueryParams(['type': e.type])
         }
 
         ctx.debug("Data provided : " + dataToFetch)
@@ -113,25 +110,25 @@ class MyCloudConnector extends CloudConnector {
             case "enter_sleep_mode":
                 payload = builder {
                     category "sleep_mode"
-                    measuregrp ([builder {state true}])
+                    measuregrp (builder {state true})
                 }
                 break
             case "exit_sleep_mode":
                 payload = builder {
                     category "sleep_mode"
-                    measuregrp ([builder {state false}])
+                    measuregrp (builder {state false})
                 }
                 break
             case "enter_stopwatch_mode":
                 payload = builder {
                     category "watch_mode"
-                    measuregrp ([builder {state true}])
+                    measuregrp (builder {state true})
                 }
                 break
             case "exit_stopwatch_mode":
                 payload = builder {
                     category "watch_mode"
-                    measuregrp ([builder {state false}])
+                    measuregrp (builder {state false})
                 }
                 break
             default:
@@ -151,10 +148,11 @@ class MyCloudConnector extends CloudConnector {
                     return new Good(Empty.list())
                 } else if (res.contentType().startsWith("application/json")) {
                     def json = slurper.parseText(content)
-                    if (json.data.type == null)
-                        return new Bad(new Failure("Can't recover type from request : " + req))
+                    def type = req.queryParams()['type']
+                    if (type == null)
+                        return new Bad(new Failure("Can't recover type from request : " + req + " with response " + res))
                     def payload = builder {
-                        category json.data.type
+                        category type
                         measuregrp json
                     }
                     def ts

@@ -8,6 +8,6 @@
     "statusAcceptNotification":200,
     "accessTokenMethod": "get",
     "parameters": {
-        "webhookUrl": "https://test0.alchim31.net:9083/cloudconnectors/"
+        "webhookUrl": "https://api.samsungsami.io/v1.1/cloudconnector"
     }
 }
