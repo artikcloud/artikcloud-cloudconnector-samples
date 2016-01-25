@@ -1,0 +1,24 @@
+{
+  "ARDataList": [
+    {
+      "Calories": 109,
+      "DataID": "e34032089471451b926a6a4*****",
+      "DistanceTraveled": 0.36088,
+      "Lat": 19.579758571265153,
+      "Lon": 86.49735491466585,
+      "MDate": 1355157900,
+      "Note": "",
+      "Steps": 694,
+      "LastChangeTime": 1392261858,
+      "DataSource": "FromDevice",
+      "TimeZone": "+0800"
+    }
+  ],
+  "CurrentRecordCount": 1,
+  "DistanceUnit": 0,
+  "NextPageUrl": "",
+  "PageLength": 50,
+  "PageNumber": 1,
+  "PrevPageUrl": "",
+  "RecordCount": 1
+}

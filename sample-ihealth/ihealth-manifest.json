@@ -1,0 +1,229 @@
+{
+  "fields": [
+    {
+      "name": "BPL",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "WHO level"
+    },
+    {
+      "name": "DataID",
+      "type": "ID",
+      "description": "the unique identity on iHealth platform"
+    },
+    {
+      "name": "HP",
+      "type": "SYSTOLIC_BLOOD_PRESSURE",
+      "description": "systolic"
+    },
+    {
+      "name": "HR",
+      "type": "HEART_RATE",
+      "description": "heart rate"
+    },
+    {
+      "name": "IsArr",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "-1 it is null in the database, 1 heart rate is normal, 2 arrhythmia cordis, 3 unknown"
+    },
+    {
+      "name": "LP",
+      "type": "DIASTOLIC_BLOOD_PRESSURE",
+      "description": "diastolic"
+    },
+    {
+      "name": "Lat",
+      "type": "LATITUDE",
+      "description": "the latitude of the testing place"
+    },
+    {
+      "name": "Lon",
+      "type": "LONGITUDE",
+      "description": "the longitude of the testing place"
+    },
+    {
+      "name": "MDate",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "measurement date time in seconds in the TimeZone"
+    },
+    {
+      "name": "Note",
+      "type": "TEXT",
+      "description": "the note of this data"
+    },
+    {
+      "name": "LastChangeTime",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "Time of last change (UTC)"
+    },
+    {
+      "name": "DataSource",
+      "type": "STATE",
+      "description": "Provides the data source. 'Manual' is from manual data entries. 'FromDevice' is for data acquired from iHealth devices"
+    },
+    {
+      "name": "TimeZone",
+      "type": "STATE",
+      "description": "Time zone of measurement location"
+    },
+    {
+      "name": "BMI",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "description": "BMI of weight"
+    },
+    {
+      "name": "BoneValue",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.KILOGRAM",
+      "description": "the weight of bone in body"
+    },
+    {
+      "name": "DCI",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "daily caloric intake"
+    },
+    {
+      "name": "FatValue",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "description": "body fat"
+    },
+    {
+      "name": "MuscleValue",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "the weight of muscle in body"
+    },
+    {
+      "name": "WaterValue",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "description": "body water"
+    },
+    {
+      "name": "WeightValue",
+      "type": "WEIGHT",
+      "description": "body weight"
+    },
+    {
+      "name": "BG",
+      "type": "GLUCOSE_LEVEL",
+      "description": "glucose value"
+    },
+    {
+      "name": "DinnerSituation",
+      "type": "STATE",
+      "description": "meal information"
+    },
+    {
+      "name": "DrugSituation",
+      "type": "STATE",
+      "description": "medicine information"
+    },
+    {
+      "name": "BO",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "Blood Oxygen value"
+    },
+    {
+      "name": "Calories",
+      "type": "CALORIES",
+      "description": "The total calories consumed"
+    },
+    {
+      "name": "DistanceTraveled",
+      "type": "DISTANCE",
+      "description": "Distance"
+    },
+    {
+      "name": "Steps",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "Statistical steps"
+    },
+    {
+      "name": "Awaken",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "Number of times awoken"
+    },
+    {
+      "name": "EndTime",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "End time of sleep"
+    },
+    {
+      "name": "FallSleep",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "Time until asleep"
+    },
+    {
+      "name": "HoursSlept",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "unit": "NonSI.HOUR",
+      "description": "The length of the sleep"
+    },
+    {
+      "name": "SleepEfficiency",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "description": "Sleep efficiency"
+    },
+    {
+      "name": "StartTime",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "Start time of sleep"
+    },
+    {
+      "name": "Amount",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "description": "Weight of the food"
+    },
+    {
+      "name": "FoodName",
+      "type": "TEXT",
+      "description": "the name of food"
+    },
+    {
+      "name": "FoodKind",
+      "type": "TEXT",
+      "description": "Types of food"
+    },
+    {
+      "name": "SportName",
+      "type": "TEXT",
+      "description": "the name of sport"
+    },
+    {
+      "name": "SportStartTime",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "Start time of sport"
+    },
+    {
+      "name": "SportEndTime",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "unit": "SI.SECOND",
+      "description": "End time of sport"
+    }
+  ],
+  "messageFormat": "json"
+}
