@@ -1,0 +1,345 @@
+import groovy.json.JsonSlurper
+
+import com.samsung.sami.manifest.Manifest
+import com.samsung.sami.manifest.fields.*
+
+import javax.measure.quantity.Quantity
+import javax.measure.unit.SI
+import javax.measure.unit.NonSI
+import javax.measure.unit.Unit
+
+import static com.samsung.sami.manifest.fields.StandardFields.*;
+import static com.samsung.sami.manifest.groovy.JsonUtil.*
+
+/*
+We only parse summary/average data of the day.
+The details of each activity are generally in an list :
+They can be split  in different messages in the connector layer ?
+ */
+public class FitbitFlexManifest implements Manifest {
+
+    //Activity collection
+    static final ACTIVITY_CALORIES = CALORIES.alias("activityCalories")
+    static final CALORIES_BMR = CALORIES.alias("caloriesBMR")
+    static final CALORIES_OUT = CALORIES.alias("caloriesOut")
+    static final MARGINAL_CALORIES = CALORIES.alias("marginalCalories")
+    static final ELEVATION = HEIGHT.alias("elevation")
+    static final FAIRLY_ACTIVE_MINUTES = new FieldDescriptor("fairlyActiveMinutes", NonSI.MINUTE, Integer.class)
+    static final LIGHTLY_ACTIVE_MINUTES = new FieldDescriptor("lightlyActiveMinutes", NonSI.MINUTE, Integer.class)
+    static final FLOORS = new FieldDescriptor("floors", Integer.class)
+    static final SEDENTARY_MINUTES = new FieldDescriptor("sedentaryMinutes", NonSI.MINUTE, Integer.class)
+    static final STEP_COUNT = new FieldDescriptor("stepCount", Integer.class)
+    static final VERY_ACTIVE_MINUTES = new FieldDescriptor("veryActiveMinutes", NonSI.MINUTE, Integer.class)
+
+    static final DISTANCE_KM =  new FieldDescriptor("distanceKm", SI.KILOMETER, Double.class)
+    static final DISTANCES_TRACKER = DISTANCE_KM.alias("distancesTracker")
+    static final DISTANCES_LOGGED_ACTIVITIES = DISTANCE_KM.alias("distancesLoggedActivities")
+    static final DISTANCES_TOTAL = DISTANCE_KM.alias("distancesTotal")
+    static final DISTANCES_VERY_ACTIVE = DISTANCE_KM.alias("distancesVeryActive")
+    static final DISTANCES_MODERATE_ACTIVE = DISTANCE_KM.alias("distancesModeratelyActive")
+    static final DISTANCES_LIGHTLY_ACTIVE = DISTANCE_KM.alias("distancesLightlyActive")
+    static final DISTANCES_SEDENTARY_ACTIVE = DISTANCE_KM.alias("distancesSedentaryActive")
+    static final DISTANCES_TREADMILL = DISTANCE_KM.alias("distancesTreadmill")
+    static final DISTANCES_WALK = DISTANCE_KM.alias("distancesWalk")
+    static final DISTANCES_BIKE = DISTANCE_KM.alias("distancesBike")
+    static final DISTANCES_RUN = DISTANCE_KM.alias("distancesRun")
+    static final DISTANCES_SWIMMING = DISTANCE_KM.alias("distancesSwimming")
+
+    static final ACTIVITY_GOAL_CALORIES_OUT =  CALORIES.alias("goalCalories")
+    static final ACTIVITY_GOAL_DISTANCE =  DISTANCE_KM.alias("goalDistance")
+    static final ACTIVITY_GOAL_FLOORS =  new FieldDescriptor("goalFloors", Integer.class)
+    static final ACTIVITY_GOAL_STEPS =  new FieldDescriptor("goalSteps", Integer.class)
+
+    //Sleep collection
+    static final ASLEEP_TIME = new FieldDescriptor("asleepTime", SI.SECOND, Integer.class)
+    static final TIME_IN_BED = new FieldDescriptor("timeInBed", SI.SECOND, Integer.class)
+    static final TOTAL_SLEEP_RECORDS = new FieldDescriptor("totalSleepRecords", Integer.class)
+
+    //Body collection
+    static final BODY_WEIGHT = WEIGHT.alias("bodyWeight")
+    static final BODY_BICEP = new FieldDescriptor("bodyBicep", Double.class)
+    static final BODY_BMI = new FieldDescriptor("bodyBmi", Double.class)
+    static final BODY_CALF = new FieldDescriptor("bodyCalf", Double.class)
+    static final BODY_CHEST = new FieldDescriptor("bodyChest", Double.class)
+    static final BODY_FAT = new FieldDescriptor("bodyFat", Double.class)
+    static final BODY_FOREARM = new FieldDescriptor("bodyForearm", Double.class)
+    static final BODY_HIPS = new FieldDescriptor("bodyHips", Double.class)
+    static final BODY_NECK = new FieldDescriptor("bodyNeck", Double.class)
+    static final BODY_THIGH = new FieldDescriptor("bodyThigh", Double.class)
+    static final BODY_WAIST = new FieldDescriptor("bodyWaist", Double.class)
+    static final BODY_GOAL_WEIGHT = BODY_WEIGHT.alias("bodyGoalWeight")
+
+    //Food collection
+    static final FOOD_CALORIES = CALORIES.alias("foodCalories")
+    static final FOOD_CARBS = new FieldDescriptor("foodCarbs", SI.GRAM,  Double.class)
+    static final FOOD_FAT = new FieldDescriptor("foodFat", SI.GRAM, Double.class)
+    static final FOOD_FIBER = new FieldDescriptor("foodFiber", SI.GRAM, Double.class)
+    static final FOOD_PROTEIN = new FieldDescriptor("foodProtein", SI.GRAM, Double.class)
+    static final FOOD_SODIUM = new FieldDescriptor("foodSodium", SI.MILLI(SI.GRAM), Double.class)
+    static final FOOD_WATER = new FieldDescriptor("foodWater", SI.MILLI(NonSI.LITER), Double.class)
+    static final FOOD_CALORIES_GOAL = CALORIES.alias("foodCaloriesGoal")
+
+    //HeartRate time series
+    static final RESTING_HEART_RATE = HEART_RATE.alias("restingHeartRate")
+    //Categories
+    static final _MINUTE = new FieldDescriptor("minutes", NonSI.MINUTE, Integer.class, false)
+    static final _MAX = HEART_RATE.alias("max")
+    static final _MIN = HEART_RATE.alias("min")
+
+    //FieldDescriptors declaration for fields
+    static final _ACTIVITIESHEART_OUTOFRANGE = new FieldDescriptor("OutOfRange", CALORIES, _MIN, _MAX, _MINUTE)
+    static final _ACTIVITIESHEART_FATBURN = new FieldDescriptor("FatBurn", CALORIES, _MIN, _MAX, _MINUTE)
+    static final _ACTIVITIESHEART_PEAK = new FieldDescriptor("Peak", CALORIES, _MIN, _MAX, _MINUTE)
+    static final _ACTIVITIESHEART_CARDIO = new FieldDescriptor("Cardio", CALORIES, _MIN, _MAX, _MINUTE)
+
+    static final Collection<FieldDescriptor> HEART_CATEGORIES = [
+            RESTING_HEART_RATE,
+            _ACTIVITIESHEART_OUTOFRANGE,
+            _ACTIVITIESHEART_FATBURN,
+            _ACTIVITIESHEART_PEAK,
+            _ACTIVITIESHEART_CARDIO,
+    ]
+    static final ACTIVITIES_HEART = new FieldDescriptor(
+            "activitiesHeart",
+            "Time series data for a specific day",
+            HEART_CATEGORIES
+    )
+    @Override
+    List<Field> normalize(String input) {
+        def slurper = new JsonSlurper()
+        def json = slurper.parseText(input)
+        def fields = []
+        if (json.activities != null) {
+            extractActivityFields(json, fields)
+        }
+        else if (json.sleep != null) {
+            extractSleepFields(json, fields)
+        }
+        else if (json.body != null){
+            extractBodyFields(json,fields)
+        }
+        else if (json.foods != null){
+            extractFoodFields(json,fields)
+        }
+        else if (json.'activities-heart' != null){
+            extractHeartRateTimeSeries(json, fields)
+        }
+        else {
+            throw new RuntimeException("Invalid message: " + json)
+        }
+        return fields
+    }
+
+    static def extractActivityFields(def json, def fields) {
+        extractActivitySummaryFields(json.summary, fields)
+        if (json.goals != null)
+            extractActivityGoalsFields(json.goals, fields)
+    }
+
+    /**
+     * Add a field if json value is not null (to avoid exception when trying to convert a non existent field)
+     * Value is automatically converted to expected fd type
+     */
+    static def addIfExist(def json, def fields, FieldDescriptor fd) {
+        addIfExist(json, fields, fd, fd.getName())
+    }
+    static def addIfExist(def json, def fields, FieldDescriptor fd, String name) {
+        if (json[name] != null && json[name] != [null])
+            fields.add(new Field(fd, (json[name].asType(fd.getValueClass()))))
+    }
+    static def addIfExist(def json, def fields, FieldDescriptor fd, Unit<Quantity> unit, String name) {
+        if (json[name] != null && json[name] != [null])
+            fields.add(new Field(fd, unit, (json[name].asType(fd.getValueClass()))))
+    }
+
+    static private def extractActivityGoalsFields(json, fields){
+        fields.add(new Field(ACTIVITY_GOAL_CALORIES_OUT, (Double)json.caloriesOut))
+        fields.add(new Field(ACTIVITY_GOAL_DISTANCE, (Double)json.distance))
+        addIfExist(json, fields, ACTIVITY_GOAL_FLOORS, "floors")
+        fields.add(new Field(ACTIVITY_GOAL_STEPS, (Integer)json.steps))
+    }
+
+    static private def extractActivitySummaryFields(def json, def fields){
+        addIfExist(json, fields, ACTIVITY_CALORIES)
+        addIfExist(json, fields, CALORIES_BMR)
+        addIfExist(json, fields, CALORIES_OUT)
+        addIfExist(json, fields, CALORIES,"caloriesOut") //Backward compatibility : the field "calories" was present in older manifest versions : we keep the same name.
+        addIfExist(json, fields, MARGINAL_CALORIES)
+        addIfExist(json, fields, ELEVATION)
+        addIfExist(json, fields, FAIRLY_ACTIVE_MINUTES)
+        addIfExist(json, fields, LIGHTLY_ACTIVE_MINUTES)
+        addIfExist(json, fields, FLOORS)
+        addIfExist(json, fields, SEDENTARY_MINUTES)
+        addIfExist(json, fields, STEP_COUNT, "steps")
+        addIfExist(json, fields, VERY_ACTIVE_MINUTES)
+
+        json.distances.each {
+            def fd = null
+            switch(it.activity){
+                case "tracker" :
+                    fd = DISTANCES_TRACKER
+                    break
+                case "loggedActivities" :
+                    fd = DISTANCES_LOGGED_ACTIVITIES
+                    break
+                case "total" :
+                    fd = DISTANCES_TOTAL
+                    break
+                case "veryActive" :
+                    fd = DISTANCES_VERY_ACTIVE
+                    break
+                case "moderatelyActive" :
+                    fd = DISTANCES_MODERATE_ACTIVE
+                    break
+                case "lightlyActive" :
+                    fd = DISTANCES_LIGHTLY_ACTIVE
+                    break
+                case "sedentaryActive" :
+                    fd = DISTANCES_SEDENTARY_ACTIVE
+                    break
+                case "Treadmill, 0% Incline":
+                    fd = DISTANCES_TREADMILL
+                    break
+                case "Walk":
+                    fd = DISTANCES_WALK
+                    break
+                case "Bike":
+                    fd = DISTANCES_BIKE
+                    break
+                case "Run":
+                    fd = DISTANCES_RUN
+                    break
+                case "Swimming":
+                    fd = DISTANCES_SWIMMING
+                    break
+            }
+            if (fd != null)
+                addIfExist(it, fields, fd, "distance")
+        }
+    }
+
+    static def extractSleepFields(def json, def fields) {
+        def summary = json.summary
+        addIfExist(summary, fields, ASLEEP_TIME, NonSI.MINUTE, "totalMinutesAsleep")
+        addIfExist(summary, fields, TIME_IN_BED, NonSI.MINUTE, "totalTimeInBed")
+        addIfExist(summary, fields, TOTAL_SLEEP_RECORDS, NonSI.MINUTE, "totalSleepRecords")
+    }
+
+    static def extractBodyFields(def json, def fields) {
+        def body = json.body
+        addIfExist(body, fields, BODY_WEIGHT, "weight")
+        addIfExist(body, fields, BODY_BICEP, "bicep")
+        addIfExist(body, fields, BODY_BMI, "bmi")
+        addIfExist(body, fields, BODY_CALF, "calf")
+        addIfExist(body, fields, BODY_CHEST, "chest")
+        addIfExist(body, fields, BODY_FAT, "fat")
+        addIfExist(body, fields, BODY_FOREARM, "forearm")
+        addIfExist(body, fields, BODY_HIPS, "hips")
+        addIfExist(body, fields, BODY_NECK, "neck")
+        addIfExist(body, fields, BODY_THIGH, "thigh")
+        addIfExist(body, fields, BODY_WAIST, "weight")
+        addIfExist(json.goals, fields, BODY_GOAL_WEIGHT, "weight")
+    }
+
+    static def extractFoodFields(def json, def fields) {
+        def summary = json.summary
+        addIfExist(summary, fields, FOOD_CALORIES, "calories")
+        addIfExist(summary, fields, FOOD_CARBS, "carbs")
+        addIfExist(summary, fields, FOOD_FAT, "fat")
+        addIfExist(summary, fields, FOOD_FIBER, "fiber")
+        addIfExist(summary, fields, FOOD_PROTEIN, "protein")
+        addIfExist(summary, fields, FOOD_SODIUM, "sodium")
+        addIfExist(summary, fields, FOOD_WATER, "water")
+        addIfExist(json.goals, fields, FOOD_CALORIES_GOAL, "calories")
+    }
+
+    static def extractHeartRateTimeSeries(def json, def fields) {
+        ArrayList jsonHeartRate = json."activities-heart"."value"
+        def activitiesHeart = []
+        if (jsonHeartRate.restingHeartRate != null && jsonHeartRate.restingHeartRate.get(0) != null)
+            activitiesHeart.add(new Field(RESTING_HEART_RATE, (Integer)jsonHeartRate.restingHeartRate.get(0)))
+        activitiesHeart.add(new Field(_ACTIVITIESHEART_OUTOFRANGE, false, parseHeartRateData(jsonHeartRate, "Out of Range")))
+        activitiesHeart.add(new Field(_ACTIVITIESHEART_FATBURN, false, parseHeartRateData(jsonHeartRate, "Fat Burn")))
+        activitiesHeart.add(new Field(_ACTIVITIESHEART_CARDIO, false, parseHeartRateData(jsonHeartRate, "Cardio")))
+        activitiesHeart.add(new Field(_ACTIVITIESHEART_PEAK, false, parseHeartRateData(jsonHeartRate, "Peak")))
+        fields.add(new Field(ACTIVITIES_HEART, false, activitiesHeart))
+    }
+
+    static def parseHeartRateData(def js, def name) {
+        def outOfRangeJson = js.heartRateZones.get(0).find {x -> (x.name == name)}
+        def outOfRange = []
+        addIfExist(outOfRangeJson, outOfRange, CALORIES, "caloriesOut")
+        addIfExist(outOfRangeJson, outOfRange, _MAX,)
+        addIfExist(outOfRangeJson, outOfRange, _MIN)
+        addIfExist(outOfRangeJson, outOfRange, _MINUTE)
+        return outOfRange
+    }
+
+    @Override
+    List<FieldDescriptor> getFieldDescriptors() {
+        return [
+                //Activity collection
+                ACTIVITY_CALORIES,
+                CALORIES_BMR,
+                CALORIES_OUT,
+                MARGINAL_CALORIES,
+                ELEVATION,
+                FAIRLY_ACTIVE_MINUTES,
+                LIGHTLY_ACTIVE_MINUTES,
+                FLOORS,
+                SEDENTARY_MINUTES,
+                STEP_COUNT,
+                VERY_ACTIVE_MINUTES,
+                CALORIES,
+                DISTANCE_KM,
+                DISTANCES_TRACKER,
+                DISTANCES_LOGGED_ACTIVITIES,
+                DISTANCES_TOTAL,
+                DISTANCES_VERY_ACTIVE,
+                DISTANCES_MODERATE_ACTIVE,
+                DISTANCES_LIGHTLY_ACTIVE,
+                DISTANCES_SEDENTARY_ACTIVE,
+                DISTANCES_TREADMILL,
+                DISTANCES_WALK,
+                DISTANCES_BIKE,
+                DISTANCES_RUN,
+                DISTANCES_SWIMMING,
+                ACTIVITY_GOAL_CALORIES_OUT,
+                ACTIVITY_GOAL_DISTANCE,
+                ACTIVITY_GOAL_FLOORS,
+                ACTIVITY_GOAL_STEPS,
+
+                //Sleep collection
+                ASLEEP_TIME,
+                TIME_IN_BED,
+                TOTAL_SLEEP_RECORDS,
+
+                //Body collection
+                BODY_WEIGHT,
+                BODY_BICEP,
+                BODY_BMI,
+                BODY_CALF,
+                BODY_CHEST,
+                BODY_FAT,
+                BODY_FOREARM,
+                BODY_HIPS,
+                BODY_NECK,
+                BODY_THIGH,
+                BODY_WAIST,
+                BODY_GOAL_WEIGHT,
+
+                //Food collection
+                FOOD_CALORIES,
+                FOOD_CARBS,
+                FOOD_FAT,
+                FOOD_FIBER,
+                FOOD_PROTEIN,
+                FOOD_SODIUM,
+                FOOD_WATER,
+                FOOD_CALORIES_GOAL,
+
+                //HeartRate
+                ACTIVITIES_HEART
+        ]
+    }
+}
