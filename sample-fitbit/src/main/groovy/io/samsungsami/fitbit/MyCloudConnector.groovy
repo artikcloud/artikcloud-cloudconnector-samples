@@ -77,10 +77,10 @@ class MyCloudConnector extends CloudConnector {
                     DateTimeZone.forID(tzStr)
                     return new Good(Option.apply(info.withUserData(tzStr)))
                 } catch (IllegalArgumentException e){
-                    return new Bad(Failure("A timezone has be recover from user profile :" + tzStr + ", but this is not a valid DateTimeZone id"))
+                    return new Bad(new Failure("A timezone has be recover from user profile :" + tzStr + ", but this is not a valid DateTimeZone id"))
                 }
             } else {
-                return new Bad(Failure("Impossible to get user profile information from fitbit api."))
+                return new Bad(new Failure("Impossible to get user profile information from fitbit, got status http status : ${res.status()}) with content: ${res.content()}"))
             }
         } else {
             return new Good(Option.apply(null))
@@ -158,7 +158,7 @@ class MyCloudConnector extends CloudConnector {
 
     def Or<NotificationResponse, Failure> answerToChallengeRequest(RequestDef req, String verifyCode){
         if (!(req.queryParams().containsKey("verify")))
-            return new Bad(Failure("An incomplete callback verification arrived : " + req))
+            return new Bad(new Failure("An incomplete callback verification arrived : " + req))
 
         if (req.queryParams().get("verify") == verifyCode)
             return new Good(new NotificationResponse([], new Response(HTTP_NO_CONTENT, "text/plain", "")))
@@ -212,7 +212,7 @@ class MyCloudConnector extends CloudConnector {
                 return new Bad(new Failure("unsupported response ${res} ... ${res.contentType()}"))
                 break
             default:
-                return new Bad(new Failure("http status : ${res.status()} is not OK (${HTTP_OK}) : ${res.content()}"))
+                return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
         }
     }
 }
