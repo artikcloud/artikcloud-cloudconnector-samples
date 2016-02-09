@@ -1,6 +1,8 @@
 SAMI Cloud Connector examples
 ==============================
 
+[![Build Status](https://travis-ci.org/samsungsamiio/sami-cloudconnector-samples.svg?branch=master)](https://travis-ci.org/samsungsamiio/sami-cloudconnector-samples)
+
 Cloud Connector examples. The examples have been tested and work in production.
 
 Build
