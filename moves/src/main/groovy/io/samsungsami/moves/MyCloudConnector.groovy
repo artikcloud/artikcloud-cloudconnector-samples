@@ -25,8 +25,8 @@ class MyCloudConnector extends CloudConnector {
 	}
 
 	@Override
-	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-		def json = slurper.parseText(inReq.content)
+	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+		def json = slurper.parseText(req.content)
 		def extId = json.userId.toString()
 		def storyLineFiltered = json.storylineUpdates.findAll{ reasonToFetchSummaryData.contains(it.reason) }
 		def datesFromStoryLines = storyLineFiltered.collect { e ->

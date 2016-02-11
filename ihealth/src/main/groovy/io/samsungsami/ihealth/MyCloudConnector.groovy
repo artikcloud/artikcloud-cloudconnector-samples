@@ -48,14 +48,14 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        def json = slurper.parseText(inReq.content())
+    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        def json = slurper.parseText(req.content())
         def notif = json.collect { collection ->
             String extId = collection['UserID']
             String kind = collection['CollectionType']
             long epochInSeconds = (DateTime.parse(collection['MDate'] as String, mdateFormat).getMillis() / 1000l).toLong()
             def endpoint = ctx.parameters()["endpoint"]
-            def req = new RequestDef("${endpoint}/user/${extId}/${kind}.json").withQueryParams([
+            def reqToDo = new RequestDef("${endpoint}/user/${extId}/${kind}.json").withQueryParams([
                     client_id: ctx.clientId(),
                     client_secret: ctx.clientSecret(),
                     sc: ctx.parameters()[kind + "_sc"],
@@ -64,7 +64,7 @@ class MyCloudConnector extends CloudConnector {
                     start_time: epochInSeconds.toString(),
                     end_time: (epochInSeconds + 1).toString()
             ])
-            new ThirdPartyNotification(new ByExternalDeviceId(extId), [req])
+            new ThirdPartyNotification(new ByExternalDeviceId(extId), [reqToDo])
         }
         new Good(new NotificationResponse(notif))
     }

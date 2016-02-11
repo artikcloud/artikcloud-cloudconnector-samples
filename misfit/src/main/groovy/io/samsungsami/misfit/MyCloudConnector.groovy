@@ -52,12 +52,12 @@ class MyCloudConnector extends CloudConnector {
 	}
 
 	@Override
-	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-		ctx.debug("notification:"  + inReq)
-		if (inReq.content == null || inReq.content.trim() == "") {
+	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+		ctx.debug("notification:"  + req)
+		if (req.content == null || req.content.trim() == "") {
 			new Good(new NotificationResponse([]))
 		} else {
-			def json = slurper.parseText(inReq.content)
+			def json = slurper.parseText(req.content)
 			if (json.SubscribeURL) {
 				String url = json.SubscribeURL
 				new Good(new NotificationResponse([new ThirdPartyNotification(Empty.deviceSelector(), [new RequestDef(url)])]))

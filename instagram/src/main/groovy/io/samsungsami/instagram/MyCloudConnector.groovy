@@ -107,11 +107,11 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        if (inReq.method() == HttpMethod.Get && inReq.queryParams().get("hub.mode") == "subscribe"){
-            answerToChallengeRequest(inReq)
+    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        if (req.method() == HttpMethod.Get && req.queryParams().get("hub.mode") == "subscribe"){
+            answerToChallengeRequest(req)
         } else {
-            def json = slurper.parseText(inReq.content)
+            def json = slurper.parseText(req.content)
             new Good(new NotificationResponse(json.collectMany { notificationContent ->
                 if (notificationContent.object == "user" && notificationContent.object_id != null && notificationContent.time != null){
                     def externalUserId=notificationContent.object_id.toString()
@@ -120,7 +120,7 @@ class MyCloudConnector extends CloudConnector {
                     [new ThirdPartyNotification(new ByExternalDeviceId(externalUserId), reqToDo, Empty.list())]
                 }
                 else {
-                    ctx.debug("Invalid callback request content : " + notificationContent + ". (callbackRequest = " + inReq + ")")
+                    ctx.debug("Invalid callback request content : " + notificationContent + ". (callbackRequest = " + req + ")")
                     []
                 }
             }))

@@ -83,22 +83,22 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        def did = inReq.queryParams().get("samiDeviceId")
+    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        def did = req.queryParams().get("samiDeviceId")
         if (did == null) {
-            ctx.debug("Bad notification (where is did in following req : ) " + inReq)
+            ctx.debug("Bad notification (where is did in following req : ) " + req)
             return new Bad(new Failure("Impossible to recover device id from token request."))
         }
-        def appliId = inReq.queryParams().get("appliId")
+        def appliId = req.queryParams().get("appliId")
         if (appliId == null) {
-            ctx.debug("Bad notification (where is appliId in following req ? : ) " + inReq)
+            ctx.debug("Bad notification (where is appliId in following req ? : ) " + req)
             return new Bad(new Failure("Impossible to recover appliId from token request."))
         }
         if (!(DEVICES_APPLI_ID.keySet().contains(appliId.toInteger()))){
-            ctx.debug("Bad notification (appliId " + appliId + " not in " + DEVICES_APPLI_ID.keySet().toString() +") : " + inReq)
+            ctx.debug("Bad notification (appliId " + appliId + " not in " + DEVICES_APPLI_ID.keySet().toString() +") : " + req)
             return new Bad(new Failure("Invalid appli id : " + appliId))
         }
-        def content = inReq.content.trim()
+        def content = req.content.trim()
         if (content == "AnyContentAsEmpty") { //resub notif
             return new Good(new NotificationResponse([]))
         }
@@ -108,7 +108,7 @@ class MyCloudConnector extends CloudConnector {
         def startDate = json.startdate
         def endDate = json.enddate
         if ((appliId.toInteger() != 16 ) && ((startDate == null) || (endDate == null))) {
-            ctx.debug("Bad notification (appliId " + appliId + " not in " + DEVICES_APPLI_ID.keySet().toString() +") : " + inReq)
+            ctx.debug("Bad notification (appliId " + appliId + " not in " + DEVICES_APPLI_ID.keySet().toString() +") : " + req)
             return new Bad(new Failure("Invalid startdate or enddate : startDate=" + startDate + " endDate=" + endDate))
         }
         def requestsToDo
@@ -125,7 +125,7 @@ class MyCloudConnector extends CloudConnector {
 
                 break
             case 16: //For Pulse, only query param = "yyyy-MM-dd" is defined.
-                def dateStr = inReq.queryParams().get("date")
+                def dateStr = req.queryParams().get("date")
                 if ((dateStr == null) && (json.date != null)) {
                     dateStr = json.date[0]
                 }
@@ -139,7 +139,7 @@ class MyCloudConnector extends CloudConnector {
                                     withQueryParams(["action" : "getmeas", "startdate" : startDate, "enddate" : endDate])]
                 } else {
                     if ((startDate == null) || (endDate == null)) {
-                        return new Bad(new Failure("Invalid startdate or enddate : startDate=" + startDate + " endDate=" + endDate + " from " + inReq))
+                        return new Bad(new Failure("Invalid startdate or enddate : startDate=" + startDate + " endDate=" + endDate + " from " + req))
                     }else {
                         requestsToDo = [
                                 new RequestDef(MEASURE_ENDPOINT).
@@ -159,7 +159,7 @@ class MyCloudConnector extends CloudConnector {
                 break
         }
         if (requestsToDo == null){
-            ctx.debug("Bad notification, impossible to build query from :" + inReq)
+            ctx.debug("Bad notification, impossible to build query from :" + req)
             return new Bad(new Failure("impossible to build query for app Id = " + appliId))
         }
         new Good(new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), requestsToDo)]))

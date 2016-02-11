@@ -167,22 +167,22 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        if(inReq.queryParams().containsKey("verify"))
-            return answerToChallengeRequest(inReq, ctx.parameters().get("endpointVerificationCode"))
-        if (inReq.contentType().startsWith("application/json")) {
-            def json = slurper.parseText(inReq.content)
+    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        if(req.queryParams().containsKey("verify"))
+            return answerToChallengeRequest(req, ctx.parameters().get("endpointVerificationCode"))
+        if (req.contentType().startsWith("application/json")) {
+            def json = slurper.parseText(req.content)
             return new Good(new NotificationResponse(json.collect { e -> createNotificationFromResult(ctx, e) }))
-        } else if (inReq.contentType().startsWith("multipart/form-data")) {
-            ctx.debug("content :" + inReq.content())
-            def fileNames = ctx.requestDefTools().listFilesFromMultipartFormData(inReq)
+        } else if (req.contentType().startsWith("multipart/form-data")) {
+            ctx.debug("content :" + req.content())
+            def fileNames = ctx.requestDefTools().listFilesFromMultipartFormData(req)
             def result = fileNames.collect { fileName ->
-                def json = slurper.parseText(ctx.requestDefTools().readFileFromMultipartFormData(inReq, fileName).get())
+                def json = slurper.parseText(ctx.requestDefTools().readFileFromMultipartFormData(req, fileName).get())
                 json.collect { e -> createNotificationFromResult(ctx, e) }
             }.flatten()
             return new Good(new NotificationResponse(result))
         } else {
-            return new Bad(new Failure("Bad content type for incoming notification : " + inReq.contentType()))
+            return new Bad(new Failure("Bad content type for incoming notification : " + req.contentType()))
         }
     }
 

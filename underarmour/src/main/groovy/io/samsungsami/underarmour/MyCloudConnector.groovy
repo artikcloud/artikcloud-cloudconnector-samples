@@ -67,8 +67,8 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        def json = slurper.parseText(inReq.content())
+    Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        def json = slurper.parseText(req.content())
         def type = json?.type ?: [""]
         switch (type[0]){
             case "application.actigraphies":
@@ -76,7 +76,6 @@ class MyCloudConnector extends CloudConnector {
                     def userId = notification._links.user[0].id
                     def deviceSelector = new ByExternalDeviceId(userId)
                     def urlEnd = notification._links.actigraphy[0].href
-                    println(new RequestDef("${ctx.parameters()['endPointUrl']}${urlEnd}").addQueryParams(['underArmourTs':notification.ts]))
                     new ThirdPartyNotification(deviceSelector, [new RequestDef("${ctx.parameters()['endPointUrl']}${urlEnd}").addQueryParams(['underArmourTs':notification.ts])])
                 }
                 new Good(new NotificationResponse(thirdPardyNotifications))

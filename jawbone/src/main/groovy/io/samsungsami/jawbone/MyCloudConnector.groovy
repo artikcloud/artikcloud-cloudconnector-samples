@@ -61,10 +61,10 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef inReq) {
-        def did = inReq.queryParams().get("samiDeviceId")
+    def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        def did = req.queryParams().get("samiDeviceId")
         if (did == null) {
-            ctx.debug("Bad notification (where is did in following req : ) " + inReq)
+            ctx.debug("Bad notification (where is did in following req : ) " + req)
             return new Bad(new Failure("Impossible to recover device id from token request."))
         }
 
@@ -76,13 +76,13 @@ class MyCloudConnector extends CloudConnector {
          */
         def jawboneCallbackSecretHash = CryptographicHelper.sha256(ctx.clientId() + ctx.clientSecret())
 
-        def content = inReq.content().trim()
+        def content = req.content().trim()
         def json = slurper.parseText(content)
         def PUSH_EVENT = ["enter_sleep_mode", "exit_sleep_mode", "enter_stopwatch_mode", "exit_stopwatch_mode"]
         ctx.debug("json from callback : " + json)
         for(e in json.events){
             if ((e.secret_hash == null || e.secret_hash != jawboneCallbackSecretHash) && (json.secret_hash != jawboneCallbackSecretHash)){
-                ctx.debug("Invalid secret hash for callback request $inReq ; expected : $jawboneCallbackSecretHash")
+                ctx.debug("Invalid secret hash for callback request $req ; expected : $jawboneCallbackSecretHash")
                 return new Bad(new Failure("Invalid secret hash"))
             }
         }
