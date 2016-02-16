@@ -1,0 +1,344 @@
+{
+  "fields":[
+    {
+      "name":"netatmoId",
+      "type":"CUSTOM",
+      "valueClass":"String",
+      "isCollection":false,
+      "description":"netatmo's station Id",
+      "tags":[
+
+      ]
+    },
+    {
+      "name":"module",
+      "children":[
+        {
+          "name":"dataType",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"netatmo's module's type",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"moduleType",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"NAModule1 for the outdoor, NAModule4 for additionnal indoor, NAModule3 for rain gauge, NAModule2 for wind gauge",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"battery",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "isCollection":false,
+          "description":"Included in every module. It contains the current battery status. The threshold depends on the kind of module.",
+          "tags":[
+            "Battery"
+          ]
+        },
+        {
+          "name":"gustStrength",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.KILOMETRES_PER_HOUR",
+          "isCollection":false,
+          "description":"speed of the last 5 min highest gust wind",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"gustAngle",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.DEGREE_ANGLE",
+          "isCollection":false,
+          "description":"direction of the last 5 min highest gust wind",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"windStrength",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.KILOMETRES_PER_HOUR",
+          "isCollection":false,
+          "description":"current 5 min average wind speed",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"rain",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"SI.MILLIMETRE",
+          "isCollection":false,
+          "description":"Last rain measured",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"windAngle",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.DEGREE_ANGLE",
+          "isCollection":false,
+          "description":"current 5 min average wind direction",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"rain1h",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"SI.MILLIMETRE",
+          "isCollection":false,
+          "description":"Amount of rain in last hour",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"rain24h",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"SI.MILLIMETRE",
+          "isCollection":false,
+          "description":"Amount of rain in last 24 hours",
+          "tags":[
+
+          ]
+        }
+      ]
+    },
+    {
+      "name":"station",
+      "children":[
+        {
+          "name":"altitude",
+          "type":"CUSTOM",
+          "valueClass":"Double",
+          "isCollection":false,
+          "description":"place's altitude",
+          "tags":[
+            "altitude"
+          ]
+        },
+        {
+          "name":"city",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"place's city",
+          "tags":[
+            "city"
+          ]
+        },
+        {
+          "name":"lat",
+          "type":"LATITUDE",
+          "valueClass":"Double",
+          "unit":null,
+          "isCollection":false,
+          "description":"place's latitude",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"long",
+          "type":"LONGITUDE",
+          "valueClass":"Double",
+          "unit":null,
+          "isCollection":false,
+          "description":"place's longitude",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"timeZone",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"place's time zone",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"pressure",
+          "type":"CUSTOM",
+          "unit":"SI.MILLI(NONSI.BAR)",
+          "valueClass":"Double",
+          "isCollection":false,
+          "description":"Last Sea level pressure measured in milli Bar",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"pressureTrend",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"Pressure trend for last 12 hours (up, down, stable)",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"noise",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.DECIBEL",
+          "isCollection":false,
+          "description":"Last noise measured",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"wifiStatus",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "isCollection":false,
+          "description":"Included in every devices. It contains the current wifi status.",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"stationType",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"Included in every device or module. It defines the type of the device/module. Its values are among : NAMain for the ba",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"humidity",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"NonSI.PERCENT",
+          "isCollection":false,
+          "description":"Last humidity measured",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"co2",
+          "type":"CUSTOM",
+          "valueClass":"Integer",
+          "unit":"StandardUnits.PARTS_PER_MILLION",
+          "isCollection":false,
+          "description":"Last Co2 measured",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"temp",
+          "type":"TEMPERATURE",
+          "valueClass":"Double",
+          "unit":"SI.CELSIUS",
+          "isCollection":false,
+          "description":"Last temperature measure",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"tempTrend",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false,
+          "description":"Temperature trend for last 1 hours (up, down, stable)",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"maxTemp",
+          "type":"MAX_TEMPERATURE",
+          "valueClass":"Double",
+          "unit":"SI.CELSIUS",
+          "isCollection":false,
+          "description":"Max temperature of the day",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"minTemp",
+          "type":"MIN_TEMPERATURE",
+          "valueClass":"Double",
+          "unit":"SI.CELSIUS",
+          "isCollection":false,
+          "description":"Min temperature of the day",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"dateMaxTemp",
+          "type":"CUSTOM",
+          "valueClass":"Double",
+          "unit":"SI.MILLI(SI.SECOND)",
+          "isCollection":false,
+          "description":"Timestamp when max temperature was measured",
+          "tags":[
+
+          ]
+        },
+        {
+          "name":"dateMinTemp",
+          "type":"CUSTOM",
+          "valueClass":"Double",
+          "unit":"SI.MILLI(SI.SECOND)",
+          "isCollection":false,
+          "description":"Timestamp when min temperature was measured",
+          "tags":[
+
+          ]
+        }
+      ]
+    }
+  ],
+  "messageFormat":"json",
+  "actions":[
+    {
+      "name":"getAllData",
+      "description":"fetch data for all weather station",
+      "isStandard":false,
+      "type":"CUSTOM"
+    },
+    {
+      "name":"getData",
+      "description":"get data for a given weather station",
+      "parameters":[
+        {
+          "name":"stationId",
+          "type":"CUSTOM",
+          "valueClass":"Integer"
+        }
+      ],
+      "isStandard":false,
+      "type":"CUSTOM"
+    }
+  ]
+}

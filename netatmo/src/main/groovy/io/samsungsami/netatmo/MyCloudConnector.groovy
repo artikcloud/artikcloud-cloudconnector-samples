@@ -22,7 +22,6 @@ class MyCloudConnector extends CloudConnector {
 
 
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
-        println("signeAndPrepare o year")
         Map params = [:]
         params.putAll(req.queryParams())
         switch (phase) {
@@ -75,6 +74,7 @@ class MyCloudConnector extends CloudConnector {
                         }
                         def ts = json.time_server
                         def events = json.body.devices.collectMany{ data ->
+                            def netatmoId = data._id
                             def modules = data?.modules ?: []
                             def moduleEvents = modules.collectMany{ moduleData ->
                                 def windStr = moduleData?.dashboard_data?.WindStrength ?: null
@@ -89,11 +89,12 @@ class MyCloudConnector extends CloudConnector {
                                 def mType = moduleData?.type ?: null
                                 if ((mType != null) && (battery != null) && (dataType != null)) {
                                     [ new Event(ts,
-                                            '''{"type": "module", "moduleType":"''' + mType + '''" ,"dataType":"''' + dataType + '''" ,"battery":''' + battery
+                                            '''{"netatmoId": "''' + netatmoId + '''"'''
+                                                    + ''',"module": {"moduleType":"''' + mType + '''" ,"dataType":"''' + dataType + '''" ,"battery":''' + battery
                                                     + ''',"gustStrength":''' + gustStr + ''',"gustAngle":''' + gustDir
                                                     + ''',"windStrength":''' + windStr + ''',"windAngle":''' + windDir
                                                     + ''',"rain":''' + rain + ''',"rain1h":''' + rainSum1+ ''',"rain24h":''' + rainSum24
-                                                    + '''}''')
+                                                    + '''}}''')
                                     ]
                                 } else {
                                     []
@@ -118,13 +119,13 @@ class MyCloudConnector extends CloudConnector {
                             def dateMaxTemp = data?.dashboard_data?.date_max_temp ?: null
                             def dateMinTemp = data?.dashboard_data?.date_min_temp ?: null
                             def sType = data?.type ?: null
-                            moduleEvents + [new Event(ts, '''{"type": "station", "city":"''' + city + '''" ,"altitude":''' + alt + ''',"latitude":''' + lat+ ''',"longitude":''' + longi + ''',"timeZone":"''' + timeZ
+                            moduleEvents + [new Event(ts, '''{"station": {"city":"''' + city + '''" ,"altitude":''' + alt + ''',"lat":''' + lat+ ''',"long":''' + longi + ''',"timeZone":"''' + timeZ
                                     + '''" ,"wifiStatus":''' + wifiStat+ ''',"stationType":"''' + sType
-                                    + '''" ,"temperature":''' + temp + ''',"humidity":''' + humid + ''',"co2":''' + co2 + ''',"noise":''' + noise
+                                    + '''" ,"temp":''' + temp + ''',"humidity":''' + humid + ''',"co2":''' + co2 + ''',"noise":''' + noise
                                     + ''',"pressure":''' + press + ''',"absolutePressure":''' + absPress
-                                    + ''',"pressureTrend":''' + pressTrend + ''',"temperatureTrend":''' + tempTrend
-                                    + ''',"maxTemperature":''' + maxTemp + ''',"minTemperature":''' + minTemp + ''',"dateMaxTemperature":''' + dateMaxTemp + ''',"dateMinTemperature":''' + dateMinTemp
-                                    + '''}''')]
+                                    + ''',"pressureTrend":"''' + pressTrend + '''" ,"tempTrend":"''' + tempTrend
+                                    + '''" ,"maxTemp":''' + maxTemp + ''',"minTemp":''' + minTemp + ''',"dateMaxTemp":''' + dateMaxTemp + ''',"dateMinTemp":''' + dateMinTemp
+                                    + '''}}''')]
                         }
                         return new Good(events)
                         break
