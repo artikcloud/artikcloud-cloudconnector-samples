@@ -42,12 +42,12 @@ class MyCloudConnector extends CloudConnector {
     def  Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         def req = new RequestDef(stationEndpoint)
         def actionRequests = null
-        def json = slurper.parseText(action.params)
         switch (action.name) {
             case "getAllData":
                 actionRequests = [new ActionRequest(new BySamiDeviceId(dInfo.did),[req])]
                 break
             case "getData":
+                def json = slurper.parseText(action.params)
                 if (json.stationId != null){
                     actionRequests = [new ActionRequest(new BySamiDeviceId(dInfo.did),[req])].withQueryParams(["device_Id": json.stationId])
                 } else {
@@ -65,7 +65,6 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
-        println("onFetchResponse")
         switch(res.status) {
             case HTTP_OK:
                 switch(req.url) {
@@ -75,7 +74,31 @@ class MyCloudConnector extends CloudConnector {
                             return new Bad(new Failure("receiving response with invalid status ${json.status} … ${res}"))
                         }
                         def ts = json.time_server
-                        def events = json.body.devices.collect{ data ->
+                        def events = json.body.devices.collectMany{ data ->
+                            def modules = data?.modules ?: []
+                            def moduleEvents = modules.collectMany{ moduleData ->
+                                def windStr = moduleData?.dashboard_data?.WindStrength ?: null
+                                def windDir = moduleData?.dashboard_data?.WindAngle ?: null
+                                def gustStr = moduleData?.dashboard_data?.GustStrength ?: null
+                                def gustDir = moduleData?.dashboard_data?.GustAngle ?: null
+                                def dataType = (moduleData?.data_type ?: []).join(", ")
+                                def rain = moduleData?.dashboard_data?.Rain ?: null
+                                def rainSum1 = moduleData?.dashboard_data?.sum_rain_1 ?: null
+                                def rainSum24 = moduleData?.dashboard_data?.sum_rain_24 ?: null
+                                def battery = moduleData?.battery_vp ?: null
+                                def mType = moduleData?.type ?: null
+                                if ((mType != null) && (battery != null) && (dataType != null)) {
+                                    [ new Event(ts,
+                                            '''{"type": "module", "moduleType":"''' + mType + '''" ,"dataType":"''' + dataType + '''" ,"battery":''' + battery
+                                                    + ''',"gustStrength":''' + gustStr + ''',"gustAngle":''' + gustDir
+                                                    + ''',"windStrength":''' + windStr + ''',"windAngle":''' + windDir
+                                                    + ''',"rain":''' + rain + ''',"rain1h":''' + rainSum1+ ''',"rain24h":''' + rainSum24
+                                                    + '''}''')
+                                    ]
+                                } else {
+                                    []
+                                }
+                            }
                             def timeZ = data?.place?.timezone ?: null
                             def city = data?.place?.city ?: null
                             def alt = data?.place?.altitude ?: null
@@ -85,18 +108,23 @@ class MyCloudConnector extends CloudConnector {
                             def noise = data?.dashboard_data?.Noise ?: null
                             def humid = data?.dashboard_data?.Humidity ?: null
                             def press = data?.dashboard_data?.Pressure ?: null
+                            def pressTrend = data?.dashboard_data?.pressure_trend ?: null
                             def absPress = data?.dashboard_data?.AbsolutePressure ?: null
                             def co2 = data?.dashboard_data?.CO2 ?: null
                             def wifiStat = data?.wifi_status ?: null
+                            def tempTrend = data?.dashboard_data?.temp_trend ?: null
                             def maxTemp = data?.dashboard_data?.max_temp ?: null
                             def minTemp = data?.dashboard_data?.min_temp ?: null
                             def dateMaxTemp = data?.dashboard_data?.date_max_temp ?: null
                             def dateMinTemp = data?.dashboard_data?.date_min_temp ?: null
-                            new Event(ts, '''{"city":''' + city + ''',"altitude":''' + alt + ''',"latitude":''' + lat+ ''',"longitude":''' + longi + '''"timeZone":''' + timeZ
-                                    + ''',"wifiStatus":''' + wifiStat
-                                    + ''',"temperature":''' + temp + ''',"humidity":''' + humid + ''',"co2":''' + co2 + ''',"noise":''' + noise
+                            def sType = data?.type ?: null
+                            moduleEvents + [new Event(ts, '''{"type": "station", "city":"''' + city + '''" ,"altitude":''' + alt + ''',"latitude":''' + lat+ ''',"longitude":''' + longi + ''',"timeZone":"''' + timeZ
+                                    + '''" ,"wifiStatus":''' + wifiStat+ ''',"stationType":"''' + sType
+                                    + '''" ,"temperature":''' + temp + ''',"humidity":''' + humid + ''',"co2":''' + co2 + ''',"noise":''' + noise
                                     + ''',"pressure":''' + press + ''',"absolutePressure":''' + absPress
-                                    + ''',"maxTemperature":''' + maxTemp + ''',"minTemperature":''' + minTemp + ''',"dateMaxTemperature":''' + dateMaxTemp + ''',"dateMinTemperature":''' + dateMinTemp + '''}''')
+                                    + ''',"pressureTrend":''' + pressTrend + ''',"temperatureTrend":''' + tempTrend
+                                    + ''',"maxTemperature":''' + maxTemp + ''',"minTemperature":''' + minTemp + ''',"dateMaxTemperature":''' + dateMaxTemp + ''',"dateMinTemperature":''' + dateMinTemp
+                                    + '''}''')]
                         }
                         return new Good(events)
                         break

@@ -31,12 +31,19 @@ class MyCloudConnectorSpec extends Specification {
 		def res = sut.onFetchResponse(ctx, req, info , fetchedResponse)
 		def ts = 1441872018
 		def expectedEvents = [
-						new Event(ts, '''{"city":Saint-Denis,"altitude":30.478512648583,"latitude":2.384033203125,"longitude":48.936934954094"timeZone":Europe/Paris,"wifiStatus":109,"temperature":3.2,"humidity":60,"co2":4852,"noise":110,"pressure":929.4,"absolutePressure":929.4,"maxTemperature":79.5,"minTemperature":-39.5,"dateMaxTemperature":1441850941,"dateMinTemperature":1441862941}''')
+				new Event(ts, '''{"type": "module", "moduleType":"NAModule3" ,"dataType":"Rain" ,"battery":4103,"gustStrength":null,"gustAngle":null,"windStrength":null,"windAngle":null,"rain":0.101,"rain1h":null,"rain24h":null}'''),
+				new Event(ts, '''{"type": "module", "moduleType":"NAModule4" ,"dataType":"Temperature, CO2, Humidity" ,"battery":44568,"gustStrength":null,"gustAngle":null,"windStrength":null,"windAngle":null,"rain":null,"rain1h":null,"rain24h":null}'''),
+				new Event(ts, '''{"type": "module", "moduleType":"NAModule1" ,"dataType":"Temperature, Humidity" ,"battery":31188,"gustStrength":null,"gustAngle":null,"windStrength":null,"windAngle":null,"rain":null,"rain1h":null,"rain24h":null}'''),
+				new Event(ts, '''{"type": "module", "moduleType":"NAModule2" ,"dataType":"Wind" ,"battery":31188,"gustStrength":35,"gustAngle":156,"windStrength":25,"windAngle":155,"rain":null,"rain1h":null,"rain24h":null}'''),
+				new Event(ts, '''{"type": "station", "city":"Saint-Denis" ,"altitude":30.478512648583,"latitude":2.384033203125,"longitude":48.936934954094,"timeZone":"Europe/Paris" ,"wifiStatus":109,"stationType":"NAMain" ,"temperature":3.2,"humidity":60,"co2":4852,"noise":110,"pressure":929.4,"absolutePressure":929.4,"pressureTrend":null,"temperatureTrend":null,"maxTemperature":79.5,"minTemperature":-39.5,"dateMaxTemperature":1441850941,"dateMinTemperature":1441862941}''')
 						]
 
 		then:
 		res.isGood()
 		res.get()[0] == expectedEvents[0]
+		res.get()[1] == expectedEvents[1]
+		res.get()[2] == expectedEvents[2]
+		res.get()[3] == expectedEvents[3]
 		res.get().size() == expectedEvents.size()
 		res.get() == expectedEvents
 	}
