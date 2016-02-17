@@ -90,10 +90,10 @@ class MyCloudConnector extends CloudConnector {
                                 if ((mType != null) && (battery != null) && (dataType != null)) {
                                     [ new Event(ts,
                                             '''{"netatmoId": "''' + netatmoId + '''"'''
-                                                    + ''',"module": {"moduleType":"''' + mType + '''" ,"dataType":"''' + dataType + '''" ,"battery":''' + battery
-                                                    + ''',"gustStrength":''' + gustStr + ''',"gustAngle":''' + gustDir
-                                                    + ''',"windStrength":''' + windStr + ''',"windAngle":''' + windDir
-                                                    + ''',"rain":''' + rain + ''',"rain1h":''' + rainSum1+ ''',"rain24h":''' + rainSum24
+                                                    + ''', "module": {"moduleType":"''' + mType + '''", "dataType":''' + optional(dataType) + ''', "battery":''' + battery
+                                                    + ''', "gustStrength":''' + gustStr + ''', "gustAngle":''' + gustDir
+                                                    + ''', "windStrength":''' + windStr + ''', "windAngle":''' + windDir
+                                                    + ''', "rain":''' + rain + ''', "rain1h":''' + rainSum1+ ''', "rain24h":''' + rainSum24
                                                     + '''}}''')
                                     ]
                                 } else {
@@ -119,12 +119,13 @@ class MyCloudConnector extends CloudConnector {
                             def dateMaxTemp = data?.dashboard_data?.date_max_temp ?: null
                             def dateMinTemp = data?.dashboard_data?.date_min_temp ?: null
                             def sType = data?.type ?: null
-                            moduleEvents + [new Event(ts, '''{"station": {"city":"''' + city + '''" ,"altitude":''' + alt + ''',"lat":''' + lat+ ''',"long":''' + longi + ''',"timeZone":"''' + timeZ
-                                    + '''" ,"wifiStatus":''' + wifiStat+ ''',"stationType":"''' + sType
-                                    + '''" ,"temp":''' + temp + ''',"humidity":''' + humid + ''',"co2":''' + co2 + ''',"noise":''' + noise
-                                    + ''',"pressure":''' + press + ''',"absolutePressure":''' + absPress
-                                    + ''',"pressureTrend":"''' + pressTrend + '''" ,"tempTrend":"''' + tempTrend
-                                    + '''" ,"maxTemp":''' + maxTemp + ''',"minTemp":''' + minTemp + ''',"dateMaxTemp":''' + dateMaxTemp + ''',"dateMinTemp":''' + dateMinTemp
+                            moduleEvents + [new Event(ts, '''{"netatmoId": "''' + netatmoId + '''"'''
+                                    + ''', "station": {"city":''' + optional(city) + ''', "altitude":''' + alt + ''', "lat":''' + lat+ ''', "long":''' + longi + ''', "timeZone":''' + optional(timeZ)
+                                    + ''', "wifiStatus":''' + wifiStat+ ''', "stationType":''' + optional(sType)
+                                    + ''', "temp":''' + temp + ''', "humidity":''' + humid + ''', "co2":''' + co2 + ''', "noise":''' + noise
+                                    + ''', "pressure":''' + press + ''', "absolutePressure":''' + absPress
+                                    + ''', "pressureTrend":''' + optional(pressTrend) + ''', "tempTrend":''' + optional(tempTrend)
+                                    + ''', "maxTemp":''' + maxTemp + ''', "minTemp":''' + minTemp + ''', "dateMaxTemp":''' + dateMaxTemp + ''', "dateMinTemp":''' + dateMinTemp
                                     + '''}}''')]
                         }
                         return new Good(events)
@@ -137,5 +138,12 @@ class MyCloudConnector extends CloudConnector {
             default:
                 return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
         }
+    }
+
+    private def String optional(String str){
+        if (str == null)
+            null
+        else
+            "\"" + str + "\""
     }
 }
