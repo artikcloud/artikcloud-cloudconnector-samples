@@ -1,0 +1,13 @@
+{
+  "authorizationUrl":"https://runkeeper.com/apps/authorize",
+  "accessTokenUrl":"https://runkeeper.com/apps/token",
+  "clientId":"575faacfd61f4c009e175fd54a335bb5",
+  "clientSecret":"beca5c8f5ac94a9683493669164e657b",
+  "authType" : "OAuth2",
+  "scope":["default"],
+  "statusAcceptNotification":200,
+  "accessTokenMethod": "post",
+  "parameters": {
+    "endpoint" : "https://runkeeper.com/apps"
+  }
+}
