@@ -8,6 +8,6 @@
   "statusAcceptNotification":200,
   "accessTokenMethod": "post",
   "parameters": {
-    "endpoint" : "https://runkeeper.com/apps"
+    "endpoint" : "https://api.runkeeper.com"
   }
 }

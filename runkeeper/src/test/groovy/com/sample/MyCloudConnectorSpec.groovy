@@ -59,7 +59,7 @@ class MyCloudConnectorSpec extends Specification {
 
 		def "push weight data to SAMI on onFetchResponse when new data and update lastPoll"() {
 			when:
-			def req = new RequestDef("foo")
+			def req = new RequestDef("${ctx.parameters().endpoint}/weight").withMethod(HttpMethod.Get)
 			def body = JsonOutput.toJson([
 				"items": [
 					["timestamp": "Fri, 1 Jan 2016 00:10:00", "weight": 50], 
@@ -88,7 +88,7 @@ class MyCloudConnectorSpec extends Specification {
 
 		def "push nothing when no new data on onFetchResponse"() {
 			when:
-			def req = new RequestDef("foo")
+			def req = new RequestDef("${ctx.parameters().endpoint}/weight").withMethod(HttpMethod.Get)
 			def body = JsonOutput.toJson([
 				"items": [
 					["timestamp": "Fri, 1 Jan 2016 00:09:30", "weight": 49]

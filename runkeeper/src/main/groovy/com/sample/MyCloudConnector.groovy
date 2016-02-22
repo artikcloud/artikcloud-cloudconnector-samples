@@ -70,39 +70,41 @@ class MyCloudConnector extends CloudConnector {
 
 	@Override
 	Or<RequestDef, Failure> fetch(Context ctx, RequestDef req, DeviceInfo info) {
-		new Good(req.addQueryParams(["pageSize" : 100]))
+		new Good(req.addQueryParams(["pageSize" : "100"]))
 	}
 
 	@Override
 	Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
+		ctx.debug("onFetchResponse response: $res")
+
 		def userData = info.userData.map { data -> slurper.parseText(data) }.getOrElse(null)
 		if (userData == null) {
 			return new Bad(new Failure("Can not get userData"))
 		}
 
 		if (res.status == HTTP_OK) {
-			switch(res.contentType) {
-				case "application/vnd.com.runkeeper.WeightSetFeed+json":
-					def data = slurper.parseText(res.content.trim())
-					def lastPoll = userData.lastPolls.weight
-					def events = data.items.collect { item ->
-						def ts = DateTime.parse(item.timestamp, timestampFormat).getMillis()
-						item.remove("timestamp")
-						item.remove("uri")
-						new Event(ts, JsonOutput.toJson(item))
-					}.findAll { event -> event.ts > lastPoll }
+			if (req.url.endsWith(userData.uris.weight)) {
+				def data = slurper.parseText(res.content.trim())
+				def lastPoll = userData.lastPolls.weight
+				def events = data.items.collect { item ->
+					def ts = DateTime.parse(item.timestamp, timestampFormat).getMillis()
+					item.remove("timestamp")
+					item.remove("uri")
+					new Event(ts, JsonOutput.toJson(item))
+				}.findAll { event -> event.ts > lastPoll }
 
-					if (events[0] != null) {
-						// getting most recent ts
-						userData.lastPolls.weight = events[0].ts
-						def lastPollEvent = new Event(ctx.now(), JsonOutput.toJson(userData), EventType.user)
-						return new Good(events + lastPollEvent)
-					} else {
-						return new Good(events)
-					}
-
-				default:
-					return new Bad(new Failure("Unknown onFetchResponse contentType ${res.contentType}"))
+				if (events[0] != null) {
+					// getting most recent ts
+					ctx.debug("Pulling new data...")
+					userData.lastPolls.weight = events[0].ts
+					def lastPollEvent = new Event(ctx.now(), JsonOutput.toJson(userData), EventType.user)
+					return new Good(events + lastPollEvent)
+				} else {
+					ctx.debug("No new data to pull")
+					return new Good(events)
+				}
+			} else {
+				return new Bad(new Failure("Unknown onFetchResponse req url ${req.url}"))
 			}
 		} else {
 			return new Bad(new Failure("onFetchResponse response status ${res.status} $res"))
