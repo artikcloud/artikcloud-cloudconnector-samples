@@ -19,10 +19,10 @@ class FakeContext implements Context {
         println(obj)
     }
     long now(){
-        DateTime.parse("Fri, 1 Jan 2016 00:09:45", MyCloudConnector.timestampFormat).getMillis()
+        DateTime.parse("Fri, 1 Jan 2016 09:45:00", MyCloudConnector.timestampFormat).getMillis()
     }
     Map<String, String> parameters(){
-        ["endpoint":"http://127.0.0.1:9001/"]
+        ["endpoint":"http://127.0.0.1:9001"]
     }
     List<String> scope(){
         ["all"]

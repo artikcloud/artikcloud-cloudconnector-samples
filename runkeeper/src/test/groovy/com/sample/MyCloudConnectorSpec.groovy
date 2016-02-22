@@ -25,11 +25,10 @@ class MyCloudConnectorSpec extends Specification {
 			ctx.cloudId(), 
 			Empty.option()
 		)
-		def cloudUserData = '{"userId": 1, "weight": "/weight", "sleep": "/sleep"}'
-		def infoWithUserData = info.withUserData(JsonOutput.toJson([
-			"uris": ["sleep": "/sleep", "weight": "/weight"],
-			"lastPolls": ["sleep": ctx.now(), "weight": ctx.now()]
-		]))
+		def cloudUserData = '{"userId": 1, "weight": "/weight", "sleep": "/sleep", "fitness_activities": "/fitness"}'
+		def infoWithUserData = info.withUserData(JsonOutput.toJson(
+			["fitness_activities": "/fitness", "sleep": "/sleep", "userId" : 1, "weight": "/weight"])
+		)
 
 		def "store user data on onSubscribeResponse"() {
 			when:
@@ -42,9 +41,9 @@ class MyCloudConnectorSpec extends Specification {
 			result.get() == Option.apply(infoWithUserData)
 		}
 
-		def "poll weight data on getWeightData action"() {
+		def "pull weight data on getWeightData action"() {
 			when:
-			def action = new ActionDef(Empty.option(), "did", ctx.now(), "getWeightData", "")
+			def action = new ActionDef(Empty.option(), "did", ctx.now(), "getWeightData", '{"nbHoursToPull": 1}')
 			def result = sut.onAction(ctx, action, infoWithUserData)
 
 			then:
@@ -52,19 +51,24 @@ class MyCloudConnectorSpec extends Specification {
 			result.get() == new ActionResponse([
 				new ActionRequest(
 					new BySamiDeviceId("did"),
-					[new RequestDef("${ctx.parameters().endpoint}/weight").withMethod(HttpMethod.Get)]
+					[new RequestDef("${ctx.parameters().endpoint}/weight")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
+					]
 				)	
 			]) 
 		}
 
-		def "push weight data to SAMI on onFetchResponse when new data and update lastPoll"() {
+		def "push weight data to SAMI on onFetchResponse"() {
 			when:
-			def req = new RequestDef("${ctx.parameters().endpoint}/weight").withMethod(HttpMethod.Get)
+			def req = new RequestDef("${ctx.parameters().endpoint}/weight")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
 			def body = JsonOutput.toJson([
 				"items": [
-					["timestamp": "Fri, 1 Jan 2016 00:10:00", "weight": 50], 
-					["timestamp": "Fri, 1 Jan 2016 00:09:55", "free_mass": 10, "bmi": 5],
-					["timestamp": "Fri, 1 Jan 2016 00:09:30", "weight": 49],
+					["timestamp": "Fri, 1 Jan 2016 09:44:00", "weight": 50], 
+					["timestamp": "Fri, 1 Jan 2016 09:40:00", "free_mass": 10, "bmi": 5],
+					["timestamp": "Fri, 1 Jan 2016 08:30:00", "weight": 49]
 				]
 			])
 			def res = new Response(200, "application/vnd.com.runkeeper.WeightSetFeed+json", body)
@@ -72,26 +76,23 @@ class MyCloudConnectorSpec extends Specification {
 
 			then:
 			result.isGood()
-			def ts1 = DateTime.parse("Fri, 1 Jan 2016 00:10:00", MyCloudConnector.timestampFormat).getMillis()
-			def ts2 = DateTime.parse("Fri, 1 Jan 2016 00:09:55", MyCloudConnector.timestampFormat).getMillis()
-			def updatedUserData = JsonOutput.toJson([
-				"lastPolls": ["sleep": ctx.now(), "weight": ts1], // take last ts1 (ctx.now() is fixed in this test)
-				"uris": ["sleep": "/sleep", "weight": "/weight"]
-			])
+			def ts1 = DateTime.parse("Fri, 1 Jan 2016 09:44:00", MyCloudConnector.timestampFormat).getMillis()
+			def ts2 = DateTime.parse("Fri, 1 Jan 2016 09:40:00", MyCloudConnector.timestampFormat).getMillis()
 
 			result.get() == [
 				new Event(ts1, JsonOutput.toJson(["weight": 50])), 
-				new Event(ts2, JsonOutput.toJson(["bmi": 5, "free_mass": 10])), 
-				new Event(ctx.now(), updatedUserData, EventType.user)
+				new Event(ts2, JsonOutput.toJson(["bmi": 5, "free_mass": 10]))
 			]
 		}
 
 		def "push nothing when no new data on onFetchResponse"() {
 			when:
-			def req = new RequestDef("${ctx.parameters().endpoint}/weight").withMethod(HttpMethod.Get)
+			def req = new RequestDef("${ctx.parameters().endpoint}/weight")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
 			def body = JsonOutput.toJson([
 				"items": [
-					["timestamp": "Fri, 1 Jan 2016 00:09:30", "weight": 49]
+					["timestamp": "Fri, 1 Jan 2016 08:30:00", "weight": 49]
 				]
 			])
 			def res = new Response(200, "application/vnd.com.runkeeper.WeightSetFeed+json", body)
@@ -100,6 +101,28 @@ class MyCloudConnectorSpec extends Specification {
 			then:
 			result.isGood()
 			result.get() == []
+		}
+
+		def "push fitness data to SAMI on onFetchResponse"() {
+			when:
+			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
+			def body = JsonOutput.toJson([
+				"items": [
+					["start_time": "Fri, 1 Jan 2016 09:44:00", "heart_rate": 70]
+				]
+			])
+			def res = new Response(200, "application/vnd.com.runkeeper.WeightSetFeed+json", body)
+			def result = sut.onFetchResponse(ctx, req, infoWithUserData, res)
+
+			then:
+			result.isGood()
+			def ts1 = DateTime.parse("Fri, 1 Jan 2016 09:44:00", MyCloudConnector.timestampFormat).getMillis()
+
+			result.get() == [
+				new Event(ts1, JsonOutput.toJson(["heart_rate": 70]))
+			]
 		}
 		
 }

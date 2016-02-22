@@ -45,16 +45,10 @@ class MyCloudConnector extends CloudConnector {
 	@Override
 	Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
 		 if (res.status == HTTP_OK) {
-			def json = slurper.parseText(res.content.trim()) 
-			json.remove("userId")
-
-			def now = ctx.now()
-			def lastPolls = json.collectEntries { kind, uri -> [kind, now] }
-
-			def dataToSave = JsonOutput.toJson(["uris" : json, "lastPolls" : lastPolls])
-			return new Good(Option.apply(info.withUserData(dataToSave)))
+			def userData = slurper.parseText(res.content.trim()) 
+			return new Good(Option.apply(info.withUserData(JsonOutput.toJson(userData))))
 		} else {
-			return new Bad(new Failure("onSubscribeResponse response status ${res.status} $res"))	
+			return new Bad(new Failure("onSubscribeResponse response status ${res.status} $res"))
 		}
 	}
 
@@ -81,31 +75,28 @@ class MyCloudConnector extends CloudConnector {
 		if (userData == null) {
 			return new Bad(new Failure("Can not get userData"))
 		}
+		def startTs = req.queryParams.get("samiPullStartTs").toLong()
+		def endTs = req.queryParams.get("samiPullEndTs").toLong()
+		if (startTs == null) {
+			return new Bad(new Failure("Can not get samiPullStartTs"))	
+		}
+		if (endTs == null) {
+			return new Bad(new Failure("Can not get samiPullEndTs"))		
+		}
 
 		if (res.status == HTTP_OK) {
-			if (req.url.endsWith(userData.uris.weight)) {
-				def data = slurper.parseText(res.content.trim())
-				def lastPoll = userData.lastPolls.weight
-				def events = data.items.collect { item ->
-					def ts = DateTime.parse(item.timestamp, timestampFormat).getMillis()
-					item.remove("timestamp")
-					item.remove("uri")
-					new Event(ts, JsonOutput.toJson(item))
-				}.findAll { event -> event.ts > lastPoll }
-
-				if (events[0] != null) {
-					// getting most recent ts
-					ctx.debug("Pulling new data...")
-					userData.lastPolls.weight = events[0].ts
-					def lastPollEvent = new Event(ctx.now(), JsonOutput.toJson(userData), EventType.user)
-					return new Good(events + lastPollEvent)
-				} else {
-					ctx.debug("No new data to pull")
-					return new Good(events)
-				}
-			} else {
-				return new Bad(new Failure("Unknown onFetchResponse req url ${req.url}"))
+			def data = slurper.parseText(res.content.trim())
+			def events = data.items.collect { item ->
+				def tsStr = (userData.fitness_activities != null && req.url.endsWith(userData.fitness_activities)) ? item.start_time : item.timestamp
+				def ts = DateTime.parse(tsStr, timestampFormat).getMillis()
+				item.remove("timestamp")
+				item.remove("start_time")
+				item.remove("uri")
+				new Event(ts, JsonOutput.toJson(item))
+			}.findAll { event -> 
+				event.ts >= startTs && event.ts < endTs
 			}
+			return new Good(events)
 		} else {
 			return new Bad(new Failure("onFetchResponse response status ${res.status} $res"))
 		}
@@ -118,18 +109,23 @@ class MyCloudConnector extends CloudConnector {
 			return new Bad(new Failure("Can not get userData"))
 		}
 
-		switch (action.name) {
-			case "getWeightData":
-				def uri = userData.uris.weight
-				if (uri != null) {
-					def req = new RequestDef("${ctx.parameters().endpoint}$uri").withMethod(HttpMethod.Get)
-					return new Good(new ActionResponse([new ActionRequest(new BySamiDeviceId(info.did), [req])]))
-				} else {
-					return new Bad(new Failure("URI for weight is not stored in userData"))
-				}
+		def actionName = action.name
+		def actionParams = slurper.parseText(action.params)
+		def pullStartTime = action.ts - (actionParams.nbHoursToPull * 3600 * 1000)
+		def uri = null
+		if (actionName == "getWeightData") uri = userData.weight
+		else if (actionName == "getFitnessData") uri = userData.fitness_activities
+		else if (actionName == "getSleepData") uri = userData.sleep
+		else if (actionName == "getDiabeteData") uri = userData.diabetes
+		else if (actionName == "getGeneralMeasurements") uri = userData.general_measurements
 
-			default:        
-				return new Bad(new Failure("Unknown action: ${action.name}"))
+		if (uri != null) {
+			def req = new RequestDef("${ctx.parameters().endpoint}$uri")
+						.withMethod(HttpMethod.Get)
+						.addQueryParams(["samiPullStartTs": pullStartTime.toString(), "samiPullEndTs": action.ts.toString()])
+			return new Good(new ActionResponse([new ActionRequest(new BySamiDeviceId(info.did), [req])]))
+		} else {
+			return new Bad(new Failure("Action ${action.name} does not match with an URI."))
 		}
 	}
 

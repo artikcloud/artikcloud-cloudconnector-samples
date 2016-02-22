@@ -9,5 +9,62 @@
   "accessTokenMethod": "post",
   "parameters": {
     "endpoint" : "https://api.runkeeper.com"
-  }
+  },
+  "polling": [
+    {
+      "cron": "* * * *",
+      "action": {
+        "name": "getFitnessData",
+        "params": {
+          "nbHoursToPull": 1
+        } 
+      }
+    },
+    {
+      "cron": "*/12 * * *",
+      "action": {
+        "name": "getSleepData",
+        "params": {
+          "nbHoursToPull": 12
+        } 
+      }
+    },
+    {
+      "cron": "* * * *",
+      "action": {
+        "name": "getDiabeteData",
+        "params": {
+          "nbHoursToPull": 1
+        } 
+      }
+    },
+    {
+      "cron": "* * * *",
+      "action": {
+        "name": "getGeneralMeasurements",
+        "params": {
+          "nbHoursToPull": 1
+        }
+      }
+    },
+    {
+      "cron": "* * * *",
+      "action": {
+        "name": "getGeneralMeasurements",
+        "params": {
+          "nbHoursToPull": 1
+        }
+      }
+    },
+    {
+      "cron": "0 * * *",
+      "action": {
+        "name": "getWeightData",
+        "params": {
+          "nbHoursToPull": 24
+        }
+      }
+    }
+  ]
+
 }
