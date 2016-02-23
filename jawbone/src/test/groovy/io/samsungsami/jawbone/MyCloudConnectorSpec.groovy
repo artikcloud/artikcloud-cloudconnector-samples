@@ -8,6 +8,7 @@ import utils.*
 
 import static java.net.HttpURLConnection.*
 import static utils.Tools.*
+import scala.Option
 
 class MyCloudConnectorSpec extends Specification {
 
@@ -59,6 +60,17 @@ class MyCloudConnectorSpec extends Specification {
 		res.get().size() == expectedEvents.size()
 		res.get() == expectedEvents
 	}
+
+	def "unsubscribe method should call the unsuscribe endpoint"() {
+		when:
+		def device = new DeviceInfo(did, Empty.option(), new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), Empty.list(), Empty.option()), ctx.cloudId(), Empty.option())
+		def reqs = sut.unsubscribe(ctx, device)
+		then:
+		reqs.isGood()
+		reqs.get() ==  [new RequestDef(sut.API_ENDPOINT_URL + "users/@me/pubsub").withMethod(HttpMethod.Delete)]
+	}
+
+
 /*
 	def "create data from push notification"() {
 		when:

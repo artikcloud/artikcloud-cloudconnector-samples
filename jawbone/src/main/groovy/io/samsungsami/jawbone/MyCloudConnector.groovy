@@ -61,6 +61,11 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
+    def Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
+        return new Good([new RequestDef(PUBSUB_ENDPOINT_URL).withMethod(HttpMethod.Delete)])
+    }
+
+    @Override
     def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
         def did = req.queryParams().get("samiDeviceId")
         if (did == null) {
