@@ -1,1 +1,2 @@
-include 'fitbit','ihealth','instagram','jawbone','misfit','moves','netatmo','openWeatherMap','underarmour','withings','runkeeper'
+include 'fitbit','ihealth','instagram','jawbone','misfit','moves','netatmo','open-weather-map','underarmour','withings','runkeeper'
+
