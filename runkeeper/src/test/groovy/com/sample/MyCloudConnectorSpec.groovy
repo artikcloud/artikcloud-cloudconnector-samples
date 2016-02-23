@@ -110,7 +110,7 @@ class MyCloudConnectorSpec extends Specification {
 						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
 			def body = JsonOutput.toJson([
 				"items": [
-					["start_time": "Fri, 1 Jan 2016 09:44:00", "heart_rate": [70, 80, 75], "total_distance": 40]
+					["start_time": "Fri, 1 Jan 2016 09:44:00", "heart_rate": [["heart_rate": 70], ["heart_rate": 80], ["heart_rate": 75]], "total_distance": 40]
 				]
 			])
 			def res = new Response(200, "application/vnd.com.runkeeper.WeightSetFeed+json", body)

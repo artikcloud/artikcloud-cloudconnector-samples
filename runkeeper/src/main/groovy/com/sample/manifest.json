@@ -1,0 +1,338 @@
+{
+  "fields": [
+    {
+      "name": "utc_offset",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "type",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "secondary_type",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "equipment",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "total_distance",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.METER",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "average_heart_rate",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "unit": "StandardUnits.BEATS_PER_MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "max_heart_rate",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "unit": "StandardUnits.BEATS_PER_MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "min_heart_rate",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "unit": "StandardUnits.BEATS_PER_MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "duration",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.SECOND",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "total_calories",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "climb",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.METER",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "total_sleep",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "deep",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "rem",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "light",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "awake",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "times_woken",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "weight",
+      "type": "WEIGHT",
+      "valueClass": "Double",
+      "unit": "SI.KILOGRAM",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "free_mass",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.KILOGRAM",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "fat_percent",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.PERCENT",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "mass_weight",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.KILOGRAM",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "bmi",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "fasting_plasma_glucose_test",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "oral_glucose_tolerance_test",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "random_plasma_glucose_test",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "hemoglobin_a1c",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "insulin",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "c_peptide",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.NANO(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "triglyceride",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "systolic",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MILLIMETER_OF_MERCURY",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "diastolic",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "NonSI.MILLIMETER_OF_MERCURY",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "total_cholesterol",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "isCollection": false,
+      "tags": []
+    }
+  ],
+  "messageFormat": "json",
+  "actions": [
+    {
+      "name": "getWeightData",
+      "description": "Pull weight data",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getFitnessData",
+      "description": "Pull fitness data",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getSleepData",
+      "description": "Pull sleep data",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getDiabeteData",
+      "description": "Pull diabete data",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getGeneralMeasurements",
+      "description": "Pull general measurements",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getAllData",
+      "description": "Pull all data",
+      "parameters": [
+        {
+          "name": "nbHoursToPull",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unit": "NonSI.HOUR"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ]
+}
