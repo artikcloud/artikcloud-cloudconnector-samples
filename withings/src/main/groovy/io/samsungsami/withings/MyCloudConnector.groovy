@@ -64,7 +64,7 @@ class MyCloudConnector extends CloudConnector {
         def callbackUrl = {int appliId -> ctx.parameters().get("notificationBaseUrl") + ctx.cloudId() + "/thirdpartynotifications?samiDeviceId=" + info.did() + "&appliId=" + appliId}
         def req = {int appliId, String name -> new RequestDef(PUBSUB_ENDPOINT_URL).withQueryParams(subscriptionParameters("revoke", callbackUrl(appliId), appliId, name)) }
         def unSubReq = DEVICES_APPLI_ID.collect({k,v -> req(k,v)})
-        ctx.debug("Unsuscribing to notification : " + subReq)
+        ctx.debug("Unsuscribing to notification : " + unSubReq)
         return new Good(unSubReq)
     }
 
