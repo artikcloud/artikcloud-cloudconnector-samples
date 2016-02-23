@@ -5,6 +5,7 @@
   "clientSecret":"bbb",
   "authType" : "OAuth2",
   "statusAcceptNotification":200,
+  "external_id" : "user_id",
   "accessTokenMethod": "post",
   "scope":["activity", "heartrate", "location", "nutrition", "profile", "settings", "sleep", "social", "weight"],
   "parameters": {
