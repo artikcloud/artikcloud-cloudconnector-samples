@@ -32,10 +32,6 @@ class MyCloudConnector extends CloudConnector {
 		return new Good(req.addHeaders(['Authorization':'Bearer ' + info.credentials.token]))
 	}
 
-	// -----------------------------------------
-	// SUBSCRIPTION
-	// -----------------------------------------
-
 	@Override
 	Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
 		def req = new RequestDef("${ctx.parameters().endpoint}/user").withMethod(HttpMethod.Get)
@@ -54,13 +50,23 @@ class MyCloudConnector extends CloudConnector {
 
 	@Override
 	Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
-		def req = new RequestDef("${ctx.parameters().endpoint}/de-authorize")
+		def req = new RequestDef("${ctx.parameters().appEndpoint}/de-authorize")
 			.withMethod(HttpMethod.Post)
 			.withBodyParams(["access_token" : info.credentials.token])
 			.withContent("", "application/x-www-form-urlencoded")
 
 		new Good([req])
 	}
+
+    @Override
+    Or<Option<DeviceInfo>,Failure> onUnsubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
+    	if (res.status >= HTTP_OK && res.status < 400) {
+    		ctx.debug("Unsubscribe successful")
+    		new Good(Empty.option())
+    	} else {
+    		new Bad(new Failure("Unsubscribe failed with status code ${res.status} $res"))
+    	}
+    }
 
 	@Override
 	Or<RequestDef, Failure> fetch(Context ctx, RequestDef req, DeviceInfo info) {
