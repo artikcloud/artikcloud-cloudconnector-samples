@@ -98,6 +98,14 @@ class MyCloudConnector extends CloudConnector {
 				item.remove("timestamp")
 				item.remove("start_time")
 				item.remove("uri")
+
+				if (userData.fitness_activities != null && req.url.endsWith(userData.fitness_activities)) {
+					def heartRates = item.get("heart_rate")
+					item.put("max_heart_rate", Collections.max(heartRates))
+					item.put("min_heart_rate", Collections.min(heartRates))
+					item.remove("heart_rate")
+				}
+
 				new Event(ts, JsonOutput.toJson(item))
 			}.findAll { event -> 
 				event.ts >= startTs && event.ts < endTs
