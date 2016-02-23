@@ -82,6 +82,20 @@ class MyCloudConnector extends CloudConnector {
             } else {
                 return new Bad(new Failure("Impossible to get user profile information from fitbit, got status http status : ${res.status()}) with content: ${res.content()}"))
             }
+        } else if (req.url().contains("apiSubscriptions")) {
+            if(res.status() == HTTP_OK) {
+                //Returned if the given user is already subscribed to the stream.
+                return new Good(Option.apply(null))
+            } else if(res.status() == HTTP_CREATED) {
+                //Returned if a new subscription was created in response to your request.
+                return new Good(Option.apply(null))
+            } else if(res.status() == HTTP_CONFLICT) {
+                //Returned if the given user is already subscribed to this stream using a different subscription ID (already subscribed sami-device)
+                return new Bad(new Failure("Impossible to perform subscription because subscription already exists (conflict)"))
+            } else {
+                //Returned if the given user is already subscribed to this stream using a different subscription ID (already subscribed sami-device)
+                return new Bad(new Failure("Impossible to perform subscription error code = " + res.status()))
+            }
         } else {
             return new Good(Option.apply(null))
         }
