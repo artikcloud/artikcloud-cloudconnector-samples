@@ -1,8 +1,8 @@
 {
   "authorizationUrl":"https://runkeeper.com/apps/authorize",
   "accessTokenUrl":"https://runkeeper.com/apps/token",
-  "clientId":"575faacfd61f4c009e175fd54a335bb5",
-  "clientSecret":"beca5c8f5ac94a9683493669164e657b",
+  "clientId":"<insert your client is here>",
+  "clientSecret":"<insert your client secret here>",
   "authType" : "OAuth2",
   "scope":["default"],
   "statusAcceptNotification":200,
