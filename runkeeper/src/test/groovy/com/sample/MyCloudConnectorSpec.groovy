@@ -50,7 +50,6 @@ class MyCloudConnectorSpec extends Specification {
 			result.isGood()
 			result.get() == new ActionResponse([
 				new ActionRequest(
-					new BySamiDeviceId("did"),
 					[new RequestDef("${ctx.parameters().endpoint}/weight")
 						.withMethod(HttpMethod.Get)
 						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])

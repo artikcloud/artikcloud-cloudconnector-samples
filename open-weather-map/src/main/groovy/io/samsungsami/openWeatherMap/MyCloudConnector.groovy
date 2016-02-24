@@ -43,7 +43,7 @@ class MyCloudConnector extends CloudConnector {
                    city = city + "," + json.countryCode
                 }
                 req = req.addQueryParams(["q":city])
-                return new Good(new ActionResponse([new ActionRequest(dSelector,[req])]))
+                return new Good(new ActionResponse([new ActionRequest([req])]))
                 break
             case "getCurrentWeatherByGPSLocation":
                 def req = new RequestDef(currentWeatherUrl)
@@ -98,7 +98,7 @@ class MyCloudConnector extends CloudConnector {
             def key = keyAndParam[0]
             req = req.addQueryParams([(key):param])
         }
-        new Good(new ActionResponse([new ActionRequest(dSelector,[req])]))
+        new Good(new ActionResponse([new ActionRequest([req])]))
     }
 
     private def transformJson(obj, f) {

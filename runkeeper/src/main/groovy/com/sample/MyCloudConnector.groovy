@@ -145,7 +145,7 @@ class MyCloudConnector extends CloudConnector {
 					.withMethod(HttpMethod.Get)
 					.addQueryParams(["samiPullStartTs": pullStartTime.toString(), "samiPullEndTs": action.ts.toString()])
 			}
-			return new Good(new ActionResponse([new ActionRequest(new BySamiDeviceId(info.did), reqs)]))
+			return new Good(new ActionResponse([new ActionRequest(reqs)]))
 		} else {
 			return new Bad(new Failure("Action ${action.name} does not match with an URI."))
 		}

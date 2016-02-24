@@ -21,7 +21,6 @@ class MyCloudConnectorSpec extends Specification {
 	def extId = "23138311640030064"
 	def currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather"
 	def info = new DeviceInfo("deviceId", Option.apply(extId), new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option())
-	def dSelector = new BySamiDeviceId("deviceId")
 
 	def "on action fetch send request for current weather"() {
 		when:
@@ -36,9 +35,9 @@ class MyCloudConnectorSpec extends Specification {
 		def actionDefLatLong = new ActionDef(Option.apply("sdid"), "ddid", ts, "getCurrentWeatherByGPSLocation", actionParamLatLong)
 		def res = [sut.onAction(ctx, actionDef, info)] + [sut.onAction(ctx, actionDefNoCountryCode, info)] + [sut.onAction(ctx, actionDefLatLong, info)]
 		def expectedEvents = [
-				new ActionRequest(dSelector,[req.withQueryParams(["q":"cervieres,fr"])]),
-				new ActionRequest(dSelector,[req.withQueryParams(["q":"cervieres"])]),
-				new ActionRequest(dSelector,[req.withQueryParams(["latitude":42, "longitude":42])]),
+				new ActionRequest([req.withQueryParams(["q":"cervieres,fr"])]),
+				new ActionRequest([req.withQueryParams(["q":"cervieres"])]),
+				new ActionRequest([req.withQueryParams(["latitude":42, "longitude":42])]),
 		].collect{ actionReq -> new Good( new ActionResponse([actionReq]))}
 		then:
 		res[0].isGood()
