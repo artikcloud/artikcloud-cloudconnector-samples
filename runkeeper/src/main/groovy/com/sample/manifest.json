@@ -173,7 +173,7 @@
       "name": "fasting_plasma_glucose_test",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     },
@@ -181,7 +181,7 @@
       "name": "oral_glucose_tolerance_test",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     },
@@ -189,7 +189,7 @@
       "name": "random_plasma_glucose_test",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     },
@@ -211,7 +211,7 @@
       "name": "c_peptide",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.NANO(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.NANO(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     },
@@ -219,7 +219,7 @@
       "name": "triglyceride",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     },
@@ -243,7 +243,7 @@
       "name": "total_cholesterol",
       "type": "CUSTOM",
       "valueClass": "Double",
-      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NONSI.LITER))",
+      "unit": "SI.MILLI(SI.GRAM).divide(SI.DECI(NonSI.LITER))",
       "isCollection": false,
       "tags": []
     }
