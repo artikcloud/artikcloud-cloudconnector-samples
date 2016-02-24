@@ -34,7 +34,7 @@
           ]
         },
         {
-          "name":"battery",
+          "name":"battery_vp",
           "type":"CUSTOM",
           "valueClass":"Integer",
           "isCollection":false,
@@ -44,80 +44,85 @@
           ]
         },
         {
-          "name":"gustStrength",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"NonSI.KILOMETRES_PER_HOUR",
-          "isCollection":false,
-          "description":"speed of the last 5 min highest gust wind",
-          "tags":[
+          "name":"dashboard_data",
+          "children":[
+            {
+              "name":"GustStrength",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.KILOMETRES_PER_HOUR",
+              "isCollection":false,
+              "description":"speed of the last 5 min highest gust wind",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"gustAngle",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"NonSI.DEGREE_ANGLE",
-          "isCollection":false,
-          "description":"direction of the last 5 min highest gust wind",
-          "tags":[
+              ]
+            },
+            {
+              "name":"GustAngle",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.DEGREE_ANGLE",
+              "isCollection":false,
+              "description":"direction of the last 5 min highest gust wind",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"windStrength",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"NonSI.KILOMETRES_PER_HOUR",
-          "isCollection":false,
-          "description":"current 5 min average wind speed",
-          "tags":[
+              ]
+            },
+            {
+              "name":"WindStrength",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.KILOMETRES_PER_HOUR",
+              "isCollection":false,
+              "description":"current 5 min average wind speed",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"rain",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"SI.MILLIMETRE",
-          "isCollection":false,
-          "description":"Last rain measured",
-          "tags":[
+              ]
+            },
+            {
+              "name":"Rain",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"SI.MILLIMETRE",
+              "isCollection":false,
+              "description":"Last rain measured",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"windAngle",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"NonSI.DEGREE_ANGLE",
-          "isCollection":false,
-          "description":"current 5 min average wind direction",
-          "tags":[
+              ]
+            },
+            {
+              "name":"WindAngle",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.DEGREE_ANGLE",
+              "isCollection":false,
+              "description":"current 5 min average wind direction",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"rain1h",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"SI.MILLIMETRE",
-          "isCollection":false,
-          "description":"Amount of rain in last hour",
-          "tags":[
+              ]
+            },
+            {
+              "name":"sum_rain_1",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"SI.MILLIMETRE",
+              "isCollection":false,
+              "description":"Amount of rain in last hour",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"rain24h",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"SI.MILLIMETRE",
-          "isCollection":false,
-          "description":"Amount of rain in last 24 hours",
-          "tags":[
+              ]
+            },
+            {
+              "name":"sum_rain_24",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"SI.MILLIMETRE",
+              "isCollection":false,
+              "description":"Amount of rain in last 24 hours",
+              "tags":[
 
+              ]
+            }
           ]
         }
       ]
@@ -126,80 +131,64 @@
       "name":"station",
       "children":[
         {
-          "name":"altitude",
-          "type":"CUSTOM",
-          "valueClass":"Double",
-          "isCollection":false,
-          "description":"place's altitude",
-          "tags":[
-            "altitude"
-          ]
-        },
-        {
-          "name":"city",
-          "type":"CUSTOM",
-          "valueClass":"String",
-          "isCollection":false,
-          "description":"place's city",
-          "tags":[
-            "city"
-          ]
-        },
-        {
-          "name":"lat",
-          "type":"LATITUDE",
-          "valueClass":"Double",
-          "unit":null,
-          "isCollection":false,
-          "description":"place's latitude",
-          "tags":[
+          "name":"place",
+          "children":[
+            {
+              "name":"altitude",
+              "type":"CUSTOM",
+              "valueClass":"Double",
+              "isCollection":false,
+              "description":"place's altitude",
+              "tags":[
+                "altitude"
+              ]
+            },
+            {
+              "name":"city",
+              "type":"CUSTOM",
+              "valueClass":"String",
+              "isCollection":false,
+              "description":"place's city",
+              "tags":[
+                "city"
+              ]
+            },
+            {
+              "name":"lat",
+              "type":"LATITUDE",
+              "valueClass":"Double",
+              "unit":null,
+              "isCollection":false,
+              "description":"place's latitude",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"long",
-          "type":"LONGITUDE",
-          "valueClass":"Double",
-          "unit":null,
-          "isCollection":false,
-          "description":"place's longitude",
-          "tags":[
+              ]
+            },
+            {
+              "name":"long",
+              "type":"LONGITUDE",
+              "valueClass":"Double",
+              "unit":null,
+              "isCollection":false,
+              "description":"place's longitude",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"timeZone",
-          "type":"CUSTOM",
-          "valueClass":"String",
-          "isCollection":false,
-          "description":"place's time zone",
-          "tags":[
+              ]
+            },
+            {
+              "name":"timezone",
+              "type":"CUSTOM",
+              "valueClass":"String",
+              "isCollection":false,
+              "description":"place's time zone",
+              "tags":[
 
+              ]
+            }
           ]
         },
         {
-          "name":"pressure",
-          "type":"CUSTOM",
-          "unit":"SI.MILLI(NONSI.BAR)",
-          "valueClass":"Double",
-          "isCollection":false,
-          "description":"Last Sea level pressure measured in milli Bar",
-          "tags":[
-
-          ]
-        },
-        {
-          "name":"pressureTrend",
-          "type":"CUSTOM",
-          "valueClass":"String",
-          "isCollection":false,
-          "description":"Pressure trend for last 12 hours (up, down, stable)",
-          "tags":[
-
-          ]
-        },
-        {
-          "name":"noise",
+          "name":"Noise",
           "type":"CUSTOM",
           "valueClass":"Integer",
           "unit":"NonSI.DECIBEL",
@@ -210,7 +199,7 @@
           ]
         },
         {
-          "name":"wifiStatus",
+          "name":"wifi_status",
           "type":"CUSTOM",
           "valueClass":"Integer",
           "isCollection":false,
@@ -230,18 +219,7 @@
           ]
         },
         {
-          "name":"humidity",
-          "type":"CUSTOM",
-          "valueClass":"Integer",
-          "unit":"NonSI.PERCENT",
-          "isCollection":false,
-          "description":"Last humidity measured",
-          "tags":[
-
-          ]
-        },
-        {
-          "name":"co2",
+          "name":"CO2",
           "type":"CUSTOM",
           "valueClass":"Integer",
           "unit":"StandardUnits.PARTS_PER_MILLION",
@@ -252,68 +230,116 @@
           ]
         },
         {
-          "name":"temp",
-          "type":"TEMPERATURE",
-          "valueClass":"Double",
-          "unit":"SI.CELSIUS",
-          "isCollection":false,
-          "description":"Last temperature measure",
-          "tags":[
+          "name":"dashboard_data",
+          "children":[
+            {
+              "name":"Pressure",
+              "type":"CUSTOM",
+              "unit":"SI.MILLI(NONSI.BAR)",
+              "valueClass":"Double",
+              "isCollection":false,
+              "description":"Last Sea level pressure measured in milli Bar",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"tempTrend",
-          "type":"CUSTOM",
-          "valueClass":"String",
-          "isCollection":false,
-          "description":"Temperature trend for last 1 hours (up, down, stable)",
-          "tags":[
+              ]
+            },
+            {
+              "name":"AbsolutePressure",
+              "type":"CUSTOM",
+              "unit":"SI.MILLI(NONSI.BAR)",
+              "valueClass":"Double",
+              "isCollection":false,
+              "description":"absolute pressure",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"maxTemp",
-          "type":"MAX_TEMPERATURE",
-          "valueClass":"Double",
-          "unit":"SI.CELSIUS",
-          "isCollection":false,
-          "description":"Max temperature of the day",
-          "tags":[
+              ]
+            },
+            {
+              "name":"pressure_trend",
+              "type":"CUSTOM",
+              "valueClass":"String",
+              "isCollection":false,
+              "description":"Pressure trend for last 12 hours (up, down, stable)",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"minTemp",
-          "type":"MIN_TEMPERATURE",
-          "valueClass":"Double",
-          "unit":"SI.CELSIUS",
-          "isCollection":false,
-          "description":"Min temperature of the day",
-          "tags":[
+              ]
+            },
+            {
+              "name":"Humidity",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.PERCENT",
+              "isCollection":false,
+              "description":"Last humidity measured",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"dateMaxTemp",
-          "type":"CUSTOM",
-          "valueClass":"Double",
-          "unit":"SI.MILLI(SI.SECOND)",
-          "isCollection":false,
-          "description":"Timestamp when max temperature was measured",
-          "tags":[
+              ]
+            },
+            {
+              "name":"temp",
+              "type":"TEMPERATURE",
+              "valueClass":"Double",
+              "unit":"SI.CELSIUS",
+              "isCollection":false,
+              "description":"Last temperature measure",
+              "tags":[
 
-          ]
-        },
-        {
-          "name":"dateMinTemp",
-          "type":"CUSTOM",
-          "valueClass":"Double",
-          "unit":"SI.MILLI(SI.SECOND)",
-          "isCollection":false,
-          "description":"Timestamp when min temperature was measured",
-          "tags":[
+              ]
+            },
+            {
+              "name":"tempTrend",
+              "type":"CUSTOM",
+              "valueClass":"String",
+              "isCollection":false,
+              "description":"Temperature trend for last 1 hours (up, down, stable)",
+              "tags":[
 
+              ]
+            },
+            {
+              "name":"maxTemp",
+              "type":"MAX_TEMPERATURE",
+              "valueClass":"Double",
+              "unit":"SI.CELSIUS",
+              "isCollection":false,
+              "description":"Max temperature of the day",
+              "tags":[
+
+              ]
+            },
+            {
+              "name":"minTemp",
+              "type":"MIN_TEMPERATURE",
+              "valueClass":"Double",
+              "unit":"SI.CELSIUS",
+              "isCollection":false,
+              "description":"Min temperature of the day",
+              "tags":[
+
+              ]
+            },
+            {
+              "name":"dateMaxTemp",
+              "type":"CUSTOM",
+              "valueClass":"Double",
+              "unit":"SI.MILLI(SI.SECOND)",
+              "isCollection":false,
+              "description":"Timestamp when max temperature was measured",
+              "tags":[
+
+              ]
+            },
+            {
+              "name":"dateMinTemp",
+              "type":"CUSTOM",
+              "valueClass":"Double",
+              "unit":"SI.MILLI(SI.SECOND)",
+              "isCollection":false,
+              "description":"Timestamp when min temperature was measured",
+              "tags":[
+
+              ]
+            }
           ]
         }
       ]
@@ -334,7 +360,7 @@
         {
           "name":"stationId",
           "type":"CUSTOM",
-          "valueClass":"Integer"
+          "valueClass":"String"
         }
       ],
       "isStandard":false,
