@@ -53,8 +53,6 @@ class MyCloudConnector extends CloudConnector {
 		def req = new RequestDef("${ctx.parameters().appEndpoint}/de-authorize")
 			.withMethod(HttpMethod.Post)
 			.withBodyParams(["access_token" : info.credentials.token])
-			.withContent("", "application/x-www-form-urlencoded")
-
 		new Good([req])
 	}
 
