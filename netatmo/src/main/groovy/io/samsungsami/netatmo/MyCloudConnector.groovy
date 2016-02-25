@@ -36,16 +36,15 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def  Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         def req = new RequestDef(stationEndpoint)
-        DeviceSelector dSelector = new BySamiDeviceId(dInfo.did)
         def actionRequests = null
         switch (action.name) {
             case "getAllData":
-                actionRequests = [new ActionRequest(dSelector,[req])]
+                actionRequests = [new ActionRequest([req])]
                 break
             case "getData":
                 def json = slurper.parseText(action.params)
                 def keyAndParams = [["device_Id", json.stationId]]
-                return buildActionResponse(req, dSelector, keyAndParams)
+                return buildActionResponse(req, keyAndParams)
                 break
             default:
                 return new Bad(new Failure("unsupported action for netatmo:" + action.name))
@@ -117,7 +116,7 @@ class MyCloudConnector extends CloudConnector {
     }
 
 
-    private def buildActionResponse(RequestDef req, DeviceSelector dSelector, List<List<String>> keyAndParams) {
+    private def buildActionResponse(RequestDef req, List<List<String>> keyAndParams) {
         keyAndParams.collect{ keyAndParam ->
             def param = keyAndParam[1]
             if (param == null) {
@@ -126,7 +125,7 @@ class MyCloudConnector extends CloudConnector {
             def key = keyAndParam[0]
             req = req.addQueryParams([(key):param])
         }
-        new Good(new ActionResponse([new ActionRequest(dSelector,[req])]))
+        new Good(new ActionResponse([new ActionRequest([req])]))
     }
 
     private def transformJson(obj, f) {
