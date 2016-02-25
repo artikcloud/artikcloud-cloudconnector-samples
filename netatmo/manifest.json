@@ -122,6 +122,28 @@
               "tags":[
 
               ]
+            },
+            {
+              "name":"Humidity",
+              "type":"CUSTOM",
+              "valueClass":"Integer",
+              "unit":"NonSI.PERCENT",
+              "isCollection":false,
+              "description":"Last humidity measured",
+              "tags":[
+
+              ]
+            },
+            {
+              "name":"temp",
+              "type":"TEMPERATURE",
+              "valueClass":"Double",
+              "unit":"SI.CELSIUS",
+              "isCollection":false,
+              "description":"Last temperature measure",
+              "tags":[
+
+              ]
             }
           ]
         }

@@ -3,9 +3,6 @@ package io.samsungsami.netatmo
 import com.samsung.sami.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import groovy.transform.CompileStatic
-import org.joda.time.format.*
-import org.joda.time.*
 import org.scalactic.*
 
 import static java.net.HttpURLConnection.*
@@ -21,12 +18,16 @@ class MyCloudConnector extends CloudConnector {
         Map params = [:]
         params.putAll(req.queryParams())
         switch (phase) {
+            case Phase.refreshToken:
+                params.put("client_id", ctx.clientId)
+                params.put("client_secret", ctx.clientSecret)
+                params.put("grant_type", "refresh_token")
             case Phase.subscribe:
             case Phase.unsubscribe:
             case Phase.undef:
             case Phase.fetch:
-            case Phase.refreshToken:
-                new Good(req.addQueryParams(["access_token": info.credentials().token()]))
+                params.put(["access_token", info.credentials().token()])
+                new Good(req.withQueryParams(params))
                 break
             default:
                 super.signAndPrepare(ctx, req, info, phase)
@@ -75,27 +76,31 @@ class MyCloudConnector extends CloudConnector {
                                                  (key):jsonEvent]
                                         ).trim())
                             }
-
-                            def moduleEvents = data?.modules?.collect{ moduleData ->
+                            def dataFiltered = transformJson(data, { k, v ->
+                                switch (k) {
+                                    case "temp_trend": return ["tempTrend": (v)]
+                                    case "max_temp": return ["maxTemp": (v)]
+                                    case "min_temp": return ["minTemp": (v)]
+                                    case "date_min_temp": return ["dateMinTemp": (v)]
+                                    case "date_max_temp": return ["dateMaxTemp": (v)]
+                                    case "Temperature": return ["temp": (v)]
+                                    case "location":    return ["lat": v[0], "long": v[1]]
+                                    case "data_type":   return ["dataType": v.join(",")]
+                                    default:            return [(k): (v)]
+                                }
+                            })
+                            def moduleEvents = dataFiltered?.modules?.collect{ moduleData ->
                                 createEvent("module", transformJson(moduleData, { k, v ->
                                     switch (k) {
                                         case "type":        return ["moduleType": (v)]
-                                        case "data_type":   return ["dataType": v.join("'")]
                                         default:            return [(k): (v)]
                                     }
                                 }))
                             }
                             def stationEvent = [
-                                    createEvent("station", transformJson(data, { k, v ->
+                                    createEvent("station", transformJson(dataFiltered, { k, v ->
                                         switch (k) {
                                             case "modules":     return [:]
-                                            case "location":    return ["lat": v[0], "long": v[1]]
-                                            case "temp_trend":  return ["tempTrend": (v)]
-                                            case "max_temp":    return ["maxTemp": (v)]
-                                            case "min_temp":    return ["minTemp": (v)]
-                                            case "date_min_temp":   return ["dateMinTemp": (v)]
-                                            case "date_max_temp":   return ["dateMaxTemp": (v)]
-                                            case "Temperature": return ["temp": (v)]
                                             case "type":        return ["stationType": (v)]
                                             default:            return [(k): (v)]
                                         }
