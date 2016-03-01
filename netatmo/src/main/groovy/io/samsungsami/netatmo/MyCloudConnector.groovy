@@ -19,9 +19,12 @@ class MyCloudConnector extends CloudConnector {
         params.putAll(req.queryParams())
         switch (phase) {
             case Phase.refreshToken:
-                params.put("client_id", ctx.clientId)
-                params.put("client_secret", ctx.clientSecret)
+                params.put("client_id", ctx.clientId())
+                params.put("client_secret", ctx.clientSecret())
+                params.put(["refresh_token", info.credentials().refreshToken().get()])
                 params.put("grant_type", "refresh_token")
+                new Good(req.withBodyParams(params).withQueryParams([:]))
+                break
             case Phase.subscribe:
             case Phase.unsubscribe:
             case Phase.undef:
@@ -37,22 +40,16 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def  Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         def req = new RequestDef(stationEndpoint)
-        def actionRequests = null
         switch (action.name) {
             case "getAllData":
-                actionRequests = [new ActionRequest([req])]
-                break
+                return new Good(new ActionResponse([new ActionRequest([req])]))
             case "getData":
                 def json = slurper.parseText(action.params)
                 def keyAndParams = [["device_Id", json.stationId]]
                 return buildActionResponse(req, keyAndParams)
-                break
             default:
                 return new Bad(new Failure("unsupported action for netatmo:" + action.name))
-                break
         }
-
-        new Good(new ActionResponse(actionRequests))
     }
 
 
