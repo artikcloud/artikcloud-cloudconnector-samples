@@ -24,7 +24,7 @@ class MyCloudConnectorSpec extends Specification {
 
 	def "on action fetch send request for current weather"() {
 		when:
-		def req = new RequestDef(currentWeatherUrl)
+		def req = new RequestDef(currentWeatherUrl).withQueryParams(["units":"metric"])
 		def actionByCity = "getCurrentWeatherByCity"
 		def actionParam = '''{"countryCode":"fr","city":"cervieres"}'''
 		def actionParamNoCountryCode = '''{"city":"cervieres"}'''
@@ -35,9 +35,9 @@ class MyCloudConnectorSpec extends Specification {
 		def actionDefLatLong = new ActionDef(Option.apply("sdid"), "ddid", ts, "getCurrentWeatherByGPSLocation", actionParamLatLong)
 		def res = [sut.onAction(ctx, actionDef, info)] + [sut.onAction(ctx, actionDefNoCountryCode, info)] + [sut.onAction(ctx, actionDefLatLong, info)]
 		def expectedEvents = [
-				new ActionRequest([req.withQueryParams(["q":"cervieres,fr"])]),
-				new ActionRequest([req.withQueryParams(["q":"cervieres"])]),
-				new ActionRequest([req.withQueryParams(["latitude":42, "longitude":42])]),
+				new ActionRequest([req.addQueryParams(["q":"cervieres,fr"])]),
+				new ActionRequest([req.addQueryParams(["q":"cervieres"])]),
+				new ActionRequest([req.addQueryParams(["lat":"42", "lon":"42"])]),
 		].collect{ actionReq -> new Good( new ActionResponse([actionReq]))}
 		then:
 		res[0].isGood()
@@ -54,9 +54,9 @@ class MyCloudConnectorSpec extends Specification {
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def req = new RequestDef(currentWeatherUrl)
 		def res = sut.onFetchResponse(ctx, req, info,  fetchedResponse)
-		def ts = 1369824698
+		def ts = 1456914668
 		def expectedEvents = [
-				new Event(ts, '''{"clouds":{"all":92},"cod":200,"coord":{"lat":35,"long":139},"dt":1369824698,"id":1851632,"main":{"humidity":89,"pressure":1013,"temp":289.5,"temp_max":292.04,"temp_min":287.04},"name":"Shuzenji","rain":{"3h":0},"sys":{"country":"JP","sunrise":1369769524,"sunset":1369821049},"wind":{"deg":187.002,"speed":7.31},"weather":{"description":"overcast clouds","icon":"04n","id":804,"main":"clouds"}}'''),
+				new Event(ts, '''{"base":"cmc stations","clouds":{"all":8},"cod":200,"coord":{"lat":44.9,"long":6.65},"dt":1456914668,"id":3030142,"main":{"grnd_level":820.48,"humidity":89,"pressure":820.48,"sea_level":1023.01,"temp":277.85,"temp_max":277.85,"temp_min":277.85},"name":"Briancon","rain":{"three_hours":0},"sys":{"country":"FR","message":0.0028,"sunrise":1456898888,"sunset":1456939396},"wind":{"deg":254.009,"speed":1.01},"weather":{"description":"clear sky","icon":"02d","id":800,"main":"Clear"}}'''),
 		]
 		then:
 		res.isGood()

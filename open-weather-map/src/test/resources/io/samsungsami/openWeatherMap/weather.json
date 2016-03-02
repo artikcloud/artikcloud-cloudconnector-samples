@@ -1,40 +1,42 @@
 {
-  "coord":{
-    "lon":139,
-    "lat":35
+  "base": "cmc stations",
+  "clouds": {
+    "all": 8
   },
-  "sys":{
-    "country":"JP",
-    "sunrise":1369769524,
-    "sunset":1369821049
+  "cod": 200,
+  "coord": {
+    "lat": 44.9,
+    "long": 6.65
   },
-  "weather":[
-    {
-      "id":804,
-      "main":"clouds",
-      "description":"overcast clouds",
-      "icon":"04n"
-    }
-  ],
-  "main":{
-    "temp":289.5,
-    "humidity":89,
-    "pressure":1013,
-    "temp_min":287.04,
-    "temp_max":292.04
+  "dt": 1456914668,
+  "id": 3030142,
+  "main": {
+    "grnd_level": 820.48,
+    "humidity": 89,
+    "pressure": 820.48,
+    "sea_level": 1023.01,
+    "temp": 277.85,
+    "temp_max": 277.85,
+    "temp_min": 277.85
   },
-  "wind":{
-    "speed":7.31,
-    "deg":187.002
+  "name": "Briancon",
+  "sys": {
+    "country": "FR",
+    "message": 0.0028,
+    "sunrise": 1456898888,
+    "sunset": 1456939396
   },
-  "rain":{
-    "3h":0
+  "wind": {
+    "deg": 254.009,
+    "speed": 1.01
   },
-  "clouds":{
-    "all":92
+  "rain": {
+    "3h": 0
   },
-  "dt":1369824698,
-  "id":1851632,
-  "name":"Shuzenji",
-  "cod":200
+  "weather":[{
+    "description": "clear sky",
+    "icon": "02d",
+    "id": 800,
+    "main": "Clear"
+  }]
 }

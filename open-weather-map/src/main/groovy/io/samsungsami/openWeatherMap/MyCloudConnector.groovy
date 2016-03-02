@@ -32,12 +32,12 @@ class MyCloudConnector extends CloudConnector {
     def  Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         def dSelector = new BySamiDeviceId(dInfo.did)
         def json = slurper.parseText(action.params)
+        RequestDef req = new RequestDef(currentWeatherUrl).withQueryParams(["units":"metric"])
         switch (action.name) {
             case "getCurrentWeatherByCity":
                 if (json.city == null) {
                     return new Bad(new Failure("unsupported action for openWeatherMap getData without city " + action.params))
                 }
-                RequestDef req = new RequestDef(currentWeatherUrl)
                 String city = json.city
                 if (json.countryCode != null){
                    city = city + "," + json.countryCode
@@ -46,9 +46,8 @@ class MyCloudConnector extends CloudConnector {
                 return new Good(new ActionResponse([new ActionRequest([req])]))
                 break
             case "getCurrentWeatherByGPSLocation":
-                def req = new RequestDef(currentWeatherUrl)
-                def keyAndParams = [["latitude", json.lat],
-                                   ["longitude",json.long]]
+                def keyAndParams = [["lat", json?.lat],
+                                   ["lon",json?.long]]
                 return buildActionResponse(req, dSelector, keyAndParams)
                 break
             default:
@@ -68,6 +67,8 @@ class MyCloudConnector extends CloudConnector {
                         def msgWithoutWeather = transformJson(json, {k,v ->
                             if (k == "lon")
                                 ["long":(v)]
+                            else if (k == "3h")
+                                ["three_hours":(v)]
                             else if (k != "weather")
                                 [(k): (v)]
                             else
@@ -96,7 +97,7 @@ class MyCloudConnector extends CloudConnector {
                 return new Bad(new Failure("unsupported action for openWeatherMap getData without " + keyAndParam[1]))
             }
             def key = keyAndParam[0]
-            req = req.addQueryParams([(key):param])
+            req = req.addQueryParams([(key):param.toString()])
         }
         new Good(new ActionResponse([new ActionRequest([req])]))
     }
