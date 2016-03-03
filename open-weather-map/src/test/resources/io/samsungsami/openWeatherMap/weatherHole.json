@@ -9,22 +9,19 @@
     "lon": 6.65
   },
   "dt": 1456914668,
-  "id": 3030142,
-  "main": {
-    "grnd_level": 820.48,
-    "humidity": 89,
-    "pressure": 820.48,
-    "sea_level": 1023.01,
-    "temp": 277.85,
-    "temp_max": 277.85,
-    "temp_min": 277.85
+  "main":{
+    "grnd_level":863.98,
+    "humidity":75,
+    "pressure":863.98,
+    "sea_level":1019.81,
+    "temp":3.74,
+    "temp_kf":-0.82,
+    "temp_max":4.55,
+    "temp_min":3.74
   },
   "name": "Briancon",
   "sys": {
-    "country": "FR",
-    "message": 0.0028,
-    "sunrise": 1456898888,
-    "sunset": 1456939396
+    "poulation": 42
   },
   "wind": {
     "deg": 254.009,
@@ -32,6 +29,9 @@
   },
   "rain": {
     "3h": 0
+  },
+  "snow": {
+
   },
   "weather":[{
     "description": "clear sky",
