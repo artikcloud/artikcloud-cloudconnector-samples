@@ -13,8 +13,7 @@ class MyCloudConnector extends CloudConnector {
     def JsonSlurper slurper = new JsonSlurper()
 
 
-
-    def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase){
+    def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase) {
         Map params = [:]
         params.putAll(req.queryParams())
         switch (phase) {
@@ -38,7 +37,7 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    def  Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
+    def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         def req = new RequestDef(stationEndpoint)
         switch (action.name) {
             case "getAllData":
@@ -55,22 +54,22 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
-        switch(res.status) {
+        switch (res.status) {
             case HTTP_OK:
-                switch(req.url) {
+                switch (req.url) {
                     case stationEndpoint:
                         def json = slurper.parseText(res.content().trim())
-                        if (json.status != "ok"){
+                        if (json.status != "ok") {
                             return new Bad(new Failure("receiving response with invalid status ${json.status} … ${res}"))
                         }
                         def ts = json.time_server
-                        def events = json.body.devices.collectMany{ data ->
+                        def events = json.body.devices.collectMany { data ->
                             def netatmoId = data._id
                             def createEvent = { key, jsonEvent ->
                                 new Event(ts * 1000L,
                                         JsonOutput.toJson(
                                                 ["netatmoId": netatmoId,
-                                                 (key):jsonEvent]
+                                                 (key): jsonEvent]
                                         ).trim())
                             }
                             def dataFiltered = transformJson(data, { k, v ->
@@ -81,25 +80,25 @@ class MyCloudConnector extends CloudConnector {
                                     case "date_min_temp": return ["dateMinTemp": (v)]
                                     case "date_max_temp": return ["dateMaxTemp": (v)]
                                     case "Temperature": return ["temp": (v)]
-                                    case "location":    return ["lat": v[0], "long": v[1]]
-                                    case "data_type":   return ["dataType": v.join(",")]
-                                    default:            return [(k): (v)]
+                                    case "location": return ["lat": v[0], "long": v[1]]
+                                    case "data_type": return ["dataType": v.join(",")]
+                                    default: return [(k): (v)]
                                 }
                             })
-                            def moduleEvents = dataFiltered?.modules?.collect{ moduleData ->
+                            def moduleEvents = dataFiltered?.modules?.collect { moduleData ->
                                 createEvent("module", transformJson(moduleData, { k, v ->
                                     switch (k) {
-                                        case "type":        return ["moduleType": (v)]
-                                        default:            return [(k): (v)]
+                                        case "type": return ["moduleType": (v)]
+                                        default: return [(k): (v)]
                                     }
                                 }))
                             }
                             def stationEvent = [
                                     createEvent("station", transformJson(dataFiltered, { k, v ->
                                         switch (k) {
-                                            case "modules":     return [:]
-                                            case "type":        return ["stationType": (v)]
-                                            default:            return [(k): (v)]
+                                            case "modules": return [:]
+                                            case "type": return ["stationType": (v)]
+                                            default: return [(k): (v)]
                                         }
                                     }))
                             ]
@@ -116,24 +115,24 @@ class MyCloudConnector extends CloudConnector {
 
 
     private def buildActionResponse(RequestDef req, List<List<String>> keyAndParams) {
-        keyAndParams.collect{ keyAndParam ->
+        keyAndParams.collect { keyAndParam ->
             def param = keyAndParam[1]
             if (param == null) {
                 return new Bad(new Failure("unsupported action for openWeatherMap getData without " + keyAndParam[1]))
             }
             def key = keyAndParam[0]
-            req = req.addQueryParams([(key):param])
+            req = req.addQueryParams([(key): param])
         }
         new Good(new ActionResponse([new ActionRequest([req])]))
     }
 
     private def transformJson(obj, f) {
-        if(obj instanceof java.util.Map) {
+        if (obj instanceof java.util.Map) {
             obj.collectEntries { k, v ->
                 (v != null) ? f(k, transformJson(v, f)) : [:]
             }
-        } else if(obj instanceof java.util.Collection) {
-            obj.collect{ item ->
+        } else if (obj instanceof java.util.Collection) {
+            obj.collect { item ->
                 transformJson(item, f)
             }
         } else {
