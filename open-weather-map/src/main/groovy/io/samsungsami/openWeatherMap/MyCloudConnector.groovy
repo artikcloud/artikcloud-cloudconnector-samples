@@ -186,7 +186,7 @@ class MyCloudConnector extends CloudConnector {
         if (obj instanceof java.util.Map) {
             obj.collectEntries { k, v ->
                 if (v != null) {
-                    Object newV = transformJson(v, f)
+                    def newV = transformJson(v, f)
                     if (newV != [:]) {
                         f(k, newV)
                     } else {
