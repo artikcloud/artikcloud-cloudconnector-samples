@@ -12,9 +12,9 @@ class MyCloudConnectorSpec extends Specification {
 
 	def sut = new MyCloudConnector()
 	def ctx = new FakeContext() {
-				Map parameters() {
-						[:]
-					}
+		Map parameters() {
+			[:]
+		}
 	}
 	def extId = "23138311640030064"
 	def currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather"

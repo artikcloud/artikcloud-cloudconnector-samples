@@ -14,9 +14,9 @@ class MyCloudConnectorSpec extends Specification {
 
 	def sut = new MyCloudConnector()
 	def ctx = new FakeContext() {
-				Map parameters() {
-						[:]
-					}
+		Map parameters() {
+			[:]
+		}
 	}
 	def extId = "23138311640030064"
 	def apiEndpoint = "https://api.netatmo.com/api/"
@@ -36,7 +36,7 @@ class MyCloudConnectorSpec extends Specification {
 				new Event(ts, '''{"netatmoId":"70:ee:50:00:00:14","module":{"_id":"03:00:00:00:00:14","battery_vp":44568,"dashboard_data":{"Humidity":23,"Noise":10,"temp":40.2,"dateMaxTemp":1437991547,"dateMinTemp":1437991549,"maxTemp":46.9,"minTemp":-31.7,"time_utc":1437991550},"dataType":"Temperature,CO2,Humidity","firmware":91,"last_message":1437991542,"last_seen":1437991541,"module_name":"Inter","rf_status":72,"moduleType":"NAModule4"}}'''),
 				new Event(ts, '''{"netatmoId":"70:ee:50:00:00:14","module":{"_id":"02:00:00:00:00:14","battery_vp":31188,"dashboard_data":{"Humidity":60,"temp":3.2,"dateMaxTemp":1441851001,"dateMinTemp":1441863001,"maxTemp":79.5,"minTemp":-39.5,"time_utc":1441872001},"dataType":"Temperature,Humidity","firmware":91,"last_message":1441872001,"last_seen":1441868401,"module_name":"out","rf_status":143,"moduleType":"NAModule1"}}'''),
 				new Event(ts, '''{"netatmoId":"70:ee:50:00:00:14","module":{"_id":"06:00:00:00:00:14","battery_vp":31188,"dashboard_data":{"GustAngle":156,"GustStrength":35,"WindAngle":155,"WindHistoric":[{"WindAngle":155,"WindStrength":25,"time_utc":1441868401},{"WindAngle":155,"WindStrength":25,"time_utc":1441869001},{"WindAngle":155,"WindStrength":25,"time_utc":1441869601},{"WindAngle":155,"WindStrength":25,"time_utc":1441870201},{"WindAngle":155,"WindStrength":25,"time_utc":1441870801},{"WindAngle":155,"WindStrength":25,"time_utc":1441871402},{"WindAngle":155,"WindStrength":25,"time_utc":1441872001}],"WindStrength":25,"date_max_wind_str":1441836001,"max_wind_angle":156,"max_wind_str":35,"time_utc":1441872001},"dataType":"Wind","firmware":91,"last_message":1441872001,"last_seen":1441868401,"module_name":"wind","rf_status":143,"moduleType":"NAModule2"}}''')
-						]
+		]
 		then:
 		res.isGood()
 		res.get()[0] == expectedEvents[0]

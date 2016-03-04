@@ -106,12 +106,9 @@ class MyCloudConnector extends CloudConnector {
                             stationEvent + moduleEvents
                         }
                         return new Good(events)
-                        break
                     default:
                         return new Bad(new Failure("receiving Responsse ${res} fron unknown request ${req.req}"))
-                        break
                 }
-                break
             default:
                 return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
         }

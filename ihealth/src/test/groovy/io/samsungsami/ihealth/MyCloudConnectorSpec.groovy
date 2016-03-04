@@ -14,9 +14,9 @@ class MyCloudConnectorSpec extends Specification {
 
 	def sut = new MyCloudConnector()
 	def ctx = new FakeContext() {
-				Map parameters() {
-						["redirectUri":"http://foo.com"]
-					}
+		Map parameters() {
+			["redirectUri":"http://foo.com"]
+		}
 	}
 	def extId = "23138311640030064"
 	def apiEndpoint = "https://api.moves-app.com/api/1.1"

@@ -42,7 +42,6 @@ class MyCloudConnector extends CloudConnector {
             case Phase.undef:
             case Phase.fetch:
                 return new Good(req.addQueryParams(["appid":appId]))
-                break
             case Phase.refreshToken:
             default:
                 super.signAndPrepare(ctx, req, info, phase)

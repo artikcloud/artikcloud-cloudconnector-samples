@@ -198,7 +198,6 @@ class MyCloudConnector extends CloudConnector {
                                 break
                             default:
                                 return new Bad(new Failure("Impossible to parse action from request of origin"))
-                                break
                         }
                         return new Good(result)
                     }
