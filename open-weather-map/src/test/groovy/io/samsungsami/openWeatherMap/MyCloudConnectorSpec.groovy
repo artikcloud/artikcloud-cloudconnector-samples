@@ -1,10 +1,13 @@
 package io.samsungsami.openWeatherMap
 
 import com.samsung.sami.cloudconnector.api_v1.*
+import groovy.json.JsonSlurper
 import org.scalactic.*
 import scala.Option
 import spock.lang.*
 import utils.*
+
+import java.text.SimpleDateFormat
 
 import static utils.Tools.*
 
@@ -21,6 +24,12 @@ class MyCloudConnectorSpec extends Specification {
 	static final String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast"
 	def info = new DeviceInfo("deviceId", Option.apply(extId), new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option())
 
+	def JsonSlurper slurper = new JsonSlurper()
+
+	static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	Calendar cal = Calendar.getInstance()
+	def date = dateFormat.format(cal.getTime())
+
 	def "on action fetch send request for current weather"() {
 		when:
 		def req = new RequestDef(currentWeatherUrl).withQueryParams(["units":"metric"])
@@ -30,24 +39,41 @@ class MyCloudConnectorSpec extends Specification {
 		def actionParamNoCountryCode = '''{"city":"cervieres"}'''
 		def actionParamLatLong = '''{"lat":42,"long":42}'''
 		def actionParamLatLongPrediction = '''{"lat":42,"long":42,"daysToForecast":1}'''
+		def actionToday = '''{"in":"cervieres","for":"today","units":"imperial"}'''
+		def actionTomorrow = '''{"countryCode":"fr","in":"cervieres","for":"tomorrow", "timeZone":"Europe/Paris"}'''
+		def actionTodayNoTZ = '''{"in":"cervieres","for":"today", "timeZone":"babar the elephant"}'''
 		def ts = 1441872018L
 		def actionDef = new ActionDef(Option.apply("sdid"), "ddid", ts, actionByCity, actionParam)
 		def actionDefNoCountryCode = new ActionDef(Option.apply("sdid"), "ddid", ts, actionByCity, actionParamNoCountryCode)
 		def actionDefLatLong = new ActionDef(Option.apply("sdid"), "ddid", ts, "getCurrentWeatherByGPSLocation", actionParamLatLong)
 		def actionDefPrediction = new ActionDef(Option.apply("sdid"), "ddid", ts, "getForecastWeatherByGPSLocation", actionParamLatLongPrediction)
-		def res = [sut.onAction(ctx, actionDef, info)] + [sut.onAction(ctx, actionDefNoCountryCode, info)] + [sut.onAction(ctx, actionDefLatLong, info)] + [sut.onAction(ctx, actionDefPrediction, info)]
+		def actionDefToday = new ActionDef(Option.apply("sdid"), "ddid", ts, "getWeatherSummary", actionToday)
+		def actionDefTomorrow = new ActionDef(Option.apply("sdid"), "ddid", ts, "getWeatherSummary", actionTomorrow)
+		def actionDefTodayNoTZ = new ActionDef(Option.apply("sdid"), "ddid", ts, "getWeatherSummary", actionTodayNoTZ)
+		def res = [sut.onAction(ctx, actionDef, info)] +
+				[sut.onAction(ctx, actionDefNoCountryCode, info)] +
+				[sut.onAction(ctx, actionDefLatLong, info)] +
+				[sut.onAction(ctx, actionDefPrediction, info)] +
+				[sut.onAction(ctx, actionDefToday, info)] +
+				[sut.onAction(ctx, actionDefTomorrow, info)]
 		def expectedEvents = [
 				new ActionRequest([req.addQueryParams(["q":"cervieres,fr"])]),
 				new ActionRequest([req.addQueryParams(["q":"cervieres"])]),
 				new ActionRequest([req.addQueryParams(["lat":"42", "lon":"42"])]),
 				new ActionRequest([foreCastReq.addQueryParams(["lat":"42", "lon":"42","daysToForecast":"1"])]),
+				new ActionRequest([foreCastReq.addQueryParams(["daysToForecast":"0", "q":"cervieres", "mustSummary": "true"])]),
+				new ActionRequest([foreCastReq.addQueryParams(["daysToForecast":"1", "q":"cervieres,fr", "mustSummary": "true"])]),
 		].collect{ actionReq -> new Good( new ActionResponse([actionReq]))}
+
 		then:
 		res[0].isGood()
+		res.size() == expectedEvents.size()
 		res[0].get() == expectedEvents[0].get()
 		res[1].get() == expectedEvents[1].get()
 		res[2].get() == expectedEvents[2].get()
 		res[3].get() == expectedEvents[3].get()
+		res[4].get() == expectedEvents[4].get()
+		res[5].get() == expectedEvents[5].get()
 		res.size() == expectedEvents.size()
 		res == expectedEvents
 	}
@@ -58,15 +84,11 @@ class MyCloudConnectorSpec extends Specification {
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def req = new RequestDef(currentWeatherUrl)
 		def res = sut.onFetchResponse(ctx, req, info,  fetchedResponse)
-		def ts = 1456914668000
-		def expectedEvents = [
-				new Event(ts, '''{"clouds":{"all":8},"coord":{"lat":44.9,"long":6.65},"dt":1456914668,"id":3030142,"main":{"humidity":89,"pressure":820.48,"temp":277.85,"temp_max":277.85,"temp_min":277.85},"name":"Briancon","rain":{"three_hours":0},"sys":{"country":"FR","sunrise":1456898888,"sunset":1456939396},"wind":{"deg":254.009,"speed":1.01},"weather":{"description":"clear sky","icon":"02d","id":800,"main":"Clear"},"date":"now"}'''),
-		]
+		def expectedEvents = '''{"clouds":{"all":8},"coord":{"lat":44.9,"long":6.65},"dt":1456914668,"id":3030142,"main":{"humidity":89,"pressure":820.48,"temp":277.85,"temp_max":277.85,"temp_min":277.85},"name":"Briancon","rain":{"three_hours":0},"sys":{"country":"FR","sunrise":1456898888,"sunset":1456939396},"wind":{"deg":254.009,"speed":1.01},"weather":{"text":"clear sky","icon":"02d","id":800,"main":"Clear"},"type":"current","date":"''' + date + '''"}'''
+
 		then:
 		res.isGood()
-		res.get()[0] == expectedEvents[0]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		res.get()[0].payload() == expectedEvents
 	}
 
 	def "do not send empty object after fetch"() {
@@ -75,18 +97,25 @@ class MyCloudConnectorSpec extends Specification {
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def req = new RequestDef(currentWeatherUrl)
 		def res = sut.onFetchResponse(ctx, req, info,  fetchedResponse)
-		def ts = 1456914668000
-		def expectedEvents = [
-				new Event(ts, '''{"clouds":{"all":8},"coord":{"lat":44.9,"long":6.65},"dt":1456914668,"main":{"humidity":75,"pressure":863.98,"temp":3.74,"temp_max":4.55,"temp_min":3.74},"name":"Briancon","rain":{"three_hours":0},"wind":{"deg":254.009,"speed":1.01},"weather":{"description":"clear sky","icon":"02d","id":800,"main":"Clear"},"date":"now"}'''),
-		]
+		def expectedEvents = '''{"clouds":{"all":8},"coord":{"lat":44.9,"long":6.65},"dt":1456914668,"main":{"humidity":75,"pressure":863.98,"temp":3.74,"temp_max":4.55,"temp_min":3.74},"name":"Briancon","rain":{"three_hours":0},"wind":{"deg":254.009,"speed":1.01},"weather":{"text":"clear sky","icon":"02d","id":800,"main":"Clear"},"type":"current","date":"''' + date + '''"}'''
+
 		then:
 		res.isGood()
-		res.get()[0] == expectedEvents[0]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		res.get()[0].payload() == expectedEvents
 	}
 
+	def "summary events"() {
+		when:
+		def json = slurper.parseText(readFile(this, "weatherSummary.json"))
 
+		def ts = 1456914668000
+		def res = sut.weatherSummary(json.list, ts, ["type": "summary"])
+		def expectedEvents = [
+				new Event(ts, '''{"type":"summary","night":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"morning":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"afternoon":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"evening":{"temp_min":274,"temp_max":275,"icon":"10n","main":"Rain","wind":{"text":"breezy","speed":4.135,"beaufort":3},"text":"light rain followed by moderate rain.","icon_later":"10n","main_later":"Rain"}}'''),
+		]
+		then:
+		res == expectedEvents
+	}
 
 //UPDATE timestamp day in prediciton.json and test to replay this test
 /*
@@ -99,19 +128,19 @@ class MyCloudConnectorSpec extends Specification {
 		def res = [sut.onFetchResponse(ctx, req, info,  fetchedResponse)]//, sut.onFetchResponse(ctx, req2, info,  fetchedResponse)]
 		def ts = 1456930800000
 		def expectedEvents0 = [
-				new Event(ts, '''{"clouds":{"all":92},"dt":1456930800,"date":"2016-03-02 15:00:00","main":{"grnd_level":996.01,"humidity":97,"pressure":996.01,"sea_level":1016.2,"temp":275.01,"temp_kf":-0.7,"temp_max":275.706,"temp_min":275.01},"rain":{"three_hours":1.065},"snow":{},"sys":{"population":0},"wind":{"deg":163,"speed":4.92},"weather":{"description":"light rain","icon":"10d","id":500,"main":"Rain"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1456941600,"date":"2016-03-02 18:00:00","main":{"grnd_level":995.92,"humidity":98,"pressure":995.92,"sea_level":1016.2,"temp":274.37,"temp_kf":-0.66,"temp_max":275.028,"temp_min":274.37},"rain":{"three_hours":4.5675},"snow":{},"sys":{"population":0},"wind":{"deg":174.504,"speed":4.76},"weather":{"description":"moderate rain","icon":"10n","id":501,"main":"Rain"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":88},"dt":1456952400,"date":"2016-03-02 21:00:00","main":{"grnd_level":996.21,"humidity":100,"pressure":996.21,"sea_level":1016.54,"temp":273.72,"temp_kf":-0.62,"temp_max":274.345,"temp_min":273.72},"rain":{"three_hours":1.5825},"snow":{"three_hours":0.14},"sys":{"population":0},"wind":{"deg":215.003,"speed":3.51},"weather":{"description":"light rain","icon":"10n","id":500,"main":"Rain"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}''')
+				new Event(ts, '''{"clouds":{"all":76},"dt":1457222400,"date":"2016-03-06 00:00:00","main":{"humidity":97,"pressure":1003.95,"temp":273.476,"temp_max":273.476,"temp_min":273.476},"snow":{"three_hours":0.0625},"wind":{"deg":233,"speed":3.56},"weather":{"text":"light snow","icon":"13n","id":600,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","type":"forecast"}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457146800,"date":"2016-03-05 03:00:00","main":{"humidity":98,"pressure":994.41,"temp":273.631,"temp_max":273.631,"temp_min":273.631},"rain":{"three_hours":0.13},"snow":{"three_hours":1.2175},"wind":{"deg":91.5005,"speed":3.59},"weather":{"text":"light rain","icon":"10n","id":500,"main":"Rain"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","type":"forecast"}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457157600,"date":"2016-03-05 06:00:00","main":{"humidity":97,"pressure":994.38,"temp":273.768,"temp_max":273.768,"temp_min":273.768},"rain":{"three_hours":0.45},"snow":{"three_hours":0.075},"wind":{"deg":87.5021,"speed":2.6},"weather":{"text":"light rain","icon":"10d","id":500,"main":"Rain"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","type":"forecast"}''')
 		]
 		def expectedEvents1 = [
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
-				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"description":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}''')
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}'''),
+				new Event(ts, '''{"clouds":{"all":92},"dt":1457136000,"date":"2016-03-05 00:00:00","main":{"grnd_level":995.19,"humidity":100,"pressure":995.19,"sea_level":1015.48,"temp":273.66,"temp_kf":0,"temp_max":273.66,"temp_min":273.66},"rain":{},"snow":{"three_hours":2.885},"sys":{"population":0},"wind":{"deg":90.5001,"speed":4.13},"weather":{"text":"snow","icon":"13n","id":601,"main":"Snow"},"coord":{"lat":55.75222,"long":37.615555},"country":"RU","id":524901,"name":"Moscow","population":0}''')
 		]
 		then:
 		res[0].isGood()

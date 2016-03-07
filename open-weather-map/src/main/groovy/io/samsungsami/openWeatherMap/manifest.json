@@ -1,5 +1,335 @@
 {
   "fields": [
+  {
+    "name": "morning",
+    "children": [
+      {
+          "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "text",
+        "tags": []
+      },
+      {
+        "name": "temp_min",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "temp_min",
+        "tags": []
+      },
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "temp",
+        "tags": []
+      },
+      {
+        "name": "temp_max",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "temp_max",
+        "tags": []
+      },
+      {
+        "name": "main",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather enum",
+        "tags": []
+      },
+      {
+        "name": "icon",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather icon Id",
+        "tags": []
+      },
+      {
+        "name": "wind",
+        "children": [
+          {
+            "name": "beaufort",
+            "type": "CUSTOM",
+            "valueClass": "Integer",
+            "isCollection": false,
+            "description": "wind on  the beaufort scale",
+            "tags": []
+          },
+          {
+            "name": "speed",
+            "type": "CUSTOM",
+            "valueClass": "Double",
+            "isCollection": false,
+            "description": "in m/s",
+            "tags": []
+          },
+          {
+            "name": "text",
+            "type": "CUSTOM",
+            "valueClass": "String",
+            "isCollection": false,
+            "description": "Either : calm, breezy, windy, galy, stormy",
+            "tags": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "afternoon",
+    "children": [
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "text",
+        "tags": []
+      },
+      {
+        "name": "temp_min",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "min temp",
+        "tags": []
+      },
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "temperature",
+        "tags": []
+      },
+      {
+        "name": "temp_max",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "temperature max",
+        "tags": []
+      },
+      {
+        "name": "main",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather enum",
+        "tags": []
+      },
+      {
+        "name": "icon",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather icon Id",
+        "tags": []
+      },
+      {
+        "name": "wind",
+        "children": [
+          {
+            "name": "beaufort",
+            "type": "CUSTOM",
+            "valueClass": "Integer",
+            "isCollection": false,
+            "description": "wind on  the beaufort scale",
+            "tags": []
+          },
+          {
+            "name": "speed",
+            "type": "CUSTOM",
+            "valueClass": "Double",
+            "isCollection": false,
+            "description": "in m/s",
+            "tags": []
+          },
+          {
+            "name": "text",
+            "type": "CUSTOM",
+            "valueClass": "String",
+            "isCollection": false,
+            "description": "Either : calm, breezy, windy, galy, stormy",
+            "tags": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "evening",
+    "children": [
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "isCollection": false,
+        "valueClass": "String"
+      },
+      {
+        "name": "temp_min",
+        "unit": "SI.CELSIUS",
+        "type": "CUSTOM",
+        "isCollection": false,
+        "valueClass": "Double"
+      },
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "temp description in Celsius",
+        "tags": []
+      },
+      {
+        "name": "temp_max",
+        "unit": "SI.CELSIUS",
+        "type": "CUSTOM",
+        "isCollection": false,
+        "valueClass": "Double"
+      },
+      {
+        "name": "main",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather enum",
+        "tags": []
+      },
+      {
+        "name": "icon",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather icon Id",
+        "tags": []
+      },
+      {
+        "name": "wind",
+        "children": [
+          {
+            "name": "beaufort",
+            "type": "CUSTOM",
+            "valueClass": "Integer",
+            "isCollection": false,
+            "description": "wind on  the beaufort scale",
+            "tags": []
+          },
+          {
+            "name": "speed",
+            "type": "CUSTOM",
+            "valueClass": "Double",
+            "isCollection": false,
+            "description": "in m/s",
+            "tags": []
+          },
+          {
+            "name": "text",
+            "type": "CUSTOM",
+            "valueClass": "String",
+            "isCollection": false,
+            "description": "Either : calm, breezy, windy, galy, stormy",
+            "tags": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "night",
+    "children": [
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "text",
+        "tags": []
+      },
+      {
+        "name": "text",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "temperature",
+        "tags": []
+      },
+      {
+        "name": "temp_max",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "temperature",
+        "tags": []
+      },
+      {
+        "name": "temp_min",
+        "type": "CUSTOM",
+        "valueClass": "Double",
+        "unit": "SI.CELSIUS",
+        "isCollection": false,
+        "description": "min temperature in celcius",
+        "tags": []
+      },
+      {
+        "name": "main",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather enum",
+        "tags": []
+      },
+      {
+        "name": "icon",
+        "type": "CUSTOM",
+        "valueClass": "String",
+        "isCollection": false,
+        "description": "weather icon Id",
+        "tags": []
+      },
+      {
+        "name": "wind",
+        "children": [
+          {
+            "name": "beaufort",
+            "type": "CUSTOM",
+            "valueClass": "Integer",
+            "isCollection": false,
+            "description": "wind on  the beaufort scale",
+            "tags": []
+          },
+          {
+            "name": "speed",
+            "type": "CUSTOM",
+            "valueClass": "Double",
+            "isCollection": false,
+            "description": "in m/s",
+            "tags": []
+          },
+          {
+            "name": "text",
+            "type": "CUSTOM",
+            "valueClass": "String",
+            "isCollection": false,
+            "description": "Either : calm, breezy, windy, galy, stormy",
+            "tags": []
+          }
+        ]
+      }
+    ]
+  },
     {
       "name": "coord",
       "children": [
@@ -9,7 +339,7 @@
           "valueClass": "Double",
           "unit": null,
           "isCollection": false,
-          "description": "place's latitude",
+          "description": "place latitude",
           "tags": []
         },
         {
@@ -18,7 +348,7 @@
           "valueClass": "Double",
           "unit": null,
           "isCollection": false,
-          "description": "place's longitude",
+          "description": "place longitude",
           "tags": []
         }
       ]
@@ -61,7 +391,7 @@
           "valueClass": "Double",
           "unit": "SI.CELSIUS",
           "isCollection": false,
-          "description": "place's temperature",
+          "description": "place temperature",
           "tags": []
         },
         {
@@ -70,7 +400,7 @@
           "valueClass": "Integer",
           "unit": "NonSI.PERCENT",
           "isCollection": false,
-          "description": "place's humidity",
+          "description": "place humidity",
           "tags": []
         },
         {
@@ -78,7 +408,7 @@
           "type": "CUSTOM",
           "valueClass": "Double",
           "isCollection": false,
-          "description": "place's pressure",
+          "description": "place pressure",
           "tags": []
         },
         {
@@ -116,7 +446,7 @@
           "valueClass": "Double",
           "unit": "SI.CELSIUS",
           "isCollection": false,
-          "description": "degrees in Celius",
+          "description": "degrees",
           "tags": []
         }
       ]
@@ -163,7 +493,7 @@
       "name": "weather",
       "children": [
         {
-          "name": "description",
+          "name": "text",
           "type": "CUSTOM",
           "valueClass": "String",
           "isCollection": false,
@@ -175,7 +505,7 @@
           "type": "CUSTOM",
           "valueClass": "String",
           "isCollection": false,
-          "description": "Group of weather parameters (Rain, Snow, Extreme etc.)",
+          "description": "weather enum",
           "tags": []
         },
         {
@@ -205,11 +535,27 @@
       "tags": []
     },
     {
+      "name": "dt",
+      "type": "CUSTOM",
+      "valueClass": "Long",
+      "isCollection": false,
+      "description": "timestamp",
+      "tags": []
+    },
+    {
       "name": "date",
       "type": "CUSTOM",
       "valueClass": "String",
       "isCollection": false,
-      "description": "forecast UTC date. can be now or a now or YYY-MM-DD",
+      "description": "forecast UTC date format. yyyy-MM-dd  possibly followed by: HH:mm:ss",
+      "tags": []
+    },
+    {
+      "name": "type",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "current, forecast or summary",
       "tags": []
     }
   ],
@@ -293,6 +639,29 @@
         },
         {
           "name": "daysToForecast",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getWeatherSummary",
+      "description": "get weather summary aggregate in 4 periods within for one day. Periods could be morning, afternoon, either today or tomorrow.",
+      "parameters": [
+        {
+          "name": "in",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "for",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "timeZone",
           "type": "CUSTOM",
           "valueClass": "String"
         }
