@@ -3,7 +3,7 @@ package utils
 import scala.Option
 import com.samsung.sami.cloudconnector.api_v1.*
 import org.joda.time.*
-import com.sample.MyCloudConnector
+import io.samsungsami.runkeeper.MyCloudConnector
 
 class FakeContext implements Context {
     String clientId(){

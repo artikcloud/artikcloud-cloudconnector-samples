@@ -1,4 +1,4 @@
-package com.sample
+package io.samsungsami.runkeeper
 
 import static java.net.HttpURLConnection.*
 
