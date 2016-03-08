@@ -16,16 +16,16 @@
       "cron": "* * * *",
       "action": {
         "name": "getFitnessData",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 1
-        } 
+        }
       }
     },
     {
       "cron": "*/12 * * *",
       "action": {
         "name": "getSleepData",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 12
         } 
       }
@@ -34,7 +34,7 @@
       "cron": "* * * *",
       "action": {
         "name": "getDiabeteData",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 1
         } 
       }
@@ -43,7 +43,7 @@
       "cron": "* * * *",
       "action": {
         "name": "getGeneralMeasurements",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 1
         }
       }
@@ -52,7 +52,7 @@
       "cron": "* * * *",
       "action": {
         "name": "getGeneralMeasurements",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 1
         }
       }
@@ -61,7 +61,7 @@
       "cron": "0 * * *",
       "action": {
         "name": "getWeightData",
-        "params": {
+        "parameters": {
           "nbHoursToPull": 24
         }
       }
