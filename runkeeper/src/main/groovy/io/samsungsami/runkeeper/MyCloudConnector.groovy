@@ -94,10 +94,15 @@ class MyCloudConnector extends CloudConnector {
 				item.remove("uri")
 
 				if (userData.fitness_activities != null && req.url.endsWith(userData.fitness_activities)) {
-					def heartRates = item.get("heart_rate").collect { heartRateObj -> heartRateObj.heart_rate }
-					item.put("max_heart_rate", Collections.max(heartRates))
-					item.put("min_heart_rate", Collections.min(heartRates))
-					item.remove("heart_rate")
+					def heartRateField = item.get("heart_rate")
+					if (heartRateField != null) {
+						def heartRates = heartRateField.collect { heartRateObj -> heartRateObj.heart_rate }
+						if (heartRates.size > 0) {
+							item.put("max_heart_rate", Collections.max(heartRates))
+							item.put("min_heart_rate", Collections.min(heartRates))
+							item.remove("heart_rate")
+						}
+					}
 				}
 
 				new Event(ts, JsonOutput.toJson(item))

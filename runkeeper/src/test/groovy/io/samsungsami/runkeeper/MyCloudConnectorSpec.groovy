@@ -112,7 +112,7 @@ class MyCloudConnectorSpec extends Specification {
 					["start_time": "Fri, 1 Jan 2016 09:44:00", "heart_rate": [["heart_rate": 70], ["heart_rate": 80], ["heart_rate": 75]], "total_distance": 40]
 				]
 			])
-			def res = new Response(200, "application/vnd.com.runkeeper.WeightSetFeed+json", body)
+			def res = new Response(200, "application/vnd.com.runkeeper.FitnessSetFeed+json", body)
 			def result = sut.onFetchResponse(ctx, req, infoWithUserData, res)
 
 			then:
@@ -121,6 +121,28 @@ class MyCloudConnectorSpec extends Specification {
 
 			result.get() == [
 				new Event(ts1, JsonOutput.toJson(["max_heart_rate": 80, "min_heart_rate": 70, "total_distance": 40]))
+			]
+		}
+
+		def "push fitness data to SAMI on onFetchResponse with no heart rate"() {
+			when:
+			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
+			def body = JsonOutput.toJson([
+				"items": [
+					["start_time": "Fri, 1 Jan 2016 09:44:00", "total_distance": 40]
+				]
+			])
+			def res = new Response(200, "application/vnd.com.runkeeper.FitnessSetFeed+json", body)
+			def result = sut.onFetchResponse(ctx, req, infoWithUserData, res)
+
+			then:
+			result.isGood()
+			def ts1 = DateTime.parse("Fri, 1 Jan 2016 09:44:00", MyCloudConnector.timestampFormat).getMillis()
+
+			result.get() == [
+				new Event(ts1, JsonOutput.toJson(["total_distance": 40]))
 			]
 		}
 		
