@@ -49,15 +49,6 @@
       }
     },
     {
-      "cron": "* * * *",
-      "action": {
-        "name": "getGeneralMeasurements",
-        "parameters": {
-          "nbHoursToPull": 1
-        }
-      }
-    },
-    {
       "cron": "0 * * *",
       "action": {
         "name": "getWeightData",
