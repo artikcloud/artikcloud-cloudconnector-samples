@@ -103,11 +103,17 @@ class MyCloudConnector extends CloudConnector {
 							item.remove("heart_rate")
 						}
 					}
+
+					def utcOffset = item.get("utc_offset")
+					if (utcOffset != null) {
+						ts = DateTime.parse(tsStr, timestampFormat.withZone(DateTimeZone.forOffsetHours(utcOffset))).getMillis()
+						item.remove("utc_offset")
+					}
 				}
 
 				new Event(ts, JsonOutput.toJson(item))
 			}.findAll { event -> 
-				event.ts >= startTs && event.ts < endTs
+				event.ts > startTs && event.ts <= endTs
 			}
 			ctx.debug("Pushing events $events")
 			return new Good(events)

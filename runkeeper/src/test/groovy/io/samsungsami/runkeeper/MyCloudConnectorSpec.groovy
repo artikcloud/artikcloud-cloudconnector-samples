@@ -145,5 +145,27 @@ class MyCloudConnectorSpec extends Specification {
 				new Event(ts1, JsonOutput.toJson(["total_distance": 40]))
 			]
 		}
+
+		def "push fitness data to SAMI on onFetchResponse with utc_offset"() {
+			when:
+			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
+						.withMethod(HttpMethod.Get)
+						.withQueryParams(["samiPullStartTs" : (ctx.now() - 3600*1000).toString(), "samiPullEndTs": ctx.now().toString()])
+			def body = JsonOutput.toJson([
+				"items": [
+					["start_time": "Fri, 1 Jan 2016 10:40:00", "total_distance": 40, "utc_offset": 1]
+				]
+			])
+			def res = new Response(200, "application/vnd.com.runkeeper.FitnessSetFeed+json", body)
+			def result = sut.onFetchResponse(ctx, req, infoWithUserData, res)
+
+			then:
+			result.isGood()
+			def ts1 = DateTime.parse("Fri, 1 Jan 2016 09:40:00", MyCloudConnector.timestampFormat).getMillis()
+
+			result.get() == [
+				new Event(ts1, JsonOutput.toJson(["total_distance": 40]))
+			]
+		}
 		
 }
