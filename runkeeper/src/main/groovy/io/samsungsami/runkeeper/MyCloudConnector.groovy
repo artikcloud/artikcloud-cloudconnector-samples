@@ -109,6 +109,11 @@ class MyCloudConnector extends CloudConnector {
 						ts = DateTime.parse(tsStr, timestampFormat.withZone(DateTimeZone.forOffsetHours(utcOffset))).getMillis()
 						item.remove("utc_offset")
 					}
+
+					def duration = item.get("duration")
+					if (duration != null) {
+						ts = ts + duration * 1000
+					}
 				}
 
 				new Event(ts, JsonOutput.toJson(item))
