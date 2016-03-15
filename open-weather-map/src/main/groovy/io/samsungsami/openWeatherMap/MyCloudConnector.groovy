@@ -97,6 +97,7 @@ class MyCloudConnector extends CloudConnector {
                     case "tomorrow": json += ["daysToForecast": "1"]; break
                     default: return new Bad(new Failure("missing or invalid action parameter 'for' of action getWeather of openWeatherMap:"))
                 }
+                //no break instruction : intentionally following with next case's code
             case "getForecastWeatherByCity":
                 RequestDef req = new RequestDef(forecastWeatherUrl).withQueryParams(["units": "metric"])
                 if (json.city == null) {

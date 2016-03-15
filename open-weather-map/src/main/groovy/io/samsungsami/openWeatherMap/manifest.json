@@ -21,14 +21,6 @@
         "tags": []
       },
       {
-        "name": "text",
-        "type": "CUSTOM",
-        "valueClass": "String",
-        "isCollection": false,
-        "description": "temp",
-        "tags": []
-      },
-      {
         "name": "temp_max",
         "type": "CUSTOM",
         "valueClass": "Double",
@@ -105,14 +97,6 @@
         "tags": []
       },
       {
-        "name": "text",
-        "type": "CUSTOM",
-        "valueClass": "String",
-        "isCollection": false,
-        "description": "temperature",
-        "tags": []
-      },
-      {
         "name": "temp_max",
         "type": "CUSTOM",
         "valueClass": "Double",
@@ -185,14 +169,6 @@
         "valueClass": "Double"
       },
       {
-        "name": "text",
-        "type": "CUSTOM",
-        "valueClass": "String",
-        "isCollection": false,
-        "description": "temp description in Celsius",
-        "tags": []
-      },
-      {
         "name": "temp_max",
         "unit": "SI.CELSIUS",
         "type": "CUSTOM",
@@ -255,14 +231,6 @@
         "valueClass": "String",
         "isCollection": false,
         "description": "text",
-        "tags": []
-      },
-      {
-        "name": "text",
-        "type": "CUSTOM",
-        "valueClass": "String",
-        "isCollection": false,
-        "description": "temperature",
         "tags": []
       },
       {

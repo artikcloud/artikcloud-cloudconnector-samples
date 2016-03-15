@@ -257,7 +257,6 @@
             {
               "name":"Pressure",
               "type":"CUSTOM",
-              "unit":"SI.MILLI(NONSI.BAR)",
               "valueClass":"Double",
               "isCollection":false,
               "description":"Last Sea level pressure measured in milli Bar",
@@ -268,7 +267,6 @@
             {
               "name":"AbsolutePressure",
               "type":"CUSTOM",
-              "unit":"SI.MILLI(NONSI.BAR)",
               "valueClass":"Double",
               "isCollection":false,
               "description":"absolute pressure",
