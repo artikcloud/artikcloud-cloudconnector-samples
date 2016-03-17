@@ -33,12 +33,14 @@ class MyCloudConnector extends CloudConnector {
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        ctx.debug("Hello world")
         def content = req.bodyParams
         def json = slurper.parseText(content.checkin)
         def extId = json.user.id.toString() 
         def pushSecret = ctx.parameters.pushSecret  
 
-        if (extId == null || (!req.contentType.startsWith("application/x-www-form-urlencoded")) {
+        
+        if (extId == null || (!req.contentType.startsWith("application/x-www-form-urlencoded"))) {
             ctx.debug('Bad notification (where is did in following req : ) ' + req)
             return new Bad(new Failure('Impossible to recover device id from token request.'))
         }
