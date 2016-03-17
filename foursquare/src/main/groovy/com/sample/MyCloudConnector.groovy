@@ -33,18 +33,18 @@ class MyCloudConnector extends CloudConnector {
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
-        def content = req.content()
-        def json = slurper.parseText(content)
+        def content = req.bodyParams
+        def json = slurper.parseText(content.checkin)
         def extId = json.user.id.toString() 
         def pushSecret = ctx.parameters.pushSecret  
 
-        if (extId == null) {
+        if (extId == null || (!req.contentType.startsWith("application/x-www-form-urlencoded")) {
             ctx.debug('Bad notification (where is did in following req : ) ' + req)
             return new Bad(new Failure('Impossible to recover device id from token request.'))
         }
-        if (json.secret == null || json.secret != pushSecret){
-            ctx.debug("Invalid secret hash for callback request $req ; expected : $jawboneCallbackSecretHash")
-            return new Bad(new Failure("Invalid secret hash"))
+        if (content.secret == null || content.secret != pushSecret){
+            ctx.debug("Invalid secret hash for callback request $req ; expected : $pushSecret")
+            return new Bad(new Failure("Invalid push secret"))
         }
 
         def dataToPush = json.checkin.collect {e -> JsonOutput.toJson(e)}
@@ -62,22 +62,18 @@ class MyCloudConnector extends CloudConnector {
                     [(k): (v)]  
                 else
                     [:]
-            })
-        def flattenedJson = flatten(checkinFiltered).subMap(["user.id", "createdAt", "timeZoneOffset", "venue.location.lat", "venue.location.lng"])
-        def aimJson = renameJson(flattenedJson)
-        return new Good([new Event(timestamp, JsonOutput.toJson(aimJson).trim())])
+            }).subMap(["user", "createdAt", "timeZoneOffset", "venue"])
+        def aimJson = renameJson(checkinFiltered)
+        def ts = (aimJson.timestamp)? aimJson.timestamp: ctx.now()
+        return new Good([new Event(ts, JsonOutput.toJson(aimJson).trim())])
     }
 
     private def renameJson(json) {
         transformJson(json, { k, v ->
-            if (k == "venue.location.lng")
+            if (k == "lng")
                 ["long": (v)]
             else if (k == "createdAt")
-                ["timestamp": (v)]
-            else if (k == "user.id")
-                ["id": (v)]
-            else if (k == "venue.location.lat")
-                ["lat": (v)]
+                ["timestamp": (v * 1000L)]
             else
                 [:]
         })
@@ -107,14 +103,4 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
-    Map flatten(Map m, String separator = '.') { 
-        m.collectEntries { 
-            k, v ->  v instanceof Map ? 
-                flatten(v, separator).collectEntries { 
-                    q, r ->  [(k + separator + q): r] 
-                } : [(k):v] 
-        } 
-    }
-
 }
-
