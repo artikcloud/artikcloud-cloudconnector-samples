@@ -65,7 +65,7 @@ class MyCloudConnector extends CloudConnector {
             })
         def flattenedJson = flatten(checkinFiltered).subMap(["user.id", "createdAt", "timeZoneOffset", "venue.location.lat", "venue.location.lng"])
         def aimJson = renameJson(flattenedJson)
-        return new Good([new Event(timestamp, JsonOutput.toJson(aimJson).trim()))])
+        return new Good([new Event(timestamp, JsonOutput.toJson(aimJson).trim())])
     }
 
     private def renameJson(json) {

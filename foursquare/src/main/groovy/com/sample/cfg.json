@@ -1,12 +1,12 @@
 {
   "authorizationUrl": "https://foursquare.com/oauth2/authorize",
   "accessTokenUrl": "https://foursquare.com/oauth2/access_token",
-  "clientId": "BDG1RHAIO2W2K3FT15O2LNU0MXZZ22LPVSRZURV4JMAENZG3",
-  "clientSecret": "GB05FPU2TX20K2AWBGL0XIOFZ53NZWY0RVNGCXVQCPA4ILMB",
+  "clientId": "<insert your client id here>",
+  "clientSecret": "<insert your client secret here>",
   "authType" : "OAuth2",
   "statusAcceptNotification": 200,
   "accessTokenMethod": "post",
   "parameters": {
-    "pushSecret": "BVM5AI3ROUKCJI0WC1O33CD22R0MOV3KZG4VQYPDXOXB2IR3"
+    "pushSecret": "<insert your push secret here>"
   }
 }
