@@ -1,0 +1,11 @@
+Connection: close
+Content-Length: 2159
+Content-Type: application/x-www-form-urlencoded
+Host:
+User-Agent: FoursquarePush/1.0
+
+
+checkin: {"id":"56e933f0498eb8032f11ba1e","createdAt":1458123760,"type":"checkin","timeZone":"Europe\/Paris","timeZoneOffset":60,"user":{"id":"166079265","firstName":"Frederic","lastName":"Wei","gender":"male","relationship":"self","photo":"https:\/\/is0.4sqi.net\/userpix_thumbs\/166079265-TXWAYFILSDZYFD3T.jpg"},"venue":{"id":"4da8402b4df0af29b708bf87","name":"Société Générale","contact":{},"location":{"address":"2 Boulevard de Strasbourg","lat":48.86950328317372,"lng":2.354668378829956,"postalCode":"75010","cc":"FR","city":"Paris","state":"Île-de-France","country":"France","formattedAddress":["2 Boulevard de Strasbourg","75010 Paris"]},"categories":[{"id":"4bf58dd8d48988d10a951735","name":"Bank","pluralName":"Banks","shortName":"Bank","icon":"https:\/\/ss3.4sqi.net\/img\/categories\/shops\/financial.png","parents":["Shop & Service"],"primary":true}],"verified":false,"stats":{"checkinsCount":64,"usersCount":16,"tipCount":0},"allowMenuUrlEdit":true}}
+secret: BVM5AI3ROUKCJI0WC1O33CD22R0MOV3KZG4VQYPDXOXB2IR3
+user: {"id":"166079265","firstName":"Frederic","lastName":"Wei","gender":"male","relationship":"self","photo":"https:\/\/is0.4sqi.net\/userpix_thumbs\/166079265-TXWAYFILSDZYFD3T.jpg","tips":{"count":0},"lists":{"groups":[{"type":"created","count":3,"items":[]}]},"homeCity":"Paris, A8","bio":"","contact":{"verifiedPhone":"false","email":"robert.wei.176@gmail.com"}}
+
