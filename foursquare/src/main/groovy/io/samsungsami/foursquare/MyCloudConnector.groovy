@@ -1,4 +1,4 @@
-package com.sample
+package io.samsungsami.foursquare
 import static java.net.HttpURLConnection.*
 
 import org.scalactic.*
