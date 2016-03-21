@@ -1,9 +1,4 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of com.samsung.sami.cloudconnector.api_v1.CloudConnector
 package com.sample
-
 import static java.net.HttpURLConnection.*
 
 import org.scalactic.*
@@ -39,8 +34,6 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
         def json = slurper.parseText(res.content)
-        oscilo(ctx, json)
-        oscilo(ctx, json.response.user.id)
         new Good(Option.apply(info.withExtId(json.response.user.id)))//.withExtId("1")))//.withExtId(json.response.user.id)))
     }
 
@@ -74,7 +67,6 @@ class MyCloudConnector extends CloudConnector {
                     [:]
             })
         }
-        checkinFiltered.each {oscilo(ctx, it)}
         ctx.debug("checkinFiltered " + checkinFiltered)
 
         def notifications = checkinFiltered.collect { e ->
