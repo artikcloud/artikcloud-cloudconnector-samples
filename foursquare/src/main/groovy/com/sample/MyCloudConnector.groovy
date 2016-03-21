@@ -15,6 +15,7 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import com.samsung.sami.cloudconnector.api_v1.*
 import org.joda.time.format.ISODateTimeFormat
+import scala.Option
 
 //@CompileStatic
 class MyCloudConnector extends CloudConnector {
@@ -23,61 +24,93 @@ class MyCloudConnector extends CloudConnector {
     static final allowedKeys = [
         "createdAt", 
         "timeZoneOffset", 
-        "user", "id", 
         "venue", "location", "lat", "lng"
     ]
+    static final extIdKeys = [ "user", "id" ]
+    static final String endpoint = "https://api.foursquare.com/v2/"
 
     JsonSlurper slurper = new JsonSlurper()
+
+    @Override
+    def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
+        new Good([new RequestDef(endpoint + "users/self").withQueryParams(["oauth_token" : info.credentials.token, "v" : "20160321"])])
+    }
+
+    @Override
+    def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
+        def json = slurper.parseText(res.content)
+        oscilo(ctx, json)
+        oscilo(ctx, json.response.user.id)
+        new Good(Option.apply(info.withExtId(json.response.user.id)))//.withExtId("1")))//.withExtId(json.response.user.id)))
+    }
 
     // CALLBACK
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
-        ctx.debug("Hello world")
-        def content = req.bodyParams
-        def json = slurper.parseText(content.checkin)
-        def extId = json.user.id.toString() 
-        def pushSecret = ctx.parameters.pushSecret  
+        def json = slurper.parseText(req.content)
+        def pushSecret = ctx.parameters()["pushSecret"]
+        ctx.debug("pushSecret " + pushSecret)
 
-        
-        if (extId == null || (!req.contentType.startsWith("application/x-www-form-urlencoded"))) {
-            ctx.debug('Bad notification (where is did in following req : ) ' + req)
-            return new Bad(new Failure('Impossible to recover device id from token request.'))
-        }
-        if (content.secret == null || content.secret != pushSecret){
+        if (json.secret == [] || json.secret.any {it.trim() != pushSecret.trim()}){
             ctx.debug("Invalid secret hash for callback request $req ; expected : $pushSecret")
             return new Bad(new Failure("Invalid push secret"))
         }
+        
+        def checkin = json.checkin.collect { e -> slurper.parseText(e)}
+        def extId = checkin.collect { e -> e.user.id.toString()}
+        ctx.debug("extId " + extId)
+        
+        if (extId.size() != checkin.size() || extId.any {it == null}) {
+            ctx.debug('Bad notification (where is did in following req : ) ' + req)
+            return new Bad(new Failure('Impossible to recover device id from token request.'))
+        }
 
-        def dataToPush = json.checkin.collect {e -> JsonOutput.toJson(e)}
-        ctx.debug("Data to push : " + dataToPush)
+        def checkinFiltered = checkin.collect { e ->
+            transformJson(e, { k, v ->
+                if ((allowedKeys + extIdKeys).contains(k))
+                    [(k): (v)]  
+                else
+                    [:]
+            })
+        }
+        checkinFiltered.each {oscilo(ctx, it)}
+        ctx.debug("checkinFiltered " + checkinFiltered)
 
-        return new Good(new NotificationResponse([new ThirdPartyNotification(new ByExternalDeviceId(extId), [], dataTopush)]))
-    }
-    
-    // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)
-    @Override
-    def Or<List<Event>, Failure> onNotificationData(Context ctx, DeviceInfo info, String data) {
-        def json = slurper.parseText(data)
-        def checkinFiltered = transformJson(json, { k, v ->
+        def notifications = checkinFiltered.collect { e ->
+            def eid = e.user.id
+            def eFiltered = transformJson(e, { k, v ->
                 if (allowedKeys.contains(k))
                     [(k): (v)]  
                 else
                     [:]
-            }).subMap(["user", "createdAt", "timeZoneOffset", "venue"])
-        def aimJson = renameJson(checkinFiltered)
-        def ts = (aimJson.timestamp)? aimJson.timestamp: ctx.now()
-        return new Good([new Event(ts, JsonOutput.toJson(aimJson).trim())])
+            })
+            def aimJson = renameJson(eFiltered)
+            def dataToPush = JsonOutput.toJson(aimJson)
+            new ThirdPartyNotification(new ByExternalDeviceId(eid), [], [dataToPush])
+        }
+        
+        return new Good(new NotificationResponse(notifications))
+            
+    }
+    
+    // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)
+    
+    @Override
+    def Or<List<Event>, Failure> onNotificationData(Context ctx, DeviceInfo info, String data) {
+        def json = slurper.parseText(data)
+        json.timestamp = (json.timestamp)? json.timestamp * 1000L: ctx.now()
+        return new Good([new Event(json.timestamp, JsonOutput.toJson(json))])
     }
 
     private def renameJson(json) {
         transformJson(json, { k, v ->
             if (k == "lng")
-                ["long": (v)]
+                ["long": v]
             else if (k == "createdAt")
-                ["timestamp": (v * 1000L)]
+                ["timestamp": v]
             else
-                [:]
+                [(k):v]
         })
     }
 
