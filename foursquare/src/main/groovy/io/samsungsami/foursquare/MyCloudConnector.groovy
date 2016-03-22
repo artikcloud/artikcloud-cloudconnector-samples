@@ -19,7 +19,8 @@ class MyCloudConnector extends CloudConnector {
     static final allowedKeys = [
         "createdAt", 
         "timeZoneOffset", 
-        "venue", "location", "lat", "lng"
+        "venue", "location", "lat", "lng",
+        "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
     ]
     static final extIdKeys = [ "user", "id" ]
     static final String endpoint = "https://api.foursquare.com/v2/"
@@ -34,13 +35,14 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
         def json = slurper.parseText(res.content)
-        new Good(Option.apply(info.withExtId(json.response.user.id)))//.withExtId("1")))//.withExtId(json.response.user.id)))
+        new Good(Option.apply(info.withExtId(json.response.user.id)))
     }
 
     // CALLBACK
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+
         def json = slurper.parseText(req.content)
         def pushSecret = ctx.parameters()["pushSecret"]
         ctx.debug("pushSecret " + pushSecret)
@@ -53,7 +55,7 @@ class MyCloudConnector extends CloudConnector {
         def checkin = json.checkin.collect { e -> slurper.parseText(e)}
         def extId = checkin.collect { e -> e.user.id.toString()}
         ctx.debug("extId " + extId)
-        
+
         if (extId.size() != checkin.size() || extId.any {it == null}) {
             ctx.debug('Bad notification (where is did in following req : ) ' + req)
             return new Bad(new Failure('Impossible to recover device id from token request.'))
@@ -83,7 +85,7 @@ class MyCloudConnector extends CloudConnector {
         }
         
         return new Good(new NotificationResponse(notifications))
-            
+        
     }
     
     // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)
