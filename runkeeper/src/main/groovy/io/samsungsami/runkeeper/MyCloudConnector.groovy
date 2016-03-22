@@ -118,7 +118,7 @@ class MyCloudConnector extends CloudConnector {
 
 				new Event(ts, JsonOutput.toJson(item))
 			}.findAll { event -> 
-				event.ts > startTs && event.ts <= endTs
+				event.ts >= startTs && event.ts < endTs
 			}
 			ctx.debug("Pushing events $events")
 			return new Good(events)
