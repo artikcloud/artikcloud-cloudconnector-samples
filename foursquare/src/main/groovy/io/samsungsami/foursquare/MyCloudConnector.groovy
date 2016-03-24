@@ -35,6 +35,7 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
         def json = slurper.parseText(res.content)
+        ctx.debug("json.response.user.id " + json.response.user.id)
         new Good(Option.apply(info.withExtId(json.response.user.id)))
     }
 
@@ -42,12 +43,13 @@ class MyCloudConnector extends CloudConnector {
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
-
+        ctx.debug("req " + req)
+        ctx.debug("req.content " + req.content)
         def json = slurper.parseText(req.content)
         def pushSecret = ctx.parameters()["pushSecret"]
         ctx.debug("pushSecret " + pushSecret)
 
-        if (json.secret == [] || json.secret.any {it.trim() != pushSecret.trim()}){
+        if (pushSecret == null || json.secret == [] || json.secret.any {it.trim() != pushSecret.trim()}){
             ctx.debug("Invalid secret hash for callback request $req ; expected : $pushSecret")
             return new Bad(new Failure("Invalid push secret"))
         }
@@ -56,40 +58,20 @@ class MyCloudConnector extends CloudConnector {
         def extId = checkin.collect { e -> e.user.id.toString()}
         ctx.debug("extId " + extId)
 
-        if (extId.size() != checkin.size() || extId.any {it == null}) {
+        if (extId.size() != checkin.size() || extId.any {it == null || it == ""}) {
             ctx.debug('Bad notification (where is did in following req : ) ' + req)
-            return new Bad(new Failure('Impossible to recover device id from token request.'))
+            return new Bad(new Failure('Impossible to recover device id from request.'))
         }
 
-        def checkinFiltered = checkin.collect { e ->
-            transformJson(e, { k, v ->
-                if ((allowedKeys + extIdKeys).contains(k))
-                    [(k): (v)]  
-                else
-                    [:]
-            })
-        }
+        def checkinFiltered = checkin.collect { e -> filterObjByKeepingKeys(e, allowedKeys + extIdKeys) }
         ctx.debug("checkinFiltered " + checkinFiltered)
-
-        def notifications = checkinFiltered.collect { e ->
-            def eid = e.user.id
-            def eFiltered = transformJson(e, { k, v ->
-                if (allowedKeys.contains(k))
-                    [(k): (v)]  
-                else
-                    [:]
-            })
-            def aimJson = renameJson(eFiltered)
-            def dataToPush = JsonOutput.toJson(aimJson)
-            new ThirdPartyNotification(new ByExternalDeviceId(eid), [], [dataToPush])
-        }
+        def notifications = generateNotificationsFromCheckins(checkinFiltered)
         
         return new Good(new NotificationResponse(notifications))
         
     }
     
     // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)
-    
     @Override
     def Or<List<Event>, Failure> onNotificationData(Context ctx, DeviceInfo info, String data) {
         def json = slurper.parseText(data)
@@ -97,8 +79,28 @@ class MyCloudConnector extends CloudConnector {
         return new Good([new Event(json.timestamp, JsonOutput.toJson(json))])
     }
 
-    private def renameJson(json) {
-        transformJson(json, { k, v ->
+    def filterObjByKeepingKeys(obj, keepingKeys) {
+        transformJson(obj, { k, v ->
+            if (keepingKeys.contains(k))
+                [(k): (v)]  
+            else
+                [:]
+        })
+    }
+
+    def generateNotificationsFromCheckins(checkins) {
+        checkins.collect { e ->
+            def eid = e.user.id
+            def eFiltered = filterObjByKeepingKeys(e, allowedKeys)
+            def aimJson = renameJson(eFiltered)
+            def dataToPush = JsonOutput.toJson(aimJson)
+            new ThirdPartyNotification(new ByExternalDeviceId(eid), [], [dataToPush])
+        }
+    }
+
+    // For key : "lng" --> "long", "createdAt" --> "timestamp"; keep other key-value
+    def renameJson(obj) {
+        transformJson(obj, { k, v ->
             if (k == "lng")
                 ["long": v]
             else if (k == "createdAt")
@@ -108,7 +110,9 @@ class MyCloudConnector extends CloudConnector {
         })
     }
 
-    private def transformJson(obj, f) {
+    // Imported from sami-cloudconnector-samples/open-weather-map/src/main/groovy/io/samsungsami/openWeatherMap/MyCloudConnector.groovy
+    // transformJson(obj, f) remove all empty values
+    def transformJson(obj, f) {
         if (obj instanceof java.util.Map) {
             obj.collectEntries { k, v ->
                 if (v != null) {

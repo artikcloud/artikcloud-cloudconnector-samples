@@ -1,0 +1,17 @@
+{
+    "createdAt": 1458147313,
+    "timeZoneOffset": 0,
+    "venue": {
+        "name": "Foursquare HQ",
+        "location": {
+            "address": "568 Broadway Fl 10",
+            "lat": 40.72412842453194,
+            "lng": -73.99726510047911,
+            "postalCode": "10012",
+            "city": "New York",
+            "state": "NY",
+            "country": "United States",
+            "formattedAddress": ["568 Broadway Fl 10 (at Prince St)", "New York, NY 10012"]
+        },
+    }
+}
