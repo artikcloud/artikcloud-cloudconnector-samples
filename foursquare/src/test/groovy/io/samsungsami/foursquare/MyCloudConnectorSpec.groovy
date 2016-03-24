@@ -128,7 +128,7 @@ class MyCloudConnectorSpec extends Specification {
 			res.get() == expectedResponse
 			
 		}
-/*	
+	
 		def "create events from created data"() {
 			when:
 			def bodyEvent_ts = 1432027166000L
@@ -137,15 +137,16 @@ class MyCloudConnectorSpec extends Specification {
 					'''{"timestamp":1458670144,"timeZoneOffset":60,"venue":{"location":{"country":"France","formattedAddress":["75000"],"lat":48.8542115806468,"long":2.352619171142578,"postalCode":"75000","state":"Ile-de-France"},"name":"Paris"}}''',
 					'''{"timestamp":1458147313,"timeZoneOffset":0,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}}'''
 			]
-			def res = data.collectMany{ datum -> sut.onNotificationData(ctx, null, datum).get()}
+			def res = data.collectMany{ it -> sut.onNotificationData(ctx, null, it).get()}
+			// timestamp *= 1000
 			def expectedEvents = [
-					new Event(1379364951000,'''{"category":"sleep_mode","measuregrp":{"state":true}}'''),
-					new Event(1379464951000,'''{"category":"sleep_mode","measuregrp":{"state":false}}'''),
-					new Event(1399434951000,'''{"category":"watch_mode","measuregrp":{"state":true}}''')
+					new Event(1458647923000,'''{"timeZoneOffset":60,"timestamp":1458647923000,"venue":{"location":{"address":"2 Boulevard de Strasbourg","city":"Paris","country":"France","formattedAddress":["2 Boulevard de Strasbourg","75010 Paris"],"lat":48.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"Ile-de-France"},"name":"Societe Generale"}}'''),
+					new Event(1458670144000,'''{"timeZoneOffset":60,"timestamp":1458670144000,"venue":{"location":{"country":"France","formattedAddress":["75000"],"lat":48.8542115806468,"long":2.352619171142578,"postalCode":"75000","state":"Ile-de-France"},"name":"Paris"}}'''),
+					new Event(1458147313000,'''{"timeZoneOffset":0,"timestamp":1458147313000,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}}''')
 			]
 
 			then:
 			res == expectedEvents
 		}
-*/
+
 }
