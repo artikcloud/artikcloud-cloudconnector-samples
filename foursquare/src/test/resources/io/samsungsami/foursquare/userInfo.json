@@ -1,0 +1,175 @@
+{
+	"meta": {
+		"code": 200,
+		"requestId": "56f401f5498eb6d04b44b398"
+	},
+	"notifications": [{
+		"type": "notificationTray",
+		"item": {
+			"unreadCount": 0
+		}
+	}],
+	"response": {
+		"user": {
+			"id": "168323003",
+			"firstName": "Sami",
+			"lastName": "Artik",
+			"gender": "none",
+			"relationship": "self",
+			"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003",
+			"photo": {
+				"prefix": "https:\/\/irs0.4sqi.net\/img\/user\/",
+				"suffix": "\/blank_boy.png",
+				"default": true
+			},
+			"friends": {
+				"count": 0,
+				"groups": [{
+					"type": "friends",
+					"name": "Mutual friends",
+					"count": 0,
+					"items": []
+				}, {
+					"type": "others",
+					"name": "Other friends",
+					"count": 0,
+					"items": []
+				}]
+			},
+			"birthday": 631152000,
+			"tips": {
+				"count": 0
+			},
+			"homeCity": "Paris, A8",
+			"bio": "",
+			"contact": {
+				"verifiedPhone": "false",
+				"email": "samiioparis@gmail.com"
+			},
+			"photos": {
+				"count": 0,
+				"items": []
+			},
+			"checkinPings": "off",
+			"pings": false,
+			"type": "user",
+			"mayorships": {
+				"count": 0,
+				"items": []
+			},
+			"checkins": {
+				"count": 14,
+				"items": [{
+					"id": "56f3f737498e6d21e5a8ee5a",
+					"createdAt": 1458829111,
+					"type": "checkin",
+					"timeZoneOffset": 60,
+					"venue": {
+						"id": "4bf976f9508c0f477f4f3f31",
+						"name": "Fuugaya",
+						"contact": {},
+						"location": {
+							"address": "320, rue St Martin",
+							"lat": 48.86877477515369,
+							"lng": 2.355514111074868,
+							"cc": "FR",
+							"city": "Paris",
+							"state": "Île-de-France",
+							"country": "France",
+							"formattedAddress": ["320, rue St Martin", "Paris"]
+						},
+						"categories": [{
+							"id": "4bf58dd8d48988d111941735",
+							"name": "Japanese Restaurant",
+							"pluralName": "Japanese Restaurants",
+							"shortName": "Japanese",
+							"icon": {
+								"prefix": "https:\/\/ss3.4sqi.net\/img\/categories_v2\/food\/japanese_",
+								"suffix": ".png"
+							},
+							"primary": true
+						}],
+						"verified": false,
+						"stats": {
+							"checkinsCount": 168,
+							"usersCount": 69,
+							"tipCount": 1
+						},
+						"like": false,
+						"allowMenuUrlEdit": true
+					},
+					"likes": {
+						"count": 0,
+						"groups": []
+					},
+					"like": false,
+					"isMayor": false,
+					"photos": {
+						"count": 0,
+						"items": []
+					},
+					"posts": {
+						"count": 0,
+						"textCount": 0
+					},
+					"comments": {
+						"count": 0
+					},
+					"source": {
+						"name": "Swarm for Android",
+						"url": "https:\/\/www.swarmapp.com"
+					}
+				}]
+			},
+			"requests": {
+				"count": 0
+			},
+			"lists": {
+				"count": 2,
+				"groups": [{
+					"type": "created",
+					"count": 0,
+					"items": []
+				}, {
+					"type": "followed",
+					"count": 0,
+					"items": []
+				}, {
+					"type": "yours",
+					"count": 2,
+					"items": [{
+						"id": "168323003\/todos",
+						"name": "My Saved Places",
+						"description": "",
+						"type": "todos",
+						"editable": true,
+						"public": true,
+						"collaborative": false,
+						"url": "\/user\/168323003\/list\/todos",
+						"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003\/list\/todos",
+						"listItems": {
+							"count": 0
+						}
+					}, {
+						"id": "168323003\/venuelikes",
+						"name": "My Liked Places",
+						"description": "",
+						"type": "likes",
+						"editable": true,
+						"public": true,
+						"collaborative": false,
+						"url": "\/user\/168323003\/list\/venuelikes",
+						"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003\/list\/venuelikes",
+						"listItems": {
+							"count": 0
+						}
+					}]
+				}]
+			},
+			"blockedStatus": "none",
+			"createdAt": 1458218604,
+			"lenses": [],
+			"referralId": "u-168323003"
+		}
+	}
+}

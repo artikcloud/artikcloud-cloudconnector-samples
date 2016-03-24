@@ -31,8 +31,19 @@ class MyCloudConnectorSpec extends Specification {
 	        "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
 	    ]
 	    def extIdKeys = [ "user", "id" ]
-
-
+/*
+		def "retrieve external user id from user profile using subscribe"() {
+	        when:
+	        def reqs = sut.subscribe(ctx, device)
+	        def resp0 = new Response(HttpURLConnection.HTTP_OK, "application/x-www-form-urlencoded", readFile(this, "userInfo.json"))
+	        def res = sut.onSubscribeResponse(ctx, reqs.get()[0], device, resp0)
+	        then:
+	        reqs.isGood()
+	        reqs.get() ==  [new RequestDef("$apiEndpoint/users/self")]//.withQueryParams(["oauth_token" : info.credentials.token, "v" : "20160321"]]
+	        res.isGood()
+	        res.get() == Option.apply(device.withExtId(extId))
+	    }
+*/
 	    def "reject Notification with invalid pushSecret"() {
 			when:
 			def invalidMsg = readFile(this, "apiNotificationBadSignature.json")
