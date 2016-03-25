@@ -1,0 +1,104 @@
+{
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "TIMESTAMP",
+      "valueClass": "Double",
+      "unit": "SI.MILLI(SI.SECOND)",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "timeZoneOffset",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "unit": "NonSI.MINUTE",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "venue",
+      "children": [
+        {
+          "name": "name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "unit": null,
+          "isCollection": false,
+          "tags": []
+        },
+        {
+          "name": "location",
+          "children": [
+            {
+              "name": "address",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "lat",
+              "type": "LATITUDE",
+              "valueClass": "Double",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "long",
+              "type": "LONGITUDE",
+              "valueClass": "Double",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "city",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "state",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "postalCode",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "country",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": false,
+              "tags": []
+            },
+            {
+              "name": "formattedAddress",
+              "type": "CUSTOM",
+              "valueClass": "String",
+              "unit": null,
+              "isCollection": true,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "messageFormat": "json",
+  "actions": []
+}
