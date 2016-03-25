@@ -2,8 +2,8 @@ package utils
 
 import scala.Option
 import cloud.artik.cloudconnector.api_v1.*
-import org.scalactic.*
-
+import org.joda.time.*
+import io.samsungsami.runkeeper.MyCloudConnector
 
 class FakeContext implements Context {
     String clientId(){
@@ -32,20 +32,4 @@ class FakeContext implements Context {
         Option<String> readFileFromMultipartFormData(RequestDef req, String key) { Option.apply(null)}
         List<String> getDataFromContent(String content, String key){ []}
     }}
-    @Override
-    Or<String, Failure> getOrCreateDevice(String samiToken, String deviceName, Option<String> externalId) {
-        return new Good("d0")
-    }
-    @Override
-    Or<Map<String, String>, Failure> getUserInfo(String samiToken) {
-        return new Good(["name": "name"])
-    }
-    @Override
-    Or<Map<String, String>, Failure> getUserId(String samiToken) {
-        return new Good("uid")
-    }
-    @Override
-    Or<List<ActionDef>, Failure> getLastActions(String samiToken, DeviceSelector deviceSelector, int limit) {
-        return new Good([new ActionDef(Option.apply("sdid"), "ddid", 12345l, "actionName", "{}")])
-    }
 }
