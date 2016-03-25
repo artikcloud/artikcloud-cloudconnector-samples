@@ -1,4 +1,4 @@
-A sample Cloud Connector for [SAMI](https://www.samsungsami.io/) to use [Moves](https://moves-app.com/) cloud as its data source.
+A sample Cloud Connector for [ARTIK Cloud](https://www.artik.io/cloud/) to use [Moves](https://moves-app.com/) cloud as its data source.
 
 [Your first Cloud Connector](https://developer.samsungsami.io/sami/demos-tools/your-first-cloud-connector.html) explains the developer workflow and Cloud Connector code using Moves as an example. You may refer to this tutorial for a detailed explanation of the implementation.
 

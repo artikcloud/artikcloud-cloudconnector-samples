@@ -1,4 +1,4 @@
-SAMI Cloud Connector examples
+ARTIK Cloud Cloud Connector examples
 ==============================
 
 [![Build Status](https://travis-ci.org/samsungsamiio/sami-cloudconnector-samples.svg?branch=master)](https://travis-ci.org/samsungsamiio/sami-cloudconnector-samples)

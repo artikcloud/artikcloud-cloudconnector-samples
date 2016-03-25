@@ -1,4 +1,4 @@
-A sample CloudConnector for [SAMI](https://www.samsungsami.io/) to use [iHealth](http://www.ihealthlabs.eu) cloud as DataSource.
+A sample CloudConnector for [ARTIK Cloud](https://www.artik.io/cloud/) to use [iHealth](http://www.ihealthlabs.eu) cloud as DataSource.
 
 Follow the installation and usage instructions in "../template/README" to compile, perform unit and integration testing in the current project folder.
 

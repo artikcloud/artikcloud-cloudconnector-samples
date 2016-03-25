@@ -1,4 +1,4 @@
-A sample CloudConnector for [SAMI](https://www.samsungsami.io/) to use [openWeatherMap](http://openweathermap.org) cloud as DataSource.
+A sample CloudConnector for [ARTIK Cloud](https://www.artik.io/cloud/) to use [openWeatherMap](http://openweathermap.org) cloud as DataSource.
 
 Follow the installation and usage instructions in "../template/README" to compile, perform unit and integration testing in the current project folder.
 
