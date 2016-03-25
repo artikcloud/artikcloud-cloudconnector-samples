@@ -1,107 +1,107 @@
 [
-	{
-		"id": "56e98ff1498ea418b2c6f1b5",
-		"createdAt": 1458147313,
-		"type": "checkin",
-		"entities": [],
-		"shout": "I'm in your consumers, testing your push API!",
-		"timeZone": "UTC",
-		"timeZoneOffset": 0,
-		"user": {
-			"id": "1",
-			"firstName": "Jimmy",
-			"lastName": "Foursquare",
-			"gender": "male",
-			"relationship": "self",
-			"photo": "https:\/\/is0.4sqi.net\/userpix_thumbs\/S54EHRPJAHQK0VHP.jpg"
-		},
-		"venue": {
-			"id": "4ef0e7cf7beb5932d5bdeb4e",
-			"name": "Foursquare HQ",
-			"contact": {
-				"phone": "6464497700",
-				"formattedPhone": "(646) 449-7700",
-				"twitter": "foursquare",
-				"facebook": "80690156072",
-				"facebookUsername": "foursquare",
-				"facebookName": "Foursquare"
-			},
-			"location": {
-				"address": "568 Broadway Fl 10",
-				"crossStreet": "at Prince St",
-				"lat": 40.72412842453194,
-				"lng": -73.99726510047911,
-				"postalCode": "10012",
-				"cc": "US",
-				"city": "New York",
-				"state": "NY",
-				"country": "United States",
-				"formattedAddress": ["568 Broadway Fl 10 (at Prince St)", "New York, NY 10012"]
-			},
-			"categories": [{
-				"id": "4bf58dd8d48988d125941735",
-				"name": "Tech Startup",
-				"pluralName": "Tech Startups",
-				"shortName": "Tech Startup",
-				"icon": "https:\/\/ss3.4sqi.net\/img\/categories\/shops\/technology.png",
-				"parents": ["Professional & Other Places", "Office"],
-				"primary": true
-			}],
-			"verified": true,
-			"stats": {
-				"checkinsCount": 84644,
-				"usersCount": 11288,
-				"tipCount": 299
-			},
-			"url": "https:\/\/foursquare.com",
-			"storeId": "HQHQHQHQ"
-		}
-	},
-	{
-		"id": "56e933f0498eb8032f11ba1e",
-		"createdAt": 1458123760,
-		"type": "checkin",
-		"timeZone": "Europe\/Paris",
-		"timeZoneOffset": 60,
-		"user": {
-			"id": "166079265",
-			"firstName": "Frederic",
-			"lastName": "Wei",
-			"gender": "male",
-			"relationship": "self",
-			"photo": "https:\/\/is0.4sqi.net\/userpix_thumbs\/166079265-TXWAYFILSDZYFD3T.jpg"
-		},
-		"venue": {
-			"id": "4da8402b4df0af29b708bf87",
-			"name": "Société Générale",
-			"contact": {},
-			"location": {
-				"address": "2 Boulevard de Strasbourg",
-				"lat": 48.86950328317372,
-				"lng": 2.354668378829956,
-				"postalCode": "75010",
-				"cc": "FR",
-				"city": "Paris",
-				"state": "Île-de-France",
-				"country": "France",
-				"formattedAddress": ["2 Boulevard de Strasbourg", "75010 Paris"]
-			},
-			"categories": [{
-				"id": "4bf58dd8d48988d10a951735",
-				"name": "Bank",
-				"pluralName": "Banks",
-				"shortName": "Bank",
-				"icon": "https:\/\/ss3.4sqi.net\/img\/categories\/shops\/financial.png",
-				"parents": ["Shop & Service"],
-				"primary": true
-			}],
-			"verified": false,
-			"stats": {
-				"checkinsCount": 64,
-				"usersCount": 16,
-				"tipCount": 0
-			},
-			"allowMenuUrlEdit": true
-		}
-	}
+    {
+        "id": "56e98ff1498ea418b2c6f1b5",
+        "createdAt": 1458147313,
+        "type": "checkin",
+        "entities": [],
+        "shout": "I'm in your consumers, testing your push API!",
+        "timeZone": "UTC",
+        "timeZoneOffset": 0,
+        "user": {
+            "id": "1",
+            "firstName": "Jimmy",
+            "lastName": "Foursquare",
+            "gender": "male",
+            "relationship": "self",
+            "photo": "https:\/\/is0.4sqi.net\/userpix_thumbs\/S54EHRPJAHQK0VHP.jpg"
+        },
+        "venue": {
+            "id": "4ef0e7cf7beb5932d5bdeb4e",
+            "name": "Foursquare HQ",
+            "contact": {
+                "phone": "6464497700",
+                "formattedPhone": "(646) 449-7700",
+                "twitter": "foursquare",
+                "facebook": "80690156072",
+                "facebookUsername": "foursquare",
+                "facebookName": "Foursquare"
+            },
+            "location": {
+                "address": "568 Broadway Fl 10",
+                "crossStreet": "at Prince St",
+                "lat": 40.72412842453194,
+                "lng": -73.99726510047911,
+                "postalCode": "10012",
+                "cc": "US",
+                "city": "New York",
+                "state": "NY",
+                "country": "United States",
+                "formattedAddress": ["568 Broadway Fl 10 (at Prince St)", "New York, NY 10012"]
+            },
+            "categories": [{
+                "id": "4bf58dd8d108988d125941735",
+                "name": "Tech Startup",
+                "pluralName": "Tech Startups",
+                "shortName": "Tech Startup",
+                "icon": "https:\/\/ss3.4sqi.net\/img\/categories\/shops\/technology.png",
+                "parents": ["Professional & Other Places", "Office"],
+                "primary": true
+            }],
+            "verified": true,
+            "stats": {
+                "checkinsCount": 84644,
+                "usersCount": 11288,
+                "tipCount": 299
+            },
+            "url": "https:\/\/foursquare.com",
+            "storeId": "HQHQHQHQ"
+        }
+    },
+    {
+        "id": "56e933f0498eb8032f11ba1e",
+        "createdAt": 1458123760,
+        "type": "checkin",
+        "timeZone": "Europe\/Some City",
+        "timeZoneOffset": 60,
+        "user": {
+            "id": "987654321",
+            "firstName": "Toto",
+            "lastName": "Tata",
+            "gender": "male",
+            "relationship": "self",
+            "photo": "https:\/\/is0.4sqi.net\/userpix_thumbs\/987654321-TXWAYFILSDZYFD3T.jpg"
+        },
+        "venue": {
+            "id": "4da8402b4df0af29b708bf87",
+            "name": "Société Générale",
+            "contact": {},
+            "location": {
+                "address": "some address",
+                "lat": 108.86950328317372,
+                "lng": 2.354668378829956,
+                "postalCode": "75010",
+                "cc": "FR",
+                "city": "Some City",
+                "state": "Some State",
+                "country": "France",
+                "formattedAddress": ["some address", "75010 Some City"]
+            },
+            "categories": [{
+                "id": "4bf58dd8d108988d10a951735",
+                "name": "Bank",
+                "pluralName": "Banks",
+                "shortName": "Bank",
+                "icon": "https:\/\/ss3.4sqi.net\/img\/categories\/shops\/financial.png",
+                "parents": ["Shop & Service"],
+                "primary": true
+            }],
+            "verified": false,
+            "stats": {
+                "checkinsCount": 64,
+                "usersCount": 16,
+                "tipCount": 0
+            },
+            "allowMenuUrlEdit": true
+        }
+    }
 ]

@@ -1,4 +1,4 @@
 [
-	{"timestamp":1458147313,"timeZoneOffset":0,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}},
-	{"timestamp":1458123760,"timeZoneOffset":60,"venue":{"location":{"address":"2 Boulevard de Strasbourg","city":"Paris","country":"France","formattedAddress":["2 Boulevard de Strasbourg","75010 Paris"],"lat":48.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"\u00cele-de-France"},"name":"Soci\u00e9t\u00e9 G\u00e9n\u00e9rale"}}
+    {"timestamp":1458147313,"timeZoneOffset":0,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}},
+    {"timestamp":1458123760,"timeZoneOffset":60,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"\u00cele-de-France"},"name":"Soci\u00e9t\u00e9 G\u00e9n\u00e9rale"}}
 ]

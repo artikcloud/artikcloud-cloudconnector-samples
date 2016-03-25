@@ -22,7 +22,7 @@ class FakeContext implements Context {
     Map<String, String> parameters(){
         [
             "endpoint":"http://127.0.0.1:9001/",
-            "pushSecret":"BVM5AI3ROUKCJI0WC1O33CD22R0MOV3KZG4VQYPDXOXB2IR3"
+            "pushSecret":"<Insert your pushSecret here>"
         ]
     }
     List<String> scope(){

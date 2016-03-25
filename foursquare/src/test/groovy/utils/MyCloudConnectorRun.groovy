@@ -12,7 +12,7 @@ class MyCloudConnectorRun {
     // @param httpsKeyStoreType - The key store type, defaults to JKS (optional)
     // @param httpsKeyStorePassword - The password, defaults to a blank password (optional)
     // @param httpsKeyStoreAlgorithm - The key store algorithm, defaults to the platforms default algorithm (optional)
-    def srvCfg = SimpleHttpServer.makeServerConfig('test0.alchim31.net', 9080, 9083, "etc/letsencrypt/archive/test0.alchim31.net/keystore.jks", "JKS", "changeit0", null)
+    def srvCfg = SimpleHttpServer.makeServerConfig('<Insert your test domain here>', 9080, 9083, "etc/letsencrypt/archive/<Insert your test domain here>/keystore.jks", "JKS", "<Insert your encrypting password here>", null)
     def base = ((args.length > 0)? args[0] : MyCloudConnectorRun.getPackage().getName()).replace('.', '/')
     println('base : ' + base)
     def server = SimpleHttpServer.start(
