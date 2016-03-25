@@ -11,12 +11,12 @@
 	}],
 	"response": {
 		"user": {
-			"id": "168323003",
-			"firstName": "Sami",
-			"lastName": "Artik",
+			"id": "987654321",
+			"firstName": "F",
+			"lastName": "L",
 			"gender": "none",
 			"relationship": "self",
-			"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003",
+			"canonicalUrl": "https:\/\/foursquare.com\/user\/987654321",
 			"photo": {
 				"prefix": "https:\/\/irs0.4sqi.net\/img\/user\/",
 				"suffix": "\/blank_boy.png",
@@ -44,7 +44,7 @@
 			"bio": "",
 			"contact": {
 				"verifiedPhone": "false",
-				"email": "samiioparis@gmail.com"
+				"email": "xxxx@gmail.com"
 			},
 			"photos": {
 				"count": 0,
@@ -138,28 +138,28 @@
 					"type": "yours",
 					"count": 2,
 					"items": [{
-						"id": "168323003\/todos",
+						"id": "987654321\/todos",
 						"name": "My Saved Places",
 						"description": "",
 						"type": "todos",
 						"editable": true,
 						"public": true,
 						"collaborative": false,
-						"url": "\/user\/168323003\/list\/todos",
-						"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003\/list\/todos",
+						"url": "\/user\/987654321\/list\/todos",
+						"canonicalUrl": "https:\/\/foursquare.com\/user\/987654321\/list\/todos",
 						"listItems": {
 							"count": 0
 						}
 					}, {
-						"id": "168323003\/venuelikes",
+						"id": "987654321\/venuelikes",
 						"name": "My Liked Places",
 						"description": "",
 						"type": "likes",
 						"editable": true,
 						"public": true,
 						"collaborative": false,
-						"url": "\/user\/168323003\/list\/venuelikes",
-						"canonicalUrl": "https:\/\/foursquare.com\/user\/168323003\/list\/venuelikes",
+						"url": "\/user\/987654321\/list\/venuelikes",
+						"canonicalUrl": "https:\/\/foursquare.com\/user\/987654321\/list\/venuelikes",
 						"listItems": {
 							"count": 0
 						}
@@ -169,7 +169,7 @@
 			"blockedStatus": "none",
 			"createdAt": 1458218604,
 			"lenses": [],
-			"referralId": "u-168323003"
+			"referralId": "u-987654321"
 		}
 	}
 }

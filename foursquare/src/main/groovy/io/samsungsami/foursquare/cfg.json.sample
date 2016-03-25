@@ -21,12 +21,12 @@
     //    }
     "accessTokenUrlMapper": null,
 
-    // clientId provides by third party cloud to the SAMI CloudConnector Application
+    // clientId provides by third party cloud to the ARTIK Cloud CloudConnector Application
     // required
     // type: string (no blank)
     "clientId": "myClientId",
 
-    // clientSecret provides by third party cloud to the SAMI CloudConnector Application
+    // clientSecret provides by third party cloud to the ARTIK Cloud CloudConnector Application
     // required
     // type: string (no blank)
     "clientSecret": "abigsecret",

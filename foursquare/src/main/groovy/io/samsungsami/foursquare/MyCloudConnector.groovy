@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import org.joda.time.format.ISODateTimeFormat
 import scala.Option
 
@@ -94,7 +94,7 @@ class MyCloudConnector extends CloudConnector {
             def eFiltered = filterObjByKeepingKeys(e, allowedKeys)
             def aimJson = renameJson(eFiltered)
             def dataToPush = JsonOutput.toJson(aimJson)
-            new ThirdPartyNotification(new ByExternalDeviceId(eid), [], [dataToPush])
+            new ThirdPartyNotification(new ByExternalId(eid), [], [dataToPush])
         }
     }
 
@@ -110,7 +110,6 @@ class MyCloudConnector extends CloudConnector {
         })
     }
 
-    // Imported from sami-cloudconnector-samples/open-weather-map/src/main/groovy/io/samsungsami/openWeatherMap/MyCloudConnector.groovy
     // transformJson(obj, f) remove all empty values
     def transformJson(obj, f) {
         if (obj instanceof java.util.Map) {
