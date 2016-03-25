@@ -2,7 +2,7 @@ package utils
 
 import spock.lang.*
 import groovy.json.JsonSlurper
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 
 class Tools {
     static def readFile(Object caller, String path) {

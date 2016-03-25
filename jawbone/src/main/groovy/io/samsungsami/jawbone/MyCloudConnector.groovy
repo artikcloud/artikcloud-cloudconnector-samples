@@ -1,6 +1,6 @@
 package io.samsungsami.jawbone
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.joda.time.*
@@ -101,7 +101,7 @@ class MyCloudConnector extends CloudConnector {
 
         ctx.debug("Data provided : " + dataToFetch)
 
-        return new Good(new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), dataToFetch, dataToPush)]))
+        return new Good(new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), dataToFetch, dataToPush)]))
     }
 
     // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)

@@ -1,6 +1,6 @@
 package io.samsungsami.openWeatherMap
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import org.scalactic.*
 import scala.Option

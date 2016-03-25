@@ -4,7 +4,7 @@ import org.scalactic.*
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import scala.Option
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import static java.net.HttpURLConnection.*
 
 //@CompileStatic
@@ -117,7 +117,7 @@ class MyCloudConnector extends CloudConnector {
                     def externalUserId=notificationContent.object_id.toString()
                     def timestamp = (notificationContent.time as long)
                     def reqToDo=[new RequestDef(ENDPOINT_URL).withQueryParams(["min_timestamp" : (timestamp - REQUEST_TIME_RANGE).toString(), "max_timestamp" : (timestamp + 1).toString()])]
-                    [new ThirdPartyNotification(new ByExternalDeviceId(externalUserId), reqToDo, Empty.list())]
+                    [new ThirdPartyNotification(new ByExternalId(externalUserId), reqToDo, Empty.list())]
                 }
                 else {
                     ctx.debug("Invalid callback request content : " + notificationContent + ". (callbackRequest = " + req + ")")

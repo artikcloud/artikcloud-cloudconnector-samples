@@ -1,6 +1,6 @@
 package io.samsungsami.withings
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import org.joda.time.*
 import org.scalactic.*
@@ -35,28 +35,28 @@ class MyCloudConnectorSpec extends Specification {
 		def exectedRequest = new RequestDef("https://wbsapi.withings.net/notify").withMethod(HttpMethod.Get)
 		def expectedReq1a = exectedRequest.withQueryParams([ "action":"revoke",	"appli":"1",
 															"callbackurl":"null?samiDeviceId=&appliId=1",
-															"comment":"Notifications to Body Scale for Samsung SAMI Platform"])
+															"comment":"Notifications to Body Scale for Samsung ARTIK Cloud Platform"])
 		def expectedReq2a = exectedRequest.withQueryParams([ "action":"revoke",	"appli":"4",
 															"callbackurl":"null?samiDeviceId=&appliId=4",
-															"comment":"Notifications to Blood pressure monitor for Samsung SAMI Platform"])
+															"comment":"Notifications to Blood pressure monitor for Samsung ARTIK Cloud Platform"])
 		def expectedReq3a = exectedRequest.withQueryParams([ "action":"revoke",	"appli":"16",
 															"callbackurl":"null?samiDeviceId=&appliId=16",
-															"comment":"Notifications to Withings pulse for Samsung SAMI Platform"])
+															"comment":"Notifications to Withings pulse for Samsung ARTIK Cloud Platform"])
 		def expectedReq4a = exectedRequest.withQueryParams([ "action":"revoke",	"appli":"44",
 															"callbackurl":"null?samiDeviceId=&appliId=44",
-															"comment":"Notifications to Sleep monitor for Samsung SAMI Platform"])
+															"comment":"Notifications to Sleep monitor for Samsung ARTIK Cloud Platform"])
 		def expectedReq1b = exectedRequest.withQueryParams([ "action":"subscribe",	"appli":"1",
 															"callbackurl":"null012345/thirdpartynotifications?samiDeviceId=&appliId=1",
-															"comment":"Notifications to Body Scale for Samsung SAMI Platform"])
+															"comment":"Notifications to Body Scale for Samsung ARTIK Cloud Platform"])
 		def expectedReq2b = exectedRequest.withQueryParams([ "action":"subscribe",	"appli":"4",
 															"callbackurl":"null012345/thirdpartynotifications?samiDeviceId=&appliId=4",
-															"comment":"Notifications to Blood pressure monitor for Samsung SAMI Platform"])
+															"comment":"Notifications to Blood pressure monitor for Samsung ARTIK Cloud Platform"])
 		def expectedReq3b = exectedRequest.withQueryParams([ "action":"subscribe",	"appli":"16",
 															"callbackurl":"null012345/thirdpartynotifications?samiDeviceId=&appliId=16",
-															"comment":"Notifications to Withings pulse for Samsung SAMI Platform"])
+															"comment":"Notifications to Withings pulse for Samsung ARTIK Cloud Platform"])
 		def expectedReq4b = exectedRequest.withQueryParams([ "action":"subscribe",	"appli":"44",
 															"callbackurl":"null012345/thirdpartynotifications?samiDeviceId=&appliId=44",
-															"comment":"Notifications to Sleep monitor for Samsung SAMI Platform"])
+															"comment":"Notifications to Sleep monitor for Samsung ARTIK Cloud Platform"])
 
 		then:
 		res.isGood()
@@ -83,17 +83,17 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		results[0].isGood()
-		results[0].get().thirdPartyNotifications[0].selector == new BySamiDeviceId(did)
+		results[0].get().thirdPartyNotifications[0].selector == new ByDeviceId(did)
 		results[0].get().thirdPartyNotifications[0].requestsOfData == [mesureReq]
-		results[0].get() == new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), [mesureReq])])
+		results[0].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [mesureReq])])
 		results[1].get().thirdPartyNotifications[0].requestsOfData == [mesureReq]
-		results[1].get() == new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), [mesureReq])])
+		results[1].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [mesureReq])])
 		results[2].get().thirdPartyNotifications[0].requestsOfData[0] == activityReq
 		results[2].get().thirdPartyNotifications[0].requestsOfData[1] == mesureActivityReq
 		results[2].get().thirdPartyNotifications[0].requestsOfData == [activityReq, mesureActivityReq]
-		results[2].get() == new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), [activityReq, mesureActivityReq])])
+		results[2].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [activityReq, mesureActivityReq])])
 		results[3].get().thirdPartyNotifications[0].requestsOfData == [sleepReq, mesureReq]
-		results[3].get() == new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), [sleepReq, mesureReq])])
+		results[3].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [sleepReq, mesureReq])])
 	}
 
 	def "fetch data after from activity notification"() {

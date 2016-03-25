@@ -1,6 +1,6 @@
 package io.samsungsami.netatmo
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.scalactic.*

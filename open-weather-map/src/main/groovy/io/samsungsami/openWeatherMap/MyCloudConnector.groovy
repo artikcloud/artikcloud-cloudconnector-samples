@@ -1,6 +1,6 @@
 package io.samsungsami.openWeatherMap
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.joda.time.DateTime
@@ -59,7 +59,7 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
-        def dSelector = new BySamiDeviceId(dInfo.did)
+        def dSelector = new ByDeviceId(dInfo.did)
         def json = slurper.parseText(action.params)
         switch (action.name) {
             case "getCurrentWeatherByCity":

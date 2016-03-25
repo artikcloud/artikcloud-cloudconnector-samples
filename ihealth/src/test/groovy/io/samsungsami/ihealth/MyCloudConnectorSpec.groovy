@@ -1,6 +1,6 @@
 package io.samsungsami.ihealth
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import org.joda.time.*
 import org.scalactic.*
 import scala.Option
@@ -67,14 +67,14 @@ class MyCloudConnectorSpec extends Specification {
 		then:
 		res.isGood()
 		res.get().thirdPartyNotifications.size == 8
-		res.get().thirdPartyNotifications[0] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq1])
-		res.get().thirdPartyNotifications[1] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq2])
-		res.get().thirdPartyNotifications[2] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq3])
-		res.get().thirdPartyNotifications[3] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq4])
-		res.get().thirdPartyNotifications[4] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq5])
-		res.get().thirdPartyNotifications[5] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq6])
-		res.get().thirdPartyNotifications[6] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq7])
-		res.get().thirdPartyNotifications[7] == new ThirdPartyNotification(new ByExternalDeviceId(did), [expectedReq8])
+		res.get().thirdPartyNotifications[0] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq1])
+		res.get().thirdPartyNotifications[1] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq2])
+		res.get().thirdPartyNotifications[2] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq3])
+		res.get().thirdPartyNotifications[3] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq4])
+		res.get().thirdPartyNotifications[4] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq5])
+		res.get().thirdPartyNotifications[5] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq6])
+		res.get().thirdPartyNotifications[6] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq7])
+		res.get().thirdPartyNotifications[7] == new ThirdPartyNotification(new ByExternalId(did), [expectedReq8])
 	}
 
 	def "create events from fetch response"() {

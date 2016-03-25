@@ -7,7 +7,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import static java.net.HttpURLConnection.*
 
 //@CompileStatic
@@ -43,7 +43,7 @@ class MyCloudConnector extends CloudConnector {
 		def requestsToDo = datesFromStoryLines.collect{ dateStr ->
 			new RequestDef(summaryEndpoint(dateStr)).withQueryParams(queryParams)
 		}
-		new Good(new NotificationResponse([new ThirdPartyNotification(new ByExternalDeviceId(extId), requestsToDo)]))
+		new Good(new NotificationResponse([new ThirdPartyNotification(new ByExternalId(extId), requestsToDo)]))
 	}
 
 	@Override

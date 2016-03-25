@@ -1,7 +1,7 @@
 package utils
 
 import scala.Option
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import org.scalactic.*
 
 

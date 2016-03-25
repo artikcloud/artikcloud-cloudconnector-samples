@@ -1,10 +1,10 @@
 // Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
 // Every code is commented, because everything is optional.
 // The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of com.samsung.sami.cloudconnector.api.CloudConnector
+// See the javadoc/scaladoc of cloud.artik.cloudconnector.api.CloudConnector
 package io.samsungsami.withings
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.joda.time.DateTime
@@ -162,7 +162,7 @@ class MyCloudConnector extends CloudConnector {
             ctx.debug("Bad notification, impossible to build query from :" + req)
             return new Bad(new Failure("impossible to build query for app Id = " + appliId))
         }
-        new Good(new NotificationResponse([new ThirdPartyNotification(new BySamiDeviceId(did), requestsToDo)]))
+        new Good(new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), requestsToDo)]))
     }
 
     @Override
@@ -229,6 +229,6 @@ class MyCloudConnector extends CloudConnector {
                 "action"     : action,
                 "appli"      : String.valueOf(appliId),
                 "callbackurl": url,
-                "comment"    : "Notifications to " + name + " for Samsung SAMI Platform"]
+                "comment"    : "Notifications to " + name + " for Samsung ARTIK Cloud Platform"]
     }
 }

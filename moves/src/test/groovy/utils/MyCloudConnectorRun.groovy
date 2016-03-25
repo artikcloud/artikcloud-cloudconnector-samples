@@ -1,6 +1,6 @@
 package utils
 
-import com.samsung.sami.cloudconnector.testkit.http.SimpleHttpServer
+import cloud.artik.cloudconnector.testkit.http.SimpleHttpServer
 
 class MyCloudConnectorRun {
 

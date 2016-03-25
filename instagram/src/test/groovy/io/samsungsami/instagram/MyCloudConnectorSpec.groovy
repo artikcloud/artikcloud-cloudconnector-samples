@@ -10,7 +10,7 @@ import org.scalactic.*
 import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import utils.FakeContext
 import static utils.Tools.*
@@ -102,8 +102,8 @@ class MyCloudConnectorSpec extends Specification {
       def res2 = sut.onFetchResponse(ctx, requestApi2, dev2, responseApi2)
       then:
       resNotif.get() == new NotificationResponse([
-        new ThirdPartyNotification(new ByExternalDeviceId(dev1.extId.get()), [ requestApi1 ]),
-        new ThirdPartyNotification(new ByExternalDeviceId(dev2.extId.get()), [ requestApi2 ])
+        new ThirdPartyNotification(new ByExternalId(dev1.extId.get()), [ requestApi1 ]),
+        new ThirdPartyNotification(new ByExternalId(dev2.extId.get()), [ requestApi2 ])
       ])
       cmpEvents(res1.get(), [event01])
       cmpEvents(res2.get(), [event02, event03])

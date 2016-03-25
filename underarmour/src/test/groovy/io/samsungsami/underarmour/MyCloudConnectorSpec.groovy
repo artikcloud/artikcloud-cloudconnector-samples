@@ -1,6 +1,6 @@
 package io.samsungsami.underarmour
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import org.joda.time.*
 import org.scalactic.*
@@ -72,10 +72,10 @@ class MyCloudConnectorSpec extends Specification {
 
   		then:
     		res.isGood()
-			res.get().thirdPartyNotifications[0].selector == new ByExternalDeviceId(euid)
+			res.get().thirdPartyNotifications[0].selector == new ByExternalId(euid)
 			res.get().thirdPartyNotifications[0].requestsOfData[0] == execetedReq
 			res.get() == new NotificationResponse([
-				new ThirdPartyNotification(new ByExternalDeviceId(euid), [execetedReq])
+				new ThirdPartyNotification(new ByExternalId(euid), [execetedReq])
 			])
     }
 

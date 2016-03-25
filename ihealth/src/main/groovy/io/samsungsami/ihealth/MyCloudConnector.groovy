@@ -1,10 +1,10 @@
 // Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
 // Every code is commented, because everything is optional.
 // The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of com.samsung.sami.cloudconnector.api.CloudConnector
+// See the javadoc/scaladoc of cloud.artik.cloudconnector.api.CloudConnector
 package io.samsungsami.ihealth
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
@@ -64,7 +64,7 @@ class MyCloudConnector extends CloudConnector {
                     start_time: epochInSeconds.toString(),
                     end_time: (epochInSeconds + 1).toString()
             ])
-            new ThirdPartyNotification(new ByExternalDeviceId(extId), [reqToDo])
+            new ThirdPartyNotification(new ByExternalId(extId), [reqToDo])
         }
         new Good(new NotificationResponse(notif))
     }

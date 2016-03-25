@@ -8,7 +8,7 @@ import org.scalactic.*
 import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import utils.FakeContext
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
@@ -58,7 +58,7 @@ class MyCloudConnectorSpec extends Specification {
 			]) 
 		}
 
-		def "push weight data to SAMI on onFetchResponse"() {
+		def "push weight data to ARTIK Cloud on onFetchResponse"() {
 			when:
 			def req = new RequestDef("${ctx.parameters().endpoint}/weight")
 						.withMethod(HttpMethod.Get)
@@ -102,7 +102,7 @@ class MyCloudConnectorSpec extends Specification {
 			result.get() == []
 		}
 
-		def "push fitness data to SAMI on onFetchResponse"() {
+		def "push fitness data to ARTIK Cloud on onFetchResponse"() {
 			when:
 			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
 						.withMethod(HttpMethod.Get)
@@ -124,7 +124,7 @@ class MyCloudConnectorSpec extends Specification {
 			]
 		}
 
-		def "push fitness data to SAMI on onFetchResponse with no heart rate"() {
+		def "push fitness data to ARTIK Cloud on onFetchResponse with no heart rate"() {
 			when:
 			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
 						.withMethod(HttpMethod.Get)
@@ -146,7 +146,7 @@ class MyCloudConnectorSpec extends Specification {
 			]
 		}
 
-		def "push fitness data to SAMI on onFetchResponse with utc_offset"() {
+		def "push fitness data to ARTIK Cloud on onFetchResponse with utc_offset"() {
 			when:
 			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
 						.withMethod(HttpMethod.Get)
@@ -168,7 +168,7 @@ class MyCloudConnectorSpec extends Specification {
 			]
 		}
 
-		def "push fitness data to SAMI on onFetchResponse with utc_offset and duration"() {
+		def "push fitness data to ARTIK Cloud on onFetchResponse with utc_offset and duration"() {
 			when:
 			def req = new RequestDef("${ctx.parameters().endpoint}/fitness")
 						.withMethod(HttpMethod.Get)

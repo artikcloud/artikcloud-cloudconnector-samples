@@ -9,7 +9,7 @@ import org.scalactic.*
 import scala.Option
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import utils.FakeContext
 import static utils.Tools.*
@@ -37,7 +37,7 @@ class MyCloudConnectorSpec extends Specification {
         then:
         res.isGood()
         res.get() == new NotificationResponse([
-            new ThirdPartyNotification(new ByExternalDeviceId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/user/summary/daily/20121213").withQueryParams(["timeZone": "UTC"]),
                 new RequestDef(apiEndpoint + "/user/summary/daily/20141213").withQueryParams(["timeZone": "UTC"])
             ]),

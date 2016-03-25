@@ -11,7 +11,7 @@ import org.joda.time.*
 import java.nio.charset.StandardCharsets
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import org.apache.commons.codec.binary.Base64;
 
 //TODO implement unsubscription (it's a workaround for https://samihub.atlassian.net/browse/SAMI-3607)
@@ -167,7 +167,7 @@ class MyCloudConnector extends CloudConnector {
         String collectionType = e.collectionType;
         String date = e.date;
         def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep).withHeaders(["remember_date": date])}
-        new ThirdPartyNotification(new BySamiDeviceId(did), requestsToDo)
+        new ThirdPartyNotification(new ByDeviceId(did), requestsToDo)
     }
 
     def Or<NotificationResponse, Failure> answerToChallengeRequest(RequestDef req, String verifyCode){

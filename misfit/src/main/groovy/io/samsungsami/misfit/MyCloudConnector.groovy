@@ -11,7 +11,7 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import scala.Option
 
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 
 import static java.net.HttpURLConnection.*
 
@@ -91,7 +91,7 @@ class MyCloudConnector extends CloudConnector {
 					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
 					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : date, "end_date" : date, "detail": "true"])
 				}
-				new ThirdPartyNotification(new ByExternalDeviceId(extId), reqs)
+				new ThirdPartyNotification(new ByExternalId(extId), reqs)
 			}
 		}
 	}

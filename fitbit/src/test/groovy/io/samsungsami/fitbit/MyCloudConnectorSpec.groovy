@@ -3,7 +3,7 @@ package io.samsungsami.fitbit
 import spock.lang.*
 import scala.Option
 import org.joda.time.*
-import com.samsung.sami.cloudconnector.api_v1.*
+import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import utils.FakeContext
 import static utils.Tools.*
@@ -59,8 +59,8 @@ class MyCloudConnectorSpec extends Specification {
 		then:
 		res.isGood()
 		res.get() == new NotificationResponse([
-				new ThirdPartyNotification(new BySamiDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"]),]),
-				new ThirdPartyNotification(new BySamiDeviceId("id2"), [
+				new ThirdPartyNotification(new ByDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"]),]),
+				new ThirdPartyNotification(new ByDeviceId("id2"), [
 						new RequestDef(apiEndpoint + "activities/date/2011-03-01.json").withHeaders(["remember_date": "2011-03-01"]),
 						new RequestDef(apiEndpoint + "activities/heart/date/2011-03-01/1d.json").withHeaders(["remember_date": "2011-03-01"])
 				]),

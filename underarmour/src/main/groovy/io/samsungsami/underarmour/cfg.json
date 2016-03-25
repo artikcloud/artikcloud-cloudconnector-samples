@@ -10,6 +10,6 @@
   "parameters": {
     "endPointUrl": "https://api.ua.com",
     "notificationCallback": "https://test0.alchim31.net:9083/cloudconnectors/0000/thirdpartynotifications",
-    "sharedSecret": "SAMI shared $ecret"
+    "sharedSecret": "ARTIK Cloud shared $ecret"
   }
 }
