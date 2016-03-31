@@ -1,0 +1,9 @@
+{
+    "oauth_consumer_key": "<insert your client id>" ,
+    "oauth_nonce": "a6f0df7089eade26d2c965e83b807414" ,
+    "oauth_signature": "NpzMqta0hlTMnP1irJ91l4eRlOU=" ,
+    "oauth_signature_method": "HMAC-SHA1" ,
+    "oauth_timestamp": 1459410365 ,
+    "oauth_token": "<insert your user token>" ,
+    "oauth_version": 1.0
+}

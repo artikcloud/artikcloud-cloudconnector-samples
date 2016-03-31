@@ -1,0 +1,13 @@
+{
+  "authorizationUrl":"https://api.twitter.com/oauth/authorize",
+  "accessTokenUrl":"https://api.twitter.com/oauth/access_token",
+  "requestTokenUrl":"https://api.twitter.com/oauth/request_token",
+  "clientId":"<insert your client id>",
+  "clientSecret":"<insert your client secret>",
+  "authType" : "OAuth1",
+  "statusAcceptNotification":200,
+  "accessTokenMethod": "post",
+  "parameters": {
+    "endpoint" : "https://api.twitter.com/1.1"
+  }
+}

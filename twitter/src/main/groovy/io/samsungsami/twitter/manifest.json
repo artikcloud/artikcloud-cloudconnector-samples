@@ -1,0 +1,36 @@
+{
+  "actions": [
+    {
+      "name": "updateStatus",
+      "description": "just tweet",
+      "parameters": [
+        {
+          "name": "status",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "display_coordinates",
+          "type": "CUSTOM",
+          "valueClass": "Boolean"
+        },
+        {
+          "name": "lat",
+          "type": "LATITUDE",
+          "valueClass": "Double",
+          "unit": null
+        },
+        {
+          "name": "long",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": null
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "fields": [],
+  "messageFormat": "json"
+}
