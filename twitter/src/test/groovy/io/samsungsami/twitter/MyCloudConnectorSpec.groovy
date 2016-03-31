@@ -34,13 +34,23 @@ class MyCloudConnectorSpec extends Specification {
         actionRes.isBad()
     }
 
+    def "test function stringifyAndSend"() {
+        when:
+        def req = sut.stringifyAndSend([lat: 16.7042, lng: 95.9038, status: 42], "${ctx.parameters().endpoint}/statuses/update.json")
+        then:
+        req.bodyParams == [lat:"16.7042", lng:"95.9038", status:"42"]
+        req == new RequestDef("https://api.twitter.com/1.1/statuses/update.json")
+                        .withMethod(HttpMethod.Post).withContentType("application/x-www-form-urlencoded")
+                        .withBodyParams([lat:"16.7042", lng:"95.9038", status:"42"])
+    }
+
     def "test function generateTwitterAuthorization"() {
         when:
         def oauthParams = parser.parseText(readFile(this, "oauthParams.json"))
         def twitterAuthorization = sut.generateTwitterAuthorization(oauthParams)
         then:
         //for twitter, signature should be URL-encoded
-        twitterAuthorization == 'OAuth oauth_consumer_key="<insert your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<insert your user token>", oauth_version="1.0"'
+        twitterAuthorization == 'OAuth oauth_consumer_key="<inser your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<inser your user token>", oauth_version="1.0"'
     }
 
     def "test function addTwitterHeader"() {
@@ -83,8 +93,8 @@ class MyCloudConnectorSpec extends Specification {
                                     Empty.option(), 
                                     new Credentials(
                                         AuthType.OAuth1, 
-                                        "<insert your user token secret>", 
-                                        "<insert your user token>", 
+                                        "<inser your user token secret>", 
+                                        "<inser your user token>", 
                                         Empty.option(), 
                                         Option.apply("bearer"), 
                                         Empty.list(), 

@@ -1,8 +1,8 @@
 {
   "actions": [
     {
-      "name": "updateStatus",
-      "description": "just tweet",
+      "name": "updateStatusWithGeolocation",
+      "description": "Tweet with geolocation",
       "parameters": [
         {
           "name": "status",
@@ -10,21 +10,27 @@
           "valueClass": "String"
         },
         {
-          "name": "display_coordinates",
-          "type": "CUSTOM",
-          "valueClass": "Boolean"
-        },
-        {
           "name": "lat",
           "type": "LATITUDE",
-          "valueClass": "Double",
-          "unit": null
+          "valueClass": "Double"
         },
         {
           "name": "long",
           "type": "CUSTOM",
-          "valueClass": "Double",
-          "unit": null
+          "valueClass": "Double"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "updateStatus",
+      "description": "tweet",
+      "parameters": [
+        {
+          "name": "status",
+          "type": "CUSTOM",
+          "valueClass": "String"
         }
       ],
       "isStandard": false,

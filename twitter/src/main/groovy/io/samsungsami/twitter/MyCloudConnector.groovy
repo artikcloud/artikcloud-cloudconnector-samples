@@ -109,23 +109,32 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo info) {
+        def paramsAsJson = slurper.parseText(action.params)
+        def tweetParams = filterObjByKeepingKeys(paramsAsJson, allowedKeys)
+        
+        if (tweetParams == null || tweetParams == Empty.map() || tweetParams.status == null) {
+            return new Bad(new Failure("Missing field 'status' in action parameters ${paramsAsJson}"))
+        }
+
         switch (action.name) {
-            case "updateStatus":     
-                def paramsAsJson = slurper.parseText(action.params)
-                def tweetParams = filterObjByKeepingKeys(paramsAsJson, allowedKeys)
-                def tweetParamsStringified = tweetParams.collectEntries { key, value -> [key, value.toString()] }
-
-                if (tweetParams == null || tweetParams == Empty.map()) {
-                    return new Bad(new Failure("Missing field 'status' in action parameters ${paramsAsJson}"))
-                }
-
-                def req = new RequestDef("${ctx.parameters().endpoint}/statuses/update.json")
-                            .withContentType("application/x-www-form-urlencoded")
-                            .withMethod(HttpMethod.Post).withBodyParams(tweetParamsStringified)
+            case "updateStatus":   
+                def req = stringifyAndSend(tweetParams, "${ctx.parameters().endpoint}/statuses/update.json") 
+                return new Good(new ActionResponse([new ActionRequest([req])]))
+            case "updateStatusWithGeolocation": 
+                tweetParams << [display_coordinates: true] 
+                def req = stringifyAndSend(tweetParams, "${ctx.parameters().endpoint}/statuses/update.json")
                 return new Good(new ActionResponse([new ActionRequest([req])]))
             default:        
                 return new Bad(new Failure("Unknown action: ${action.name}"))
         }
+    }
+
+    def stringifyAndSend(Map params, String url) {
+        def paramsStringified = params.collectEntries { key, value -> [key, value.toString()] }
+        def req = new RequestDef(url)
+            .withContentType("application/x-www-form-urlencoded")
+            .withMethod(HttpMethod.Post).withBodyParams(paramsStringified) 
+        return req
     }
 
     def generateTwitterAuthorization(Map params) {
