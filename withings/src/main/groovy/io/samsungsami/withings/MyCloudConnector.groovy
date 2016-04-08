@@ -1,7 +1,3 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of cloud.artik.cloudconnector.api.CloudConnector
 package io.samsungsami.withings
 
 import cloud.artik.cloudconnector.api_v1.*
@@ -78,7 +74,7 @@ class MyCloudConnector extends CloudConnector {
             return new Good(Option.apply(null))
         }
         else {
-            return new Bad(new Failure("can't subscribe json status : ${json.status} is not OK (200)"))
+            return new Bad(new Failure("can't subscribe (did:$info.did()) json status : ${json.status} is not OK (200) : '$res'"))
         }
     }
 
