@@ -31,19 +31,7 @@ class MyCloudConnectorSpec extends Specification {
             "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
         ]
         def extIdKeys = [ "user", "id" ]
-/*
-        def "retrieve external user id from user profile using subscribe"() {
-            when:
-            def reqs = sut.subscribe(ctx, device)
-            def resp0 = new Response(HttpURLConnection.HTTP_OK, "application/x-www-form-urlencoded", readFile(this, "userInfo.json"))
-            def res = sut.onSubscribeResponse(ctx, reqs.get()[0], device, resp0)
-            then:
-            reqs.isGood()
-            reqs.get() ==  [new RequestDef("$apiEndpoint/users/self")]//.withQueryParams(["oauth_token" : info.credentials.token, "v" : "20160321"]]
-            res.isGood()
-            res.get() == Option.apply(device.withExtId(extId))
-        }
-*/
+
         def "reject Notification with invalid pushSecret"() {
             when:
             def invalidMsg = readFile(this, "apiNotificationBadSignature.json")
@@ -66,10 +54,10 @@ class MyCloudConnectorSpec extends Specification {
             res.isBad()
         }
 
-        def "test Function filterObjByKeepingKeys"() {
+        def "test Function filterByAllowedKeys"() {
             when:
             def checkin = parser.parseText(readFile(this, "sampleCheckin.json"))[0]
-            def checkinFiltered = sut.filterObjByKeepingKeys(checkin, allowedKeys)
+            def checkinFiltered = sut.filterByAllowedKeys(checkin, allowedKeys)
             def expectedCheckinFiltered = parser.parseText(readFile(this, "expectedFilteredCheckin.json"))
             then:
             checkinFiltered == expectedCheckinFiltered
@@ -80,23 +68,11 @@ class MyCloudConnectorSpec extends Specification {
             def checkin = parser.parseText(readFile(this, "sampleCheckin.json"))
             def notificationGenerated = sut.generateNotificationsFromCheckins(checkin)
             def expectedNotificationGenerated = [
-                /*
-                new ThirdPartyNotification(new ByExternalId("1",),[],[
-                    JsonOutput.toJson(
-                        parser.parseText(readFile(this, "expectedNotificationContent.json"))[0]
-                    )
-                ]), 
-                new ThirdPartyNotification(new ByExternalId("987654321",),[],[
-                    JsonOutput.toJson(
-                        parser.parseText(readFile(this, "expectedNotificationContent.json"))[1]
-                    )
-                ])
-                */
                 new ThirdPartyNotification(new ByExternalId("1",),[],[
                     '''{"timestamp":1458147313,"timeZoneOffset":0,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}}'''
                 ]), 
                 new ThirdPartyNotification(new ByExternalId("987654321",),[],[
-                    '''{"timestamp":1458123760,"timeZoneOffset":60,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"\\u00cele-de-France"},"name":"Soci\\u00e9t\\u00e9 G\\u00e9n\\u00e9rale"}}'''
+                    '''{"timestamp":1458123760,"timeZoneOffset":60,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"Some State"},"name":"Soci\\u00e9t\\u00e9 G\\u00e9n\\u00e9rale"}}'''
                 ])
 
             ]
@@ -106,11 +82,11 @@ class MyCloudConnectorSpec extends Specification {
             notificationGenerated == expectedNotificationGenerated
         }
 
-        // renameJson(obj) -< transformJson(obj, f) remove all empty values
-        def "test Function renameJson"() {
+        // renameJsonKey(obj) -< transformJson(obj, f) remove all empty values
+        def "test Function renameJsonKey"() {
             when:
             def checkin = parser.parseText(readFile(this, "sampleCheckin.json"))[0]
-            def checkinRenamed = sut.renameJson(checkin)
+            def checkinRenamed = sut.renameJsonKey(checkin)
             def expectedCheckinRenamed = parser.parseText(readFile(this, "expectedRenamedCheckin.json"))
             then:
             checkinRenamed == expectedCheckinRenamed
@@ -126,10 +102,9 @@ class MyCloudConnectorSpec extends Specification {
                     ['''{"timestamp":1458647923,"timeZoneOffset":60,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"Ile-de-France"},"name":"Societe Generale"}}'''],
                     ['''{"timestamp":1458670144,"timeZoneOffset":60,"venue":{"location":{"country":"France","formattedAddress":["75000"],"lat":108.8542115806468,"long":2.352619171142578,"postalCode":"75000","state":"Ile-de-France"},"name":"Some City"}}''']
             ]
-            def expectedResponse = new NotificationResponse([
-                    new ThirdPartyNotification(new ByExternalId(device.extId.get()), [], expectedData[0]),
-                    new ThirdPartyNotification(new ByExternalId(device.extId.get()), [], expectedData[1])
-                ])
+            def expectedResponse = new NotificationResponse( expectedData.collect { data ->
+                    new ThirdPartyNotification(new ByExternalId(device.extId.get()), [], data)
+            })
                     
             then:
             res.isGood()

@@ -35,7 +35,6 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
         def json = slurper.parseText(res.content)
-        ctx.debug("json.response.user.id " + json.response.user.id)
         new Good(Option.apply(info.withExtId(json.response.user.id)))
     }
 
@@ -43,28 +42,21 @@ class MyCloudConnector extends CloudConnector {
     // -----------------------------------------
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
-        ctx.debug("req " + req)
-        ctx.debug("req.content " + req.content)
         def json = slurper.parseText(req.content)
         def pushSecret = ctx.parameters()["pushSecret"]
-        ctx.debug("pushSecret " + pushSecret)
 
         if (pushSecret == null || json.secret == [] || json.secret.any {it.trim() != pushSecret.trim()}){
-            ctx.debug("Invalid secret hash for callback request $req ; expected : $pushSecret")
             return new Bad(new Failure("Invalid push secret"))
         }
         
         def checkin = json.checkin.collect { e -> slurper.parseText(e)}
         def extId = checkin.collect { e -> e.user.id.toString()}
-        ctx.debug("extId " + extId)
 
         if (extId.size() != checkin.size() || extId.any {it == null || it == ""}) {
-            ctx.debug('Bad notification (where is did in following req : ) ' + req)
             return new Bad(new Failure('Impossible to recover device id from request.'))
         }
 
-        def checkinFiltered = checkin.collect { e -> filterObjByKeepingKeys(e, allowedKeys + extIdKeys) }
-        ctx.debug("checkinFiltered " + checkinFiltered)
+        def checkinFiltered = checkin.collect { e -> filterByAllowedKeys(e, allowedKeys + extIdKeys) }
         def notifications = generateNotificationsFromCheckins(checkinFiltered)
         
         return new Good(new NotificationResponse(notifications))
@@ -79,34 +71,30 @@ class MyCloudConnector extends CloudConnector {
         return new Good([new Event(json.timestamp, JsonOutput.toJson(json))])
     }
 
-    def filterObjByKeepingKeys(obj, keepingKeys) {
+    def filterByAllowedKeys(obj, keepingKeys) {
         transformJson(obj, { k, v ->
-            if (keepingKeys.contains(k))
-                [(k): (v)]  
-            else
-                [:]
+            keepingKeys.contains(k)? [(k): v]: [:]
         })
     }
 
     def generateNotificationsFromCheckins(checkins) {
         checkins.collect { e ->
             def eid = e.user.id
-            def eFiltered = filterObjByKeepingKeys(e, allowedKeys)
-            def aimJson = renameJson(eFiltered)
+            def eFiltered = filterByAllowedKeys(e, allowedKeys)
+            def aimJson = renameJsonKey(eFiltered)
             def dataToPush = JsonOutput.toJson(aimJson)
             new ThirdPartyNotification(new ByExternalId(eid), [], [dataToPush])
         }
     }
 
     // For key : "lng" --> "long", "createdAt" --> "timestamp"; keep other key-value
-    def renameJson(obj) {
+    def renameJsonKey(obj) {
         transformJson(obj, { k, v ->
-            if (k == "lng")
-                ["long": v]
-            else if (k == "createdAt")
-                ["timestamp": v]
-            else
-                [(k):v]
+            switch(k) {
+                case "lng": return ["long": v]
+                case "createdAt": return ["timestamp": v]
+                default: return [(k):v]
+            }
         })
     }
 

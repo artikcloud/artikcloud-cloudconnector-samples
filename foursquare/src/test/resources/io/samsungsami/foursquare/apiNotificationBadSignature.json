@@ -8,7 +8,7 @@
         "{\"id\":\"987654321\",\"firstName\":\"Toto\",\"lastName\":\"Tata\",\"gender\":\"male\",\"relationship\":\"self\",\"photo\":\"https:\\/\\/is0.4sqi.net\\/userpix_thumbs\\/987654321-TXWAYFILSDZYFD3T.jpg\",\"tips\":{\"count\":0},\"lists\":{\"groups\":[{\"type\":\"created\",\"count\":3,\"items\":[]}]},\"homeCity\":\"Some City, A8\",\"bio\":\"\",\"contact\":{\"verifiedPhone\":\"false\",\"email\":\"toto.Tata.176@gmail.com\"}}"
     ],
     "secret":[
-        "<Insert your pushSecret here>\r\n",
+        "<Insert false pushSecret here>\r\n",
         "<Insert your pushSecret here>\r\n"
     ]
 }
