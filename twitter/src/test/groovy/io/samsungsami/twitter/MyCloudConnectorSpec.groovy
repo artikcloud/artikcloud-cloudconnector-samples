@@ -50,7 +50,7 @@ class MyCloudConnectorSpec extends Specification {
         def twitterAuthorization = sut.generateTwitterAuthorization(oauthParams)
         then:
         //for twitter, signature should be URL-encoded
-        twitterAuthorization == 'OAuth oauth_consumer_key="<inser your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<inser your user token>", oauth_version="1.0"'
+        twitterAuthorization == 'OAuth oauth_consumer_key="<inser your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<insert your user token>", oauth_version="1.0"'
     }
 
     def "test function addTwitterHeader"() {

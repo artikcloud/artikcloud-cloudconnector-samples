@@ -110,11 +110,10 @@ class MyCloudConnector extends CloudConnector {
     @Override
     Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo info) {
         def paramsAsJson = slurper.parseText(action.params)
-        def tweetParams = filterObjByKeepingKeys(paramsAsJson, allowedKeys)
-        
-        if (tweetParams == null || tweetParams == Empty.map() || tweetParams.status == null) {
+        if (paramsAsJson?.status == null) {
             return new Bad(new Failure("Missing field 'status' in action parameters ${paramsAsJson}"))
         }
+        def tweetParams = filterObjByKeepingKeys(paramsAsJson, allowedKeys)
 
         switch (action.name) {
             case "updateStatus":   
@@ -158,10 +157,7 @@ class MyCloudConnector extends CloudConnector {
     // Imported from sami-cloudconnector-samples/foursquare/src/main/groovy/io/samsungsami/foursquare/MyCloudConnector.groovy
     def filterObjByKeepingKeys(obj, keepingKeys) {
         traversalNestedObj(obj, { k, v ->
-            if (keepingKeys.contains(k))
-                [(k): (v)]  
-            else
-                [:]
+            keepingKeys.contains(k)? [(k): (v)]: [:]
         })
     }
 
