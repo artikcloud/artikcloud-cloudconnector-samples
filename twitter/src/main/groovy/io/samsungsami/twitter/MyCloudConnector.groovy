@@ -1,7 +1,3 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of cloud.artik.cloudconnector.api_v1.CloudConnector
 package io.samsungsami.twitter
 
 import static java.net.HttpURLConnection.*
@@ -113,7 +109,7 @@ class MyCloudConnector extends CloudConnector {
         if (paramsAsJson?.status == null) {
             return new Bad(new Failure("Missing field 'status' in action parameters ${paramsAsJson}"))
         }
-        def tweetParams = filterObjByKeepingKeys(paramsAsJson, allowedKeys)
+        def tweetParams = filterByAllowedKeys(paramsAsJson, allowedKeys)
 
         switch (action.name) {
             case "updateStatus":   
@@ -154,20 +150,20 @@ class MyCloudConnector extends CloudConnector {
         ])
     }
 
-    // Imported from sami-cloudconnector-samples/foursquare/src/main/groovy/io/samsungsami/foursquare/MyCloudConnector.groovy
-    def filterObjByKeepingKeys(obj, keepingKeys) {
-        traversalNestedObj(obj, { k, v ->
-            keepingKeys.contains(k)? [(k): (v)]: [:]
+    // copy-pasted from sami-cloudconnector-samples/foursquare/src/main/groovy/io/samsungsami/foursquare/MyCloudConnector.groovy
+    def filterByAllowedKeys(obj, allowedKeys) {
+        applyToMessage(obj, { k, v ->
+            allowedKeys.contains(k)? [(k): (v)]: [:]
         })
     }
 
-    // Imported from sami-cloudconnector-samples/open-weather-map/src/main/groovy/io/samsungsami/openWeatherMap/MyCloudConnector.groovy -> transformJson
-    // traversalNestedObj(obj, f) will remove all empty values
-    def traversalNestedObj(obj, f) {
-        if (obj instanceof java.util.Map) {
-            obj.collectEntries { k, v ->
+    // copy-pasted from sami-cloudconnector-samples/open-weather-map/src/main/groovy/io/samsungsami/openWeatherMap/MyCloudConnector.groovy -> transformJson
+    // applyToMessage(obj, f) will remove all empty values
+    def applyToMessage(message, f) {
+        if (message instanceof java.util.Map) {
+            message.collectEntries { k, v ->
                 if (v != null) {
-                    def newV = traversalNestedObj(v, f)
+                    def newV = applyToMessage(v, f)
                     if (newV != [:]) {
                         f(k, newV)
                     } else {
@@ -177,13 +173,13 @@ class MyCloudConnector extends CloudConnector {
                     [:]
                 }
             }
-        } else if (obj instanceof java.util.Collection) {
-            java.util.Collection newList = obj.collect { item ->
-                traversalNestedObj(item, f)
+        } else if (message instanceof java.util.Collection) {
+            java.util.Collection newList = message.collect { item ->
+                applyToMessage(item, f)
             }
             (newList.isEmpty()) ? [:] : newList
         } else {
-            obj
+            message
         }
     }
     
