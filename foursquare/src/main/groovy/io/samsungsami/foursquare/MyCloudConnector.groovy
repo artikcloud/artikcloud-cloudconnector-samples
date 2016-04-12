@@ -23,6 +23,11 @@ class MyCloudConnector extends CloudConnector {
         "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
     ]
     static final extIdKeys = [ "user", "id" ]
+    static final eventKeys = [
+        "timeZoneOffset", 
+        "venue", "location", "lat", "long",
+        "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
+    ]
     static final String endpoint = "https://api.foursquare.com/v2/"
 
     JsonSlurper slurper = new JsonSlurper()
@@ -67,8 +72,9 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<List<Event>, Failure> onNotificationData(Context ctx, DeviceInfo info, String data) {
         def json = slurper.parseText(data)
-        json.timestamp = (json.timestamp)? json.timestamp * 1000L: ctx.now()
-        return new Good([new Event(json.timestamp, JsonOutput.toJson(json))])
+        def ts = (json.timestamp)? json.timestamp * 1000L: ctx.now()
+        def jsonFiltered = filterByAllowedKeys(json, eventKeys)
+        return new Good([new Event(ts, JsonOutput.toJson(jsonFiltered))])
     }
 
     def filterByAllowedKeys(obj, keepingKeys) {

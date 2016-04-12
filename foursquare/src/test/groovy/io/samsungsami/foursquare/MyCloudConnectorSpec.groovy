@@ -126,9 +126,9 @@ class MyCloudConnectorSpec extends Specification {
             def res = data.collectMany{ it -> sut.onNotificationData(ctx, null, it).get()}
             // timestamp *= 1000
             def expectedEvents = [
-                    new Event(1458647923000,'''{"timeZoneOffset":60,"timestamp":1458647923000,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"Ile-de-France"},"name":"Societe Generale"}}'''),
-                    new Event(1458670144000,'''{"timeZoneOffset":60,"timestamp":1458670144000,"venue":{"location":{"country":"France","formattedAddress":["75000"],"lat":108.8542115806468,"long":2.352619171142578,"postalCode":"75000","state":"Ile-de-France"},"name":"Some City"}}'''),
-                    new Event(1458147313000,'''{"timeZoneOffset":0,"timestamp":1458147313000,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}}''')
+                    new Event(1458647923000,'''{"timeZoneOffset":60,"venue":{"location":{"address":"some address","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"long":2.354668378829956,"postalCode":"75010","state":"Ile-de-France"},"name":"Societe Generale"}}'''),
+                    new Event(1458670144000,'''{"timeZoneOffset":60,"venue":{"location":{"country":"France","formattedAddress":["75000"],"lat":108.8542115806468,"long":2.352619171142578,"postalCode":"75000","state":"Ile-de-France"},"name":"Some City"}}'''),
+                    new Event(1458147313000,'''{"timeZoneOffset":0,"venue":{"location":{"address":"568 Broadway Fl 10","city":"New York","country":"United States","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"long":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ"}}''')
             ]
 
             then:
