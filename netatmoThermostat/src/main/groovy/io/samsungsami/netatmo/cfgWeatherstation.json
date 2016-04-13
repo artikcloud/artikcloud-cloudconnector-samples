@@ -1,0 +1,10 @@
+{
+  "authorizationUrl":"https://api.netatmo.com/oauth2/authorize",
+  "accessTokenUrl":"https://api.netatmo.com/oauth2/token",
+  "clientId":"42",
+  "clientSecret":"42",
+  "authType" : "OAuth2",
+  "scope":["read_station"],
+  "statusAcceptNotification":200,
+  "accessTokenMethod": "post"
+}

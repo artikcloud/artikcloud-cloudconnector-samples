@@ -1,0 +1,683 @@
+{
+  "body": {
+    "devices": [
+      {
+        "_id": "70:ee:50:1a:62:14",
+        "firmware": 60,
+        "last_setup": 1460022077,
+        "last_status_store": 1460125804,
+        "modules": [
+          {
+            "_id": "04:00:00:1a:53:4e",
+            "module_name": "Thermostat 0",
+            "type": "NATherm1",
+            "firmware": 38,
+            "last_message": 1460125804,
+            "rf_status": 42,
+            "battery_vp": 4804,
+            "therm_orientation": 3,
+            "therm_relay_cmd": 0,
+            "battery_percent": 100,
+            "last_therm_seen": 1460125804,
+            "setpoint": {
+              "setpoint_temp": 25,
+              "setpoint_endtime": 1460132077,
+              "setpoint_mode": "manual"
+            },
+            "therm_program_list": [
+              {
+                "zones": [
+                  {
+                    "type": 0,
+                    "name": "Comfort",
+                    "temp": 25,
+                    "id": 0
+                  },
+                  {
+                    "type": 1,
+                    "name": "Night",
+                    "temp": 22,
+                    "id": 1
+                  },
+                  {
+                    "type": 2,
+                    "temp": 18,
+                    "id": 2
+                  },
+                  {
+                    "type": 3,
+                    "temp": 7,
+                    "id": 3
+                  },
+                  {
+                    "type": 5,
+                    "name": "Eco",
+                    "temp": 16,
+                    "id": 4
+                  }
+                ],
+                "timetable": [
+                  {
+                    "id": 1,
+                    "m_offset": 0
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 480
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 1200
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 1920
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 2640
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 3360
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 4080
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 4800
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 5520
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 6240
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 6960
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 7680
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 8400
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 9120
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 9840
+                  }
+                ],
+                "program_id": "57062beacce37cb0738b468f",
+                "name": "Default",
+                "selected": true
+              }
+            ],
+            "measured": {
+              "time": 1460125804,
+              "temperature": 25.6,
+              "setpoint_temp": 25
+            }
+          },
+          {
+            "_id": "04:00:00:1a:53:4f",
+            "module_name": "Thermostat 1",
+            "type": "NATherm1",
+            "firmware": 38,
+            "last_message": 1460125804,
+            "rf_status": 42,
+            "battery_vp": 4804,
+            "therm_orientation": 3,
+            "therm_relay_cmd": 0,
+            "battery_percent": 100,
+            "last_therm_seen": 1460125804,
+            "setpoint": {
+              "setpoint_temp": 25,
+              "setpoint_endtime": 1460132077,
+              "setpoint_mode": "manual"
+            },
+            "therm_program_list": [
+              {
+                "zones": [
+                  {
+                    "type": 0,
+                    "name": "Comfort",
+                    "temp": 25,
+                    "id": 0
+                  },
+                  {
+                    "type": 1,
+                    "name": "Night",
+                    "temp": 22,
+                    "id": 1
+                  },
+                  {
+                    "type": 2,
+                    "temp": 18,
+                    "id": 2
+                  },
+                  {
+                    "type": 3,
+                    "temp": 7,
+                    "id": 3
+                  },
+                  {
+                    "type": 5,
+                    "name": "Eco",
+                    "temp": 16,
+                    "id": 4
+                  }
+                ],
+                "timetable": [
+                  {
+                    "id": 1,
+                    "m_offset": 0
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 480
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 1200
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 1920
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 2640
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 3360
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 4080
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 4800
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 5520
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 6240
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 6960
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 7680
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 8400
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 9120
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 9840
+                  }
+                ],
+                "program_id": "57062beacce37cb0738b468f",
+                "name": "Default",
+                "selected": true
+              }
+            ],
+            "measured": {
+              "time": 1460125804,
+              "temperature": 25.6,
+              "setpoint_temp": 25
+            }
+          }
+        ],
+        "place": {
+          "altitude": 37,
+          "city": "Paris",
+          "country": "FR",
+          "improveLocProposed": true,
+          "location": [
+            2.3543654,
+            48.8694186
+          ],
+          "timezone": "Europe/Paris",
+          "trust_location": true
+        },
+        "plug_connected_boiler": false,
+        "station_name": "Maison I",
+        "type": "NAPlug",
+        "udp_conn": true,
+        "wifi_status": 37,
+        "last_plug_seen": 1460125804
+      },
+      {
+        "_id": "70:ee:50:1a:62:15",
+        "firmware": 60,
+        "last_setup": 1460022077,
+        "last_status_store": 1460125804,
+        "modules": [
+          {
+            "_id": "04:00:00:1a:53:50",
+            "module_name": "Thermostat 2",
+            "type": "NATherm1",
+            "firmware": 38,
+            "last_message": 1460125804,
+            "rf_status": 42,
+            "battery_vp": 4804,
+            "therm_orientation": 3,
+            "therm_relay_cmd": 0,
+            "battery_percent": 100,
+            "last_therm_seen": 1460125804,
+            "setpoint": {
+              "setpoint_temp": 25,
+              "setpoint_endtime": 1460132077,
+              "setpoint_mode": "manual"
+            },
+            "therm_program_list": [
+              {
+                "zones": [
+                  {
+                    "type": 0,
+                    "name": "Comfort",
+                    "temp": 25,
+                    "id": 0
+                  },
+                  {
+                    "type": 1,
+                    "name": "Night",
+                    "temp": 22,
+                    "id": 1
+                  },
+                  {
+                    "type": 2,
+                    "temp": 18,
+                    "id": 2
+                  },
+                  {
+                    "type": 3,
+                    "temp": 7,
+                    "id": 3
+                  },
+                  {
+                    "type": 5,
+                    "name": "Eco",
+                    "temp": 16,
+                    "id": 4
+                  }
+                ],
+                "timetable": [
+                  {
+                    "id": 1,
+                    "m_offset": 0
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 480
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 1200
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 1920
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 2640
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 3360
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 4080
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 4800
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 5520
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 6240
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 6960
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 7680
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 8400
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 9120
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 9840
+                  }
+                ],
+                "program_id": "57062beacce37cb0738b468f",
+                "name": "Default",
+                "selected": true
+              }
+            ],
+            "measured": {
+              "time": 1460125804,
+              "temperature": 25.6,
+              "setpoint_temp": 25
+            }
+          },
+          {
+            "_id": "04:00:00:1a:53:51",
+            "module_name": "Thermostat 3",
+            "type": "NATherm1",
+            "firmware": 38,
+            "last_message": 1460125804,
+            "rf_status": 42,
+            "battery_vp": 4804,
+            "therm_orientation": 3,
+            "therm_relay_cmd": 0,
+            "battery_percent": 100,
+            "last_therm_seen": 1460125804,
+            "setpoint": {
+              "setpoint_temp": 25,
+              "setpoint_endtime": 1460132077,
+              "setpoint_mode": "manual"
+            },
+            "therm_program_list": [
+              {
+                "zones": [
+                  {
+                    "type": 0,
+                    "name": "Comfort",
+                    "temp": 25,
+                    "id": 0
+                  },
+                  {
+                    "type": 1,
+                    "name": "Night",
+                    "temp": 22,
+                    "id": 1
+                  },
+                  {
+                    "type": 2,
+                    "temp": 18,
+                    "id": 2
+                  },
+                  {
+                    "type": 3,
+                    "temp": 7,
+                    "id": 3
+                  },
+                  {
+                    "type": 5,
+                    "name": "Eco",
+                    "temp": 16,
+                    "id": 4
+                  }
+                ],
+                "timetable": [
+                  {
+                    "id": 1,
+                    "m_offset": 0
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 480
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 1200
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 1920
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 2640
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 3360
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 4080
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 4800
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 5520
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 6240
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 6960
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 7680
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 8400
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 9120
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 9840
+                  }
+                ],
+                "program_id": "57062beacce37cb0738b468f",
+                "name": "Default",
+                "selected": true
+              }
+            ],
+            "measured": {
+              "time": 1460125804,
+              "temperature": 25.6,
+              "setpoint_temp": 25
+            }
+          },
+          {
+            "_id": "04:00:00:1a:53:52",
+            "module_name": "Thermostat 4",
+            "type": "NATherm1",
+            "firmware": 38,
+            "last_message": 1460125804,
+            "rf_status": 42,
+            "battery_vp": 4804,
+            "therm_orientation": 3,
+            "therm_relay_cmd": 0,
+            "battery_percent": 100,
+            "last_therm_seen": 1460125804,
+            "setpoint": {
+              "setpoint_temp": 25,
+              "setpoint_endtime": 1460132077,
+              "setpoint_mode": "manual"
+            },
+            "therm_program_list": [
+              {
+                "zones": [
+                  {
+                    "type": 0,
+                    "name": "Comfort",
+                    "temp": 25,
+                    "id": 0
+                  },
+                  {
+                    "type": 1,
+                    "name": "Night",
+                    "temp": 22,
+                    "id": 1
+                  },
+                  {
+                    "type": 2,
+                    "temp": 18,
+                    "id": 2
+                  },
+                  {
+                    "type": 3,
+                    "temp": 7,
+                    "id": 3
+                  },
+                  {
+                    "type": 5,
+                    "name": "Eco",
+                    "temp": 16,
+                    "id": 4
+                  }
+                ],
+                "timetable": [
+                  {
+                    "id": 1,
+                    "m_offset": 0
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 480
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 1200
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 1920
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 2640
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 3360
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 4080
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 4800
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 5520
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 6240
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 6960
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 7680
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 8400
+                  },
+                  {
+                    "id": 0,
+                    "m_offset": 9120
+                  },
+                  {
+                    "id": 1,
+                    "m_offset": 9840
+                  }
+                ],
+                "program_id": "57062beacce37cb0738b468f",
+                "name": "Default",
+                "selected": true
+              }
+            ],
+            "measured": {
+              "time": 1460125804,
+              "temperature": 25.6,
+              "setpoint_temp": 25
+            }
+          }
+        ],
+        "place": {
+          "altitude": 37,
+          "city": "Paris",
+          "country": "FR",
+          "improveLocProposed": true,
+          "location": [
+            2.3543654,
+            48.8694186
+          ],
+          "timezone": "Europe/Paris",
+          "trust_location": true
+        },
+        "plug_connected_boiler": false,
+        "station_name": "Maison II",
+        "type": "NAPlug",
+        "udp_conn": true,
+        "wifi_status": 37,
+        "last_plug_seen": 1460125804
+      }
+    ],
+    "user": {
+      "mail": "samiioparis@gmail.com",
+      "administrative": {
+        "country": "FR",
+        "reg_locale": "fr-FR",
+        "lang": "en-US",
+        "unit": 0,
+        "windunit": 0,
+        "pressureunit": 0,
+        "feel_like_algo": 0
+      }
+    }
+  },
+  "status": "ok",
+  "time_exec": 0.2988588809967,
+  "time_server": 1460126438
+}
