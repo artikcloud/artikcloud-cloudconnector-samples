@@ -183,7 +183,7 @@ class MyCloudConnector extends CloudConnector {
                     case "thermostat":
                         def devicesModulesMixte = json?.body?.devices?.collectMany { oneDevice ->
                             def deviceOnlyFiltered = filterObjByKeepingKeys(oneDevice, deviceKeys)
-                            def deviceRenamed = renameJsonWithMap(deviceOnlyFiltered, ["_id":"deviceId"])
+                            def deviceRenamed = renameJsonWithMap(deviceOnlyFiltered, ["_id": "deviceId"])
                             def moduleFilteringKeys = (moduleKeys + setpointKeys + measuredKeys).unique()
                             def modulesOnlyFiltered = oneDevice?.modules.collect { oneModule ->
                                 filterObjByKeepingKeys(oneModule, moduleFilteringKeys)
