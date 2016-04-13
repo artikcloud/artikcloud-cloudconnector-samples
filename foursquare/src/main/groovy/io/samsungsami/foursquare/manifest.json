@@ -1,14 +1,6 @@
 {
   "fields": [
     {
-      "name": "timestamp",
-      "type": "TIMESTAMP",
-      "valueClass": "Double",
-      "unit": "SI.MILLI(SI.SECOND)",
-      "isCollection": false,
-      "tags": []
-    },
-    {
       "name": "timeZoneOffset",
       "type": "CUSTOM",
       "valueClass": "Integer",
