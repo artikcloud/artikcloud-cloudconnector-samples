@@ -4,18 +4,19 @@ import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.scalactic.*
+import scala.Option
 
 import static java.net.HttpURLConnection.*
 
 class MyCloudConnector extends CloudConnector {
     def JsonSlurper slurper = new JsonSlurper()
-    //assert ctx.parameters().netatmoProduct == "station"|"thermostat"
+    //ctx.parameters().netatmoProduct == "weatherstation"|"thermostat"
     static final String endpoint = "https://api.netatmo.com/api/"
     static final String stationEndpoint = "${endpoint}getstationsdata"
-    static final deviceKeys = [ "devices", "_id", "station_name", "type", "wifi_status" ]
-    static final moduleKeys = [ "modules", "_id", "module_name", "type", "rf_status", "battery_vp", "battery_percent" ]
+    static final deviceKeys = [ "deviceId", "station_name", "type", "wifi_status" ]
+    static final moduleKeys = [ "moduleId", "module_name", "type", "rf_status", "battery_vp", "battery_percent" ]
     static final setpointKeys = [ "setpoint", "setpoint_temp", "setpoint_endtime", "setpoint_mode" ]
-    static final measuredKeys = [ "measured", "time", "temperature", "setpoint_temp" ]
+    static final measuredKeys = [ "measured", "time", "temp", "setpoint_temp" ]
     static final modeKeysExceptManual = [ "program", "away", "hg", "off", "max" ]
 
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase) {
@@ -44,7 +45,7 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         switch(ctx.parameters().netatmoProduct) {
-            case "station":
+            case "weatherstation":
                 def req = new RequestDef("${endpoint}getstationsdata")
                 switch (action.name) {
                     case "getAllData":
@@ -59,65 +60,62 @@ class MyCloudConnector extends CloudConnector {
             break
             case "thermostat":
                 def json = slurper.parseText(action.params? action.params.trim(): "{}")
+                def request
                 switch (action.name) {
                     case "getAllData":
-                        return new Good(new ActionResponse([new ActionRequest([
-                                new RequestDef("${endpoint}getthermostatsdata")
-                        ])]))
+                        request = new RequestDef("${ctx.parameters().endpoint}/getthermostatsdata")
+                    break
                     case "getData":
-                        return new Good(new ActionResponse([new ActionRequest([
-                                new RequestDef("${endpoint}getthermostatsdata")
-                                    .withQueryParams(["device_id": json.deviceId])
-                        ])]))
+                        def querys = ["device_id": json.deviceId]
+                        if (nullValueCheck(querys)) {
+                            return new Bad(new Failure("Null value in " + querys))
+                        }
+                        request = stringifiedReqFromMap(querys, "${ctx.parameters().endpoint}/getthermostatsdata")
+                    break
                     case "setTemperatureDuring":
-                        return new Good(new ActionResponse([new ActionRequest([
-                                new RequestDef("${endpoint}setthermpoint")
-                                    .withQueryParams(
-                                        [   "device_id": json.deviceId,
-                                            "module_id": json.moduleId,
-                                            "setpoint_mode": "manual",
-                                            "setpoint_endtime": ctx.now().intdiv(1000) + json.duration * 60,
-                                            "setpoint_temp": json.temp
-                                        ].collectEntries { k, v ->
-                                            (v != null) ? [(k): v.toString()] : [:]
-                                        } 
-                                    )
-                        ])]))
+                        def querys = [  "device_id": json.deviceId,
+                                        "module_id": json.moduleId,
+                                        "setpoint_mode": "manual",
+                                        "setpoint_endtime": ctx.now().intdiv(1000) + json.duration * 60,
+                                        "setpoint_temp": json.temp
+                                    ] 
+                        if (nullValueCheck(querys)) {
+                            return new Bad(new Failure("Null value in " + querys))
+                        }
+                        request = stringifiedReqFromMap(querys, "${ctx.parameters().endpoint}/setthermpoint")
+                    break
                     //setTemperature by default during 12h
                     case "setTemperature":
-                        return new Good(new ActionResponse([new ActionRequest([
-                                new RequestDef("${endpoint}setthermpoint")
-                                    .withQueryParams(
-                                        [   "device_id": json.deviceId,
-                                            "module_id": json.moduleId,
-                                            "setpoint_mode": "manual",
-                                            "setpoint_endtime": ctx.now().intdiv(1000) + 12 * 3600,
-                                            "setpoint_temp": json.temp
-                                        ].collectEntries { k, v ->
-                                            (v != null) ? [(k): v.toString()] : [:]
-                                        } 
-                                    )
-                        ])]))
+                        def querys = [  "device_id": json.deviceId,
+                                        "module_id": json.moduleId,
+                                        "setpoint_mode": "manual",
+                                        "setpoint_endtime": ctx.now().intdiv(1000) + 12 * 3600,
+                                        "setpoint_temp": json.temp
+                                    ]
+                        if (nullValueCheck(querys)) {
+                            return new Bad(new Failure("Null value in " + querys))
+                        }
+                        request = stringifiedReqFromMap(querys, "${ctx.parameters().endpoint}/setthermpoint")
+                    break
                     //For mode "max", the setpoint_endtime is hard-coded as now() + 12h.
                     case "setMode":
+                        if (nullValueCheck([json.deviceId, json.moduleId, json.mode])) {
+                            return new Bad(new Failure("Null value in " + querys))
+                        }
                         if (!modeKeysExceptManual.contains(json.mode)) {
                             return new Bad(new Failure("unsupported mode:" + json.mode))
-                        } else {
-                            def querys = [  "device_id": json.deviceId,
-                                            "module_id": json.moduleId,
-                                            "setpoint_mode": json.mode,
-                                            "setpoint_endtime": (json.mode == "max")? ctx.now().intdiv(1000) + 12 * 3600: null
-                                        ].collectEntries { k, v ->
-                                            (v != null) ? [(k): v.toString()] : [:]
-                                        }
-                            return new Good(new ActionResponse([new ActionRequest([
-                                    new RequestDef("${endpoint}setthermpoint")
-                                        .withQueryParams(querys)
-                            ])]))
                         }
+                        def querys = [  "device_id": json.deviceId,
+                                        "module_id": json.moduleId,
+                                        "setpoint_mode": json.mode,
+                                        "setpoint_endtime": (json.mode == "max")? ctx.now().intdiv(1000) + 12 * 3600: null
+                                    ].findAll { k, v -> v!=null }
+                        request = stringifiedReqFromMap(querys, "${ctx.parameters().endpoint}/setthermpoint")
+                    break
                     default:
                         return new Bad(new Failure("unsupported action for netatmo:" + action.name))
-                }        
+                }
+                return new Good(new ActionResponse([new ActionRequest([request])]))    
             break
             default:
                 return new Bad(new Failure("unsupported ctx.parameters().netatmoProduct: " + ctx.parameters().netatmoProduct))
@@ -136,7 +134,7 @@ class MyCloudConnector extends CloudConnector {
                 }
                 def ts = json.time_server
                 switch (ctx.parameters().netatmoProduct) {
-                    case "station":
+                    case "weatherstation":
                         def events = json.body.devices.collectMany { data ->
                             def netatmoId = data._id
                             def createEvent = { key, jsonEvent ->
@@ -182,20 +180,19 @@ class MyCloudConnector extends CloudConnector {
                         break
                     case "thermostat":
                         def devicesModulesMixte = json?.body?.devices?.collectMany { oneDevice ->
-                            def deviceOnlyFiltered = filterObjByKeepingKeys(oneDevice, deviceKeys)
-                            def deviceRenamed = renameJsonWithMap(deviceOnlyFiltered, ["_id": "deviceId"])
-                            def moduleFilteringKeys = (moduleKeys + setpointKeys + measuredKeys).unique()
-                            def modulesOnlyFiltered = oneDevice?.modules.collect { oneModule ->
-                                filterObjByKeepingKeys(oneModule, moduleFilteringKeys)
-                            }
-                            def moduleRenamed = renameJsonWithMap(modulesOnlyFiltered, [
+                            def modules = oneDevice.remove('modules') //no more key as "modules"
+                            def deviceRenamed = renameJsonWithMap(oneDevice, ["_id":"deviceId"])
+                            def moduleRenamed = renameJsonWithMap(modules, [
                                 "_id": "moduleId",
                                 "temperature": "temp"
                                 ])
                             [deviceRenamed] + moduleRenamed
                         }
-                        def events = devicesModulesMixte.collect { obj ->
-                            createEventFromTsInSecond(ts, obj)
+                        def mixteFiltered = filterByAllowedKeys( devicesModulesMixte, 
+                            (deviceKeys + moduleKeys + setpointKeys + measuredKeys).unique()
+                            )
+                        def events = mixteFiltered.collect { obj ->
+                            eventFromTsInSecond(ts, obj)
                         }
                         return new Good(events)
                         break
@@ -213,12 +210,35 @@ class MyCloudConnector extends CloudConnector {
         keyAndParams.collect { keyAndParam ->
             def param = keyAndParam[1]
             if (param == null) {
-                return new Bad(new Failure("unsupported action for openWeatherMap getData without " + keyAndParam[1]))
+                return new Bad(new Failure("unsupported action for netatmo getData without " + keyAndParam[1]))
             }
             def key = keyAndParam[0]
             req = req.addQueryParams([(key): param])
         }
         new Good(new ActionResponse([new ActionRequest([req])]))
+    }
+
+    def nullValueCheck(obj) {
+        switch(obj) {
+            case Map:
+                return obj.values().any{it == null}? true: false
+            break
+            case List:
+                return obj.any{it == null}? true: false
+            break
+            default:
+                return false
+            break
+        }
+    }
+
+    def stringifiedReqFromMap(map, url) {
+        new RequestDef(url)
+            .withQueryParams(
+                map.collectEntries { k, v ->
+                    [(k): v.toString()]
+                }
+            )
     }
 
     def transformJson(obj, f) {
@@ -235,13 +255,13 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
-    def createEventFromTsInSecond (ts, obj) {
+    def eventFromTsInSecond (ts, obj) {
         return new Event(ts * 1000L, JsonOutput.toJson(obj).trim())
     }
 
-    def filterObjByKeepingKeys(obj, keepingKeys) {
+    def filterByAllowedKeys(obj, keepingKeys) {
         transformJson(obj, { k, v ->
-            keepingKeys.contains(k)? [(k): v]: [:]
+            keepingKeys.contains(k)? [(k): (v)]: [:]
         })
     }
 
@@ -250,4 +270,5 @@ class MyCloudConnector extends CloudConnector {
             renameMap.keySet().contains(k)? [(renameMap[k]): v]: [(k): v]
         })
     }
+
 }

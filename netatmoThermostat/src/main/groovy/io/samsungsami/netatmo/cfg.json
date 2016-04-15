@@ -8,6 +8,7 @@
   "statusAcceptNotification":200,
   "accessTokenMethod": "post",
   "parameters": {
+    "endpoint": "https://api.netatmo.com/api",
     "netatmoProduct": "thermostat"
   }
 }
