@@ -1,0 +1,151 @@
+{
+  "fields": [
+    {
+      "name": "steps",
+      "children": [
+        {
+          "name": "type",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "step's message type",
+          "tags": []
+        },
+        {
+          "name": "count",
+          "type": "COUNT",
+          "valueClass": "Long",
+          "unit": null,
+          "isCollection": false,
+          "description": "step's count",
+          "tags": []
+        },
+        {
+          "name": "timestamp",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unit": "SI.SECOND",
+          "isCollection": false,
+          "description": "nest timeseries timestamps",
+          "tags": []
+        },
+        {
+          "name": "startDate",
+          "type": "CUSTOM",
+          "valueClass": "Long",
+          "isCollection": false,
+          "description": "start date in millisecond",
+          "tags": []
+        },
+        {
+          "name": "endDate",
+          "type": "CUSTOM",
+          "valueClass": "Long",
+          "isCollection": false,
+          "description": "end date in millisecond",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "heartRate",
+      "children": [
+        {
+          "name": "type",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "underamour source type for heartRate",
+          "tags": []
+        },
+        {
+          "name": "resting",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "resting heart rate",
+          "tags": []
+        },
+        {
+          "name": "startDate",
+          "type": "CUSTOM",
+          "valueClass": "Long",
+          "isCollection": false,
+          "description": "start date in millisecond",
+          "tags": []
+        },
+        {
+          "name": "endDate",
+          "type": "CUSTOM",
+          "valueClass": "Long",
+          "isCollection": false,
+          "description": "end date in millisecond",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "sleep",
+      "children": [
+        {
+          "name": "type",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "underamour source type for sleep",
+          "tags": []
+        },
+        {
+          "name": "awake",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "awake duration",
+          "tags": []
+        },
+        {
+          "name": "totalSleep",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "underamour sleep sum",
+          "tags": []
+        },
+        {
+          "name": "lightSleep",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "light sleep duration",
+          "tags": []
+        },
+        {
+          "name": "deepSleep",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "isCollection": false,
+          "description": "deep sleep duration",
+          "tags": []
+        },
+        {
+          "name": "startDate",
+          "description": "start date in millisecond",
+          "valueClass": "Long",
+          "tags": [],
+          "type": "CUSTOM",
+          "isCollection": false
+        },
+        {
+          "name": "endDate",
+          "type": "CUSTOM",
+          "valueClass": "Long",
+          "isCollection": false,
+          "description": "end date in millisecond",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "messageFormat": "json",
+  "actions": []
+}

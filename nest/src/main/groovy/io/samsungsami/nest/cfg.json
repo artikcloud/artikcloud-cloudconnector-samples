@@ -1,0 +1,12 @@
+{
+  "authType" : "OAuth2",
+  "clientId":"aaaa",
+  "clientSecret":"bbbb",
+  "authorizationUrl":"",
+  "accessTokenUrl":"",
+  "scope":[ "read" ],
+  "statusAcceptNotification":200,
+  "accessTokenMethod": "post",
+  "parameters": {
+  }
+}
