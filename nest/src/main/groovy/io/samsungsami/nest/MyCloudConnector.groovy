@@ -9,8 +9,7 @@ import org.scalactic.*
 import static java.net.HttpURLConnection.*
 
 class MyCloudConnector extends CloudConnector {
-    static final String endpoint = "https://api.netatmo.com/api/"
-    static final String stationEndpoint = "${endpoint}getstationsdata"
+    static final String endpoint = "https://developer-api.nest.com"
     def JsonSlurper slurper = new JsonSlurper()
 
 
@@ -18,20 +17,15 @@ class MyCloudConnector extends CloudConnector {
         Map params = [:]
         params.putAll(req.queryParams())
         switch (phase) {
-            case Phase.refreshToken:
-                params.put("client_id", ctx.clientId())
-                params.put("client_secret", ctx.clientSecret())
-                params.put(["refresh_token", info.credentials().refreshToken().get()])
-                params.put("grant_type", "refresh_token")
-                new Good(req.withBodyParams(params).withQueryParams([:]))
-                break
+            case Phase.undef:
             case Phase.subscribe:
             case Phase.unsubscribe:
-            case Phase.undef:
             case Phase.fetch:
-                params.put(["access_token", info.credentials().token()])
-                new Good(req.withQueryParams(params))
+            ctx.debug(info.credentials.token)
+            return new Good(req.addHeaders(["Authorization": "Bearer " + info.credentials.token]))
                 break
+            case Phase.refreshToken:
+            case Phase.getOauth2Token:
             default:
                 super.signAndPrepare(ctx, req, info, phase)
         }
@@ -39,16 +33,11 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
-        def req = new RequestDef(stationEndpoint)
         switch (action.name) {
             case "getAllData":
-                return new Good(new ActionResponse([new ActionRequest([req])]))
-            case "getData":
-                def json = slurper.parseText(action.params)
-                def keyAndParams = [["device_Id", json.stationId]]
-                return buildActionResponse(req, keyAndParams)
+                return new Good(new ActionResponse([new ActionRequest([new RequestDef(endpoint + "/all")])]))
             default:
-                return new Bad(new Failure("unsupported action for netatmo:" + action.name))
+                return new Bad(new Failure("unsupported action for nest:" + action.name))
         }
     }
 
@@ -58,54 +47,11 @@ class MyCloudConnector extends CloudConnector {
         switch (res.status) {
             case HTTP_OK:
                 switch (req.url) {
-                    case stationEndpoint:
-                        def json = slurper.parseText(res.content().trim())
-                        if (json.status != "ok") {
-                            return new Bad(new Failure("receiving response with invalid status ${json.status} … ${res}"))
-                        }
-                        def ts = json.time_server
-                        def events = json.body.devices.collectMany { data ->
-                            def netatmoId = data._id
-                            def createEvent = { key, jsonEvent ->
-                                new Event(ts * 1000L,
-                                        JsonOutput.toJson(
-                                                ["netatmoId": netatmoId,
-                                                 (key): jsonEvent]
-                                        ).trim())
-                            }
-                            def dataFiltered = transformJson(data, { k, v ->
-                                switch (k) {
-                                    case "temp_trend": return ["tempTrend": (v)]
-                                    case "max_temp": return ["maxTemp": (v)]
-                                    case "min_temp": return ["minTemp": (v)]
-                                    case "date_min_temp": return ["dateMinTemp": (v)]
-                                    case "date_max_temp": return ["dateMaxTemp": (v)]
-                                    case "Temperature": return ["temp": (v)]
-                                    case "location": return ["lat": v[0], "long": v[1]]
-                                    case "data_type": return ["dataType": v.join(",")]
-                                    default: return [(k): (v)]
-                                }
-                            })
-                            def moduleEvents = dataFiltered?.modules?.collect { moduleData ->
-                                createEvent("module", transformJson(moduleData, { k, v ->
-                                    switch (k) {
-                                        case "type": return ["moduleType": (v)]
-                                        default: return [(k): (v)]
-                                    }
-                                }))
-                            }
-                            def stationEvent = [
-                                    createEvent("station", transformJson(dataFiltered, { k, v ->
-                                        switch (k) {
-                                            case "modules": return [:]
-                                            case "type": return ["stationType": (v)]
-                                            default: return [(k): (v)]
-                                        }
-                                    }))
-                            ]
-                            stationEvent + moduleEvents
-                        }
-                        return new Good(events)
+                    case endpoint + "/all":
+                        def json = slurper.parseText(res.content())
+
+
+                        return new Good(Event(42L, json))
                     default:
                         return new Bad(new Failure("receiving Responsse ${res} fron unknown request ${req.req}"))
                 }
