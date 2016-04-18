@@ -36,12 +36,7 @@ class MyCloudConnector extends CloudConnector {
     @Override
     Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
         def json = slurper.parseText(req.content)
-        def pushSecret = ctx.parameters()["pushSecret"]
 
-        if (pushSecret == null || json.secret == [] || json.secret.any {it.trim() != pushSecret.trim()}){
-            return new Bad(new Failure("Invalid push secret"))
-        }
-        
         def checkin = json.checkin.collect { e -> slurper.parseText(e)}
         def extId = checkin.collect { e -> e.user.id.toString()}
 
