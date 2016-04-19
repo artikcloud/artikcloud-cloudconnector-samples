@@ -19,15 +19,19 @@ class MyCloudConnectorSpec extends Specification {
 		}
 	}
 	def extId = "23138311640030064"
-	def apiEndpoint = "https://api.netatmo.com/api/"
-	def stationEndpoint = "${apiEndpoint}getstationsdata"
-	def info = new DeviceInfo("deviceId", Option.apply(extId), new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option())
+	static final String endpoint = "https://developer-api.nest.com"
+	static final String getAllEndpoint = "${endpoint}/all"
+	def info = new DeviceInfo("deviceId", Option.apply(extId),
+			new Credentials(AuthType.OAuth2, "", "1j0v33o6c5b34cVPqIiB_M2LYb_iM5S9Vcy7Rx7jA2630pK7HIjEXvJoiE8V5rRF", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()),
+			ctx.cloudId(),
+			Empty.option()
+	)
 
 	def "create events from fetch response"() {
 		when:
-		def msg = readFile(this, "station.json")
+		def msg = readFile(this, "thermostatExemple.json")
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
-		def req = new RequestDef(stationEndpoint)
+		def req = new RequestDef(getAllEndpoint)
 		def res = sut.onFetchResponse(ctx, req, info,  fetchedResponse)
 		def ts = 1441872018000L
 		def expectedEvents = [

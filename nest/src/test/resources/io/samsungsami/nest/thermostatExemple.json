@@ -1,7 +1,7 @@
 {
   "devices": {
     "thermostats": {
-      "<insert device id>": {
+      "aDeviceId": {
         "humidity": 35,
         "locale": "en-US",
         "temperature_scale": "C",
@@ -10,7 +10,7 @@
         "software_version": "5.2-6",
         "has_leaf": false,
         "where_id": "sgMXjlXDq6HzMKet8mjqwB-74fELRhQy8Ro86IhzzpV63LT_25LLFQ",
-        "device_id": "<insert device id>",
+        "device_id": "aDeviceId",
         "name": "Office",
         "can_heat": true,
         "can_cool": false,
@@ -27,7 +27,7 @@
         "away_temperature_high_f": 76,
         "away_temperature_low_c": 9,
         "away_temperature_low_f": 48,
-        "structure_id": "<insert structure id>",
+        "structure_id": "aStructureId",
         "fan_timer_active": false,
         "fan_timer_timeout": "1970-01-01T00:00:00.000Z",
         "name_long": "Office Thermostat",
@@ -38,15 +38,15 @@
     }
   },
   "structures": {
-    "<insert structure id>": {
+    "aStructureId": {
       "name": "Paris Office",
       "country_code": "FR",
       "time_zone": "Europe/Paris",
       "away": "home",
       "thermostats": [
-        "<insert device id>"
+        "aDeviecId"
       ],
-      "structure_id": "<insert structure id>",
+      "structure_id": "aDeviecId",
       "wheres": {
         "sgMXjlXDq6HzMKet8mjqwB-74fELRhQy8Ro86IhzzpVUnzumX7LfDQ": {
           "where_id": "sgMXjlXDq6HzMKet8mjqwB-74fELRhQy8Ro86IhzzpVUnzumX7LfDQ",

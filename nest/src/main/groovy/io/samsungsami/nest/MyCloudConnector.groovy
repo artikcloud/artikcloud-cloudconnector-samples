@@ -9,7 +9,21 @@ import org.scalactic.*
 import static java.net.HttpURLConnection.*
 
 class MyCloudConnector extends CloudConnector {
+    static final allowedKeys = [
+            "away", "away_temperature_high_c", "away_temperature_low_c", "ambient_temperature_c",
+            "can_cool", "can_heat",
+            "device_id",
+            "fan_timer_active", "fan_timer_timeout",
+            "has_fan", "has_leaf", "hvac_mode", "humidity", "hvac_state",
+            "is_online", "is_using_emergency_heat",
+            "last_connection",
+            "name", "name_long",
+            "structure_name",
+            "target_temperature_c", "target_temperature_high_c", "target_temperature_low_c"
+    ]
+
     static final String endpoint = "https://developer-api.nest.com"
+    static final String getAllEndpoint = "${endpoint}/all"
     def JsonSlurper slurper = new JsonSlurper()
 
 
@@ -35,7 +49,7 @@ class MyCloudConnector extends CloudConnector {
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
         switch (action.name) {
             case "getAllData":
-                return new Good(new ActionResponse([new ActionRequest([new RequestDef(endpoint + "/all")])]))
+                return new Good(new ActionResponse([new ActionRequest([new RequestDef(getAllEndpoint)])]))
             default:
                 return new Bad(new Failure("unsupported action for nest:" + action.name))
         }
@@ -47,11 +61,11 @@ class MyCloudConnector extends CloudConnector {
         switch (res.status) {
             case HTTP_OK:
                 switch (req.url) {
-                    case endpoint + "/all":
+                    case getAllEndpoint:
                         def json = slurper.parseText(res.content())
 
 
-                        return new Good(Event(42L, json))
+                        return new Good([new Event(42L, outputJson(json))])
                     default:
                         return new Bad(new Failure("receiving Responsse ${res} fron unknown request ${req.req}"))
                 }
@@ -85,5 +99,16 @@ class MyCloudConnector extends CloudConnector {
         } else {
             obj
         }
+    }
+
+    private def outputJson(json) {
+        JsonOutput.toJson(
+                transformJson(json, { k, v ->
+                    if (allowedKeys.contains(k))
+                        [(k): (v)]
+                    else
+                        [:]
+                })
+        ).trim()
     }
 }
