@@ -9,7 +9,7 @@ import static java.net.HttpURLConnection.*
 
 class MyCloudConnector extends CloudConnector {
     static final allowedKeys = [
-            "away", "away_temperature_high_c", "away_temperature_low_c", "ambient_temperature_c",
+            "away_temperature_high_c", "away_temperature_low_c", "ambient_temperature_c",
             "can_cool", "can_heat",
             "device_id",
             "fan_timer_active", "fan_timer_timeout",
@@ -17,14 +17,15 @@ class MyCloudConnector extends CloudConnector {
             "is_online", "is_using_emergency_heat",
             "last_connection",
             "name", "name_long",
-            "structure_name",
-            "target_temperature_c", "target_temperature_high_c", "target_temperature_low_c"
+            "structure_id",
+            "target_temperature_c", "target_temperature_high_c", "target_temperature_low_c",
+            "structure", "away", "name"
     ]
+
     def JsonSlurper slurper = new JsonSlurper()
 
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase) {
         ctx.debug("signAndPrepare Started")
-        probe(ctx, info, "info")
         ctx.debug('phase: ' + phase)
         return new Good(req.addHeaders(['Authorization':'Bearer ' + info.credentials.token]))
     }
@@ -37,27 +38,31 @@ class MyCloudConnector extends CloudConnector {
             case "getAllData":
                 return new Good(new ActionResponse([new ActionRequest([new RequestDef("${ctx.parameters().endpoint}")])]))
             case "setTemperature":
-                def querys = [  "did": json.deviceId,
-                                "target_temperature_c": json.temp
-                            ]
+                def querys = [
+                    "did": json.deviceId,
+                    "target_temperature_c": json.temp
+                ]
                 return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s/${querys.did}", ctx)
                 break
             case "setTemperatureInFahrenheit":
-                def querys = [  "did": json.deviceId,
-                                "target_temperature_f": json.temp
-                            ]
+                def querys = [
+                    "did": json.deviceId,
+                    "target_temperature_f": json.temp
+                ]
                 return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s/${querys.did}", ctx)
                 break
             case "setHome":
-                def querys = [  "sid": json.buildingId,
-                                "away": "home"
-                            ]
+                def querys = [
+                    "sid": json.structureId,
+                    "away": "home"
+                ]
                 return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/structures/${querys.sid}", ctx)
                 break
             case "setAway":
-                def querys = [  "sid": json.buildingId,
-                                "away": "away"
-                            ]
+                def querys = [
+                    "sid": json.structureId,
+                    "away": "away"
+                ]
                 return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/structures/${querys.sid}", ctx)
                 break
             default:
@@ -66,17 +71,20 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
-    Or<RequestDef, Failure> fetch(Context ctx, RequestDef req, DeviceInfo info) {
-        probe(ctx, req, "req in Fetch")
-        new Good(req)
-    }
-
-    @Override
     def Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
-        probe(ctx, res, "res")
         switch (res.status) {
             case HTTP_OK:
-                return new Good([new Event(42L, res.content)])
+                def json = slurper.parseText(res.content? res.content.trim(): "{}")
+                ctx.debug("the line after json defined")
+                def events = json?.devices?.get("${ctx.parameters().productType}s")?.values()?.collect { oneDevice ->
+                    def extraStructure = json?.structures?.get("${oneDevice.structure_id}")
+                    oneDevice.put('structure', extraStructure)
+                    new Event(ctx.now(), outputJson(oneDevice))
+                }
+                if (events == null) {
+                    events = Empty.list()
+                }
+                return new Good(events)
             default:
                 return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
         }
@@ -89,11 +97,7 @@ class MyCloudConnector extends CloudConnector {
             msg.collectEntries { k, v ->
                 if (v != null) {
                     def newV = applyToMessage(v, f)
-                    if (newV != [:]) {
-                        f(k, newV)
-                    } else {
-                        [:]
-                    }
+                    newV != [:]? f(k, newV): [:]
                 } else {
                     [:]
                 }
@@ -102,16 +106,10 @@ class MyCloudConnector extends CloudConnector {
             java.util.Collection newList = msg.collect { item ->
                 applyToMessage(item, f)
             }
-            (newList.isEmpty()) ? [:] : newList
+            newList.isEmpty()? [:]: newList
         } else {
             msg
         }
-    }
-
-    def filterByAllowedKeys(obj, keepingKeys) {
-        applyToMessage(obj, { k, v ->
-            keepingKeys.contains(k)? [(k): v]: [:]
-        })
     }
 
     def nestJsonActionResponse(paramsMap, url, ctx) {
@@ -119,7 +117,6 @@ class MyCloudConnector extends CloudConnector {
             return new Bad(new Failure("Null value in " + paramsMap))
         }
         def paramsWithoutId = paramsMap.findAll{ k, v -> !k.endsWith('id') }
-        probe(ctx, paramsWithoutId, "paramsWithoutId")
         def request = new RequestDef(url).withMethod(HttpMethod.Put)
                         .withContent(JsonOutput.toJson(paramsWithoutId), "application/json")
         return new Good(new ActionResponse([new ActionRequest([request])]))
@@ -138,9 +135,13 @@ class MyCloudConnector extends CloudConnector {
             break
         }
     }
-
-
-    def probe(ctx, obj="", objName = "") {
-        ctx.debug(objName + " " + obj?.getClass() + "\n" + obj)
+    
+    def outputJson(json) {
+        JsonOutput.toJson(
+            applyToMessage(json, { k, v ->
+                allowedKeys.contains(k)? [(k): v]: [:]
+            })
+        ).trim()
     }
+
 }

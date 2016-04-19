@@ -7,6 +7,12 @@
       "isCollection":false
     },
     {
+      "name":"structure_id",
+      "type":"CUSTOM",
+      "valueClass":"String",
+      "isCollection":false
+    },
+    {
       "name":"name",
       "type":"CUSTOM",
       "valueClass":"String",
@@ -131,6 +137,29 @@
       "type":"CUSTOM",
       "valueClass":"String",
       "isCollection":false
+    },
+    {
+      "name":"structure",
+      "children":[
+        {
+          "name":"away",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false
+        },
+        {
+          "name":"name",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false
+        },
+        {
+          "name":"structure_id",
+          "type":"CUSTOM",
+          "valueClass":"String",
+          "isCollection":false
+        }
+      ]
     }
   ],
   "messageFormat":"json",
@@ -182,7 +211,7 @@
       "description":"setAway",
       "parameters":[
         {
-          "name":"buildingId",
+          "name":"structureId",
           "type":"CUSTOM",
           "valueClass":"String"
         }
@@ -195,7 +224,7 @@
       "description":"setHome",
       "parameters":[
         {
-          "name":"buildingId",
+          "name":"structureId",
           "type":"CUSTOM",
           "valueClass":"String"
         }

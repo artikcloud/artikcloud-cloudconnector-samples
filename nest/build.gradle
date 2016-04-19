@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'codenarc'
 
-group = 'com.sample'
+group = 'io.samsungsami.nest'
 
 repositories {
   jcenter()
