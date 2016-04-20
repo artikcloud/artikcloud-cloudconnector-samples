@@ -25,9 +25,20 @@ class MyCloudConnector extends CloudConnector {
     def JsonSlurper slurper = new JsonSlurper()
 
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase) {
-        ctx.debug("signAndPrepare Started")
-        ctx.debug('phase: ' + phase)
-        return new Good(req.addHeaders(['Authorization':'Bearer ' + info.credentials.token]))
+        Map params = [:]
+        params.putAll(req.queryParams())
+        switch (phase) {
+            case Phase.undef:
+            case Phase.subscribe:
+            case Phase.unsubscribe:
+            case Phase.fetch:
+            return new Good(req.addHeaders(["Authorization": "Bearer " + info.credentials.token]))
+                break
+            case Phase.refreshToken:
+            case Phase.getOauth2Token:
+            default:
+                super.signAndPrepare(ctx, req, info, phase)
+        }
     }
 
     @Override
@@ -38,32 +49,42 @@ class MyCloudConnector extends CloudConnector {
             case "getAllData":
                 return new Good(new ActionResponse([new ActionRequest([new RequestDef("${ctx.parameters().endpoint}")])]))
             case "setTemperature":
-                def querys = [
-                    "did": json.deviceId,
-                    "target_temperature_c": json.temp
+                def urls = [
+                  ["root": "${ctx.parameters().endpoint}"],
+                  ["dataType": "devices"],
+                  ["deviceType": "${ctx.parameters().productType}s"],
+                  ["deviceId": json.deviceId]
                 ]
-                return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s/${querys.did}", ctx)
+                def params = ["target_temperature_c": json.temp]
+                return nestApiJsonActionResponse(urls, params)
                 break
             case "setTemperatureInFahrenheit":
-                def querys = [
-                    "did": json.deviceId,
-                    "target_temperature_f": json.temp
+                def urls = [
+                  ["root": "${ctx.parameters().endpoint}"],
+                  ["dataType": "devices"],
+                  ["deviceType": "${ctx.parameters().productType}s"],
+                  ["deviceId": json.deviceId]
                 ]
-                return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s/${querys.did}", ctx)
+                def params = ["target_temperature_f": json.temp]
+                return nestApiJsonActionResponse(urls, params)
                 break
             case "setHome":
-                def querys = [
-                    "sid": json.structureId,
-                    "away": "home"
+                def urls = [
+                  ["root": "${ctx.parameters().endpoint}"],
+                  ["dataType": "structures"],
+                  ["structureId": json.structureId]
                 ]
-                return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/structures/${querys.sid}", ctx)
+                def params = ["away": "home"]
+                return nestApiJsonActionResponse(urls, params)
                 break
             case "setAway":
-                def querys = [
-                    "sid": json.structureId,
-                    "away": "away"
+                def urls = [
+                  ["root": "${ctx.parameters().endpoint}"],
+                  ["dataType": "structures"],
+                  ["structureId": json.structureId]
                 ]
-                return nestJsonActionResponse(querys, "${ctx.parameters().endpoint}/structures/${querys.sid}", ctx)
+                def params = ["away": "away"]
+                return nestApiJsonActionResponse(urls, params)
                 break
             default:
                 return new Bad(new Failure("unsupported action for nest:" + action.name))
@@ -76,6 +97,7 @@ class MyCloudConnector extends CloudConnector {
             case HTTP_OK:
                 def json = slurper.parseText(res.content? res.content.trim(): "{}")
                 ctx.debug("the line after json defined")
+                //json/devices/thermostats/Map<THERMO_ID, THERMO_VALUE>
                 def events = json?.devices?.get("${ctx.parameters().productType}s")?.values()?.collect { oneDevice ->
                     def extraStructure = json?.structures?.get("${oneDevice.structure_id}")
                     oneDevice.put('structure', extraStructure)
@@ -92,7 +114,7 @@ class MyCloudConnector extends CloudConnector {
 
     // Copy-pasted from sami-cloudconnector-samples/open-weather-map/src/main/groovy/io/samsungsami/openWeatherMap/MyCloudConnector.groovy -> transformJson
     // applyToMessage(msg, f) will remove all empty values
-    def applyToMessage(msg, f) {
+    private def applyToMessage(msg, f) {
         if (msg instanceof java.util.Map) {
             msg.collectEntries { k, v ->
                 if (v != null) {
@@ -112,31 +134,27 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
-    def nestJsonActionResponse(paramsMap, url, ctx) {
-        if (nullValueCheck(paramsMap)) {
-            return new Bad(new Failure("Null value in " + paramsMap))
+    //In the entering List<Map>, this Map should include only 1 key-value!, Using List<Map> to ensure collect in order
+    def nestApiActionResponse(List<Map> urlKeyAndNodes, java.util.Map contentParams) {
+        contentParams.collectEntries { k, v ->
+            if (v == null) {
+                return new Bad(new Failure("Null value in query which item is: " + (k) + " : " + v))
+            }
         }
-        def paramsWithoutId = paramsMap.findAll{ k, v -> !k.endsWith('id') }
-        def request = new RequestDef(url).withMethod(HttpMethod.Put)
-                        .withContent(JsonOutput.toJson(paramsWithoutId), "application/json")
+        urlNodes = urlKeyAndNodes.collect { keyAndParam ->
+            def param = keyAndParam.values()[0]
+            if (param == null) {
+                return new Bad(new Failure("Null value in query which item is: " + keyAndParam.keySet() + " : " + keyAndParam.values()))
+            }
+            param
+        }      
+        def request = new RequestDef(urlNodes.join("/"))
+                        .withMethod(HttpMethod.Put)
+                        .withContent(JsonOutput.toJson(contentParams), "application/json")
         return new Good(new ActionResponse([new ActionRequest([request])]))
     }
-
-    def nullValueCheck(obj) {
-        switch(obj) {
-            case Map:
-                return obj.values().any{it == null}? true: false
-                break
-            case List:
-                return obj.any{it == null}? true: false
-                break
-            default:
-                return false
-            break
-        }
-    }
     
-    def outputJson(json) {
+    private def outputJson(json) {
         JsonOutput.toJson(
             applyToMessage(json, { k, v ->
                 allowedKeys.contains(k)? [(k): v]: [:]
