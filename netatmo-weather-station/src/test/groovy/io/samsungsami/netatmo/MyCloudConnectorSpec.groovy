@@ -1,13 +1,10 @@
 package io.samsungsami.netatmo
 
 import cloud.artik.cloudconnector.api_v1.*
-import org.joda.time.*
-import org.scalactic.*
 import scala.Option
 import spock.lang.*
 import utils.*
 
-import static java.net.HttpURLConnection.*
 import static utils.Tools.*
 
 class MyCloudConnectorSpec extends Specification {
