@@ -1,0 +1,231 @@
+{
+  "metadata": {
+    "access_token": "c.FmDPkzyzaQe...",
+    "client_version": 1
+  },
+  "devices": {
+    "thermostats": {
+      "peyiJNo0IldT2YlIVtYaGQ": {
+        "device_id": "peyiJNo0IldT2YlIVtYaGQ",
+        "locale": "en-US",
+        "software_version": "4.0",
+        "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+        "name": "Hallway (upstairs)",
+        "name_long": "Hallway Thermostat (upstairs)",
+        "last_connection": "2016-10-31T23:59:59.000Z",
+        "is_online": true,
+        "can_cool": true,
+        "can_heat": true,
+        "is_using_emergency_heat": true,
+        "has_fan": true,
+        "fan_timer_active": true,
+        "fan_timer_timeout": "2016-10-31T23:59:59.000Z",
+        "has_leaf": true,
+        "temperature_scale": "C",
+        "target_temperature_f": 72,
+        "target_temperature_c": 21.5,
+        "target_temperature_high_f": 72,
+        "target_temperature_high_c": 21.5,
+        "target_temperature_low_f": 64,
+        "target_temperature_low_c": 17.5,
+        "away_temperature_high_f": 72,
+        "away_temperature_high_c": 21.5,
+        "away_temperature_low_f": 64,
+        "away_temperature_low_c": 17.5,
+        "hvac_mode": "heat",
+        "ambient_temperature_f": 72,
+        "ambient_temperature_c": 21.5,
+        "humidity": 40,
+        "hvac_state": "heating",
+        "where_id": "UNCBGUnN24..."
+      },
+      "qfyiJNo0IldT2YlIVtYaHR": {
+        "device_id": "qfyiJNo0IldT2YlIVtYaHR",
+        "locale": "en-US",
+        "software_version": "4.0",
+        "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+        "name": "Nowhere (downstairs)",
+        "name_long": "Nowhere Thermostat (downstairs)",
+        "last_connection": "2016-10-31T23:59:59.000Z",
+        "is_online": true,
+        "can_cool": true,
+        "can_heat": true,
+        "is_using_emergency_heat": true,
+        "has_fan": true,
+        "fan_timer_active": true,
+        "fan_timer_timeout": "2016-10-31T23:59:59.000Z",
+        "has_leaf": true,
+        "temperature_scale": "C",
+        "target_temperature_f": 72,
+        "target_temperature_c": 21.5,
+        "target_temperature_high_f": 72,
+        "target_temperature_high_c": 21.5,
+        "target_temperature_low_f": 64,
+        "target_temperature_low_c": 17.5,
+        "away_temperature_high_f": 72,
+        "away_temperature_high_c": 21.5,
+        "away_temperature_low_f": 64,
+        "away_temperature_low_c": 17.5,
+        "hvac_mode": "heat",
+        "ambient_temperature_f": 72,
+        "ambient_temperature_c": 21.5,
+        "humidity": 40,
+        "hvac_state": "heating",
+        "where_id": "UNCBGUnN24..."
+      }
+    },
+    "smoke_co_alarms": {
+      "RTMTKxsQTCxzVcsySOHPxKoF4OyCifrs": {
+        "device_id": "RTMTKxsQTCxzVcsySOHPxKoF4OyCifrs",
+        "locale": "en-US",
+        "software_version": "1.01",
+        "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+        "name": "Hallway (upstairs)",
+        "name_long": "Hallway Protect (upstairs)",
+        "last_connection": "2016-10-31T23:59:59.000Z",
+        "is_online": true,
+        "battery_health": "ok",
+        "co_alarm_state": "ok",
+        "smoke_alarm_state": "ok",
+        "is_manual_test_active": true,
+        "last_manual_test_time": "2016-10-31T23:59:59.000Z",
+        "ui_color_state": "gray",
+        "where_id": "UNCBGUnN24..."
+      }
+    },
+    "cameras": {
+      "awJo6rH0IldT2YlIVtYaGQ": {
+        "device_id": "awJo6rH...",
+        "software_version": "4.0",
+        "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+        "where_id": "d6reb_OZTM...",
+        "name": "Hallway (upstairs)",
+        "name_long": "Hallway Camera (upstairs)",
+        "is_online": true,
+        "is_streaming": true,
+        "is_audio_input_enabled": true,
+        "last_is_online_change": "2016-12-29T18:42:00.000Z",
+        "is_video_history_enabled": true,
+        "web_url": "https://home.nest.com/cameras/device_id?auth=access_token",
+        "app_url": "nestmobile://cameras/device_id?auth=access_token",
+        "last_event": {
+          "has_sound": true,
+          "has_motion": true,
+          "start_time": "2016-12-29T00:00:00.000Z",
+          "end_time": "2016-12-29T18:42:00.000Z",
+          "urls_expire_time": "2016-10-31T23:59:59.000Z",
+          "web_url": "https://home.nest.com/cameras/device_id/cuepoints/STRING?auth=access_token",
+          "app_url": "nestmobile://cameras/device_id/cuepoints/STRING?auth=access_token",
+          "image_url": "STRING1/device_id/STRING2?auth=access_token",
+          "animated_image_url": "STRING1/device_id/STRING2?auth=access_token"
+        }
+      }
+    },
+    "$company": {
+      "$product_type": {
+        "CPMEMSnC48JlSAHjQIp-aHI72IjLYHK_ul_c54UFb8CmPXNj4ixLbg": {
+          "identification": {
+            "device_id": "CPMEMSnC48JlSAHjQIp-kHI72IjLYHK_ul_c54UFb8CmPXNj4ixLbg",
+            "serial_number": "1L090B50230"
+          },
+          "location": {
+            "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+            "where_id": "UNCBGUnN24..."
+          },
+          "software": {
+            "version": "1.0"
+          },
+          "resource_use": {
+            "electricity": {
+              "value": 42.789,
+              "measurement_reset_time": "2016-01-01T01:01:01.000Z",
+              "measurement_time": "2016-01-01T01:02:35.000Z"
+            },
+            "gas": {
+              "value": 0.345234545,
+              "measurement_reset_time": "2016-01-01T01:01:01.000Z",
+              "measurement_time": "2016-01-01T01:02:35.000Z"
+            },
+            "water": {
+              "value": 10000.3,
+              "measurement_reset_time": "2016-01-01T01:01:01.000Z",
+              "measurement_time": "2016-01-01T01:02:35.000Z"
+            }
+          }
+        }
+      }
+    }
+  },
+  "structures": {
+    "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw": {
+      "structure_id": "VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw",
+      "thermostats": [
+        "peyiJNo0IldT2YlIVtYaGQ", "qfyiJNo0IldT2YlIVtYaHR"
+      ],
+      "smoke_co_alarms": [
+        "RTMTKxsQTCxzVcsySOHPxKoF4OyCifrs"
+      ],
+      "cameras": [
+        "awJo6rH…"
+      ],
+      "devices": {
+        "$company": {
+          "$product_type": [
+            "CPMEMSnC48JlSAHjQIp-aHI72IjLYHK_ul_c54UFb8CmPXNj4ixLbg"
+          ]
+        }
+      },
+      "away": "home",
+      "name": "Home",
+      "country_code": "US",
+      "postal_code": "94304",
+      "peak_period_start_time": "2016-10-31T23:59:59.000Z",
+      "peak_period_end_time": "2016-10-31T23:59:59.000Z",
+      "time_zone": "America/Los_Angeles",
+      "eta": {
+        "trip_id": "myTripHome1024",
+        "estimated_arrival_window_begin": "2016-10-31T22:42:59.000Z",
+        "estimated_arrival_window_end": "2016-10-31T23:59:59.000Z"
+      },
+      "rhr_enrollment": true,
+      "wheres": {
+        "Fqp6wJI...": {
+          "where_id": "Fqp6wJI...",
+          "name": "Bedroom"
+        }
+      }
+    },
+    "wrFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4tx": {
+      "structure_id": "wrFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4tx",
+      "thermostats": [],
+      "smoke_co_alarms": [],
+      "cameras": [],
+      "devices": {
+        "$company": {
+          "$product_type": [
+            "CPMEMSnC48JlSAHjQIp-aHI72IjLYHK_ul_c54UFb8CmPXNj4ixLbg"
+          ]
+        }
+      },
+      "away": "home",
+      "name": "Home",
+      "country_code": "US",
+      "postal_code": "94304",
+      "peak_period_start_time": "2016-10-31T23:59:59.000Z",
+      "peak_period_end_time": "2016-10-31T23:59:59.000Z",
+      "time_zone": "America/Los_Angeles",
+      "eta": {
+        "trip_id": "myTripHome1024",
+        "estimated_arrival_window_begin": "2016-10-31T22:42:59.000Z",
+        "estimated_arrival_window_end": "2016-10-31T23:59:59.000Z"
+      },
+      "rhr_enrollment": true,
+      "wheres": {
+        "Fqp6wJI...": {
+          "where_id": "Fqp6wJI...",
+          "name": "Bedroom"
+        }
+      }
+    }
+  }
+}
