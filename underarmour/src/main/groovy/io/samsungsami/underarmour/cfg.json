@@ -1,7 +1,7 @@
 {
   "authType" : "OAuth2",
-  "clientId":"aaaa",
-  "clientSecret":"bbbb",
+  "clientId":"4yxbhsjxexuuh5tcw5j4cwhk5c7jjgnk",
+  "clientSecret":"ZSqczAT9cMpsWD7wyNPUCfXAANxrfe6e4yHY3AtVAHA",
   "authorizationUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize/",
   "accessTokenUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/access_token/",
   "scope":[ "read" ],

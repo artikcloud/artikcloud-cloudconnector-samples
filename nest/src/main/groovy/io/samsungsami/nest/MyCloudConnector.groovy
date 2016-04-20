@@ -43,28 +43,21 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo info) {
-        ctx.debug("onAction Started")
         def json = slurper.parseText(action.params? action.params.trim(): "{}")
         switch (action.name) {
             case "getAllData":
                 return new Good(new ActionResponse([new ActionRequest([new RequestDef("${ctx.parameters().endpoint}")])]))
             case "setTemperature":
                 def urls = [
-                  ["root": "${ctx.parameters().endpoint}"],
-                  ["dataType": "devices"],
-                  ["deviceType": "${ctx.parameters().productType}s"],
+                  ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
                   ["deviceId": json.deviceId]
                 ]
-                probe(ctx, urls, "urls")
                 def params = ["target_temperature_c": json.temp]
-                probe(ctx, params, "params")
                 return nestApiActionResponse(urls, params)
                 break
             case "setTemperatureInFahrenheit":
                 def urls = [
-                  ["root": "${ctx.parameters().endpoint}"],
-                  ["dataType": "devices"],
-                  ["deviceType": "${ctx.parameters().productType}s"],
+                  ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
                   ["deviceId": json.deviceId]
                 ]
                 def params = ["target_temperature_f": json.temp]
@@ -72,8 +65,7 @@ class MyCloudConnector extends CloudConnector {
                 break
             case "setHome":
                 def urls = [
-                  ["root": "${ctx.parameters().endpoint}"],
-                  ["dataType": "structures"],
+                  ["root": "${ctx.parameters().endpoint}/structures"],
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "home"]
@@ -81,8 +73,7 @@ class MyCloudConnector extends CloudConnector {
                 break
             case "setAway":
                 def urls = [
-                  ["root": "${ctx.parameters().endpoint}"],
-                  ["dataType": "structures"],
+                  ["root": "${ctx.parameters().endpoint}/structures"],
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "away"]
@@ -97,17 +88,13 @@ class MyCloudConnector extends CloudConnector {
     def Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
         switch (res.status) {
             case HTTP_OK:
-                def json = slurper.parseText(res.content? res.content.trim(): "{}")
-                ctx.debug("the line after json defined")
+                def json = slurper.parseText(res?.content ?: "{}")
                 //json/devices/thermostats/Map<THERMO_ID, THERMO_VALUE>
-                def events = json?.devices?.get("${ctx.parameters().productType}s")?.values()?.collect { oneDevice ->
-                    def extraStructure = json?.structures?.get("${oneDevice.structure_id}")
-                    oneDevice.put('structure', extraStructure)
-                    new Event(ctx.now(), outputJson(oneDevice))
-                }
-                if (events == null) {
-                    events = Empty.list()
-                }
+                def events = json?.devices?.get("${ctx.parameters().productType}s")?.values()?.collect { device ->
+                    def extraStructure = json?.structures?.get("${device.structure_id}")
+                    device.put('structure', extraStructure)
+                    new Event(ctx.now(), outputJson(device))
+                } ?: []
                 return new Good(events)
             default:
                 return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
@@ -137,7 +124,7 @@ class MyCloudConnector extends CloudConnector {
     }
 
     //In the entering List<Map>, this Map should include only 1 key-value!, Using List<Map> to ensure collect in order
-    def nestApiActionResponse(List<Map> urlKeyAndNodes, Map contentParams) {
+    def nestApiActionResponse(List<Map<String, Object>> urlKeyAndNodes, Map contentParams) {
         contentParams.each { k, v ->
             if (v == null) {
                 return new Bad(new Failure("Null value in query which item is: " + (k) + " : " + v))
@@ -163,9 +150,4 @@ class MyCloudConnector extends CloudConnector {
             })
         ).trim()
     }
-
-    def probe(ctx, obj, objName = "") {
-        ctx.debug(objName + " " + obj.getClass() + "\n" + obj)
-    }
-
 }

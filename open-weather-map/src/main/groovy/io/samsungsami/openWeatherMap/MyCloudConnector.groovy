@@ -317,11 +317,11 @@ class MyCloudConnector extends CloudConnector {
 
     private def buildActionResponse(RequestDef req, DeviceSelector dSelector, List<List<String>> keyAndParams) {
         keyAndParams.collect { keyAndParam ->
+            def key = keyAndParam[0]
             def param = keyAndParam[1]
             if (param == null) {
-                return new Bad(new Failure("unsupported action for openWeatherMap getData without " + keyAndParam[1]))
+                return new Bad(new Failure("unsupported action for openWeatherMap action without " + key + ": " + param))
             }
-            def key = keyAndParam[0]
             req = req.addQueryParams([(key): param.toString()])
         }
         new Good(new ActionResponse([new ActionRequest([req])]))
