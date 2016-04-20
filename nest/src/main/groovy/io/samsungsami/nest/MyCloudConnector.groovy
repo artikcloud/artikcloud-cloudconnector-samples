@@ -55,8 +55,10 @@ class MyCloudConnector extends CloudConnector {
                   ["deviceType": "${ctx.parameters().productType}s"],
                   ["deviceId": json.deviceId]
                 ]
+                probe(ctx, urls, "urls")
                 def params = ["target_temperature_c": json.temp]
-                return nestApiJsonActionResponse(urls, params)
+                probe(ctx, params, "params")
+                return nestApiActionResponse(urls, params)
                 break
             case "setTemperatureInFahrenheit":
                 def urls = [
@@ -66,7 +68,7 @@ class MyCloudConnector extends CloudConnector {
                   ["deviceId": json.deviceId]
                 ]
                 def params = ["target_temperature_f": json.temp]
-                return nestApiJsonActionResponse(urls, params)
+                return nestApiActionResponse(urls, params)
                 break
             case "setHome":
                 def urls = [
@@ -75,7 +77,7 @@ class MyCloudConnector extends CloudConnector {
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "home"]
-                return nestApiJsonActionResponse(urls, params)
+                return nestApiActionResponse(urls, params)
                 break
             case "setAway":
                 def urls = [
@@ -84,7 +86,7 @@ class MyCloudConnector extends CloudConnector {
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "away"]
-                return nestApiJsonActionResponse(urls, params)
+                return nestApiActionResponse(urls, params)
                 break
             default:
                 return new Bad(new Failure("unsupported action for nest:" + action.name))
@@ -135,18 +137,18 @@ class MyCloudConnector extends CloudConnector {
     }
 
     //In the entering List<Map>, this Map should include only 1 key-value!, Using List<Map> to ensure collect in order
-    def nestApiActionResponse(List urlKeyAndNodes, java.util.Map contentParams) {
-        contentParams.collectEntries { k, v ->
+    def nestApiActionResponse(List<Map> urlKeyAndNodes, Map contentParams) {
+        contentParams.each { k, v ->
             if (v == null) {
                 return new Bad(new Failure("Null value in query which item is: " + (k) + " : " + v))
             }
         }
-        urlNodes = urlKeyAndNodes.collect { keyAndParam ->
+        def urlNodes = urlKeyAndNodes.collect { keyAndParam ->
             def param = keyAndParam.values()[0]
             if (param == null) {
                 return new Bad(new Failure("Null value in query which item is: " + keyAndParam.keySet() + " : " + keyAndParam.values()))
             }
-            param
+            return param
         }      
         def request = new RequestDef(urlNodes.join("/"))
                         .withMethod(HttpMethod.Put)
@@ -160,6 +162,10 @@ class MyCloudConnector extends CloudConnector {
                 allowedKeys.contains(k)? [(k): v]: [:]
             })
         ).trim()
+    }
+
+    def probe(ctx, obj, objName = "") {
+        ctx.debug(objName + " " + obj.getClass() + "\n" + obj)
     }
 
 }
