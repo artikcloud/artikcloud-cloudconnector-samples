@@ -135,7 +135,7 @@ class MyCloudConnector extends CloudConnector {
     }
 
     //In the entering List<Map>, this Map should include only 1 key-value!, Using List<Map> to ensure collect in order
-    def nestApiActionResponse(List<Map> urlKeyAndNodes, java.util.Map contentParams) {
+    def nestApiActionResponse(List urlKeyAndNodes, java.util.Map contentParams) {
         contentParams.collectEntries { k, v ->
             if (v == null) {
                 return new Bad(new Failure("Null value in query which item is: " + (k) + " : " + v))
