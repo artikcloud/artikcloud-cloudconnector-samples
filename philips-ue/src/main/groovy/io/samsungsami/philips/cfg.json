@@ -1,0 +1,13 @@
+{
+  "authType": "OAuth2",
+  "clientId": "",
+  "clientSecret": "",
+  "authorizationUrl": "https://api.meethue.com/oauth2/auth",
+  "accessTokenUrl": "https://api.home.philips.com/oauth2/access_token",
+  "scope": [],
+  "statusAcceptNotification": 200,
+  "accessTokenMethod": "post",
+  "parameters": {
+    "appId": "<put your appId"
+  }
+}
