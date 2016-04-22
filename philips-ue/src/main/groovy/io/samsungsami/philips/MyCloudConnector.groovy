@@ -23,8 +23,7 @@ class MyCloudConnector extends CloudConnector {
             "reachable",
             "sat","state","swversion",
             "type",
-            "xy",
-            "1", "2", "3", "4", "5", "6", "7", "8"
+            "xy"
     ]
     static final endpoint = "https://api.meethue.com"
     static final brigdeEndpoint = "${endpoint}/v1/bridges"
@@ -32,7 +31,6 @@ class MyCloudConnector extends CloudConnector {
     def JsonSlurper slurper = new JsonSlurper()
 
     def Or<RequestDef, Failure> signAndPrepare(Context ctx, RequestDef req, DeviceInfo info, Phase phase) {
-
         switch (phase) {
             case Phase.getOauth2Code:
                 req.addQueryParams(["appid": ctx.parameters.appId(), "response_type": "code", "deviceid": "ARTIK Cloud"])
@@ -51,43 +49,72 @@ class MyCloudConnector extends CloudConnector {
     }
 
     @Override
+    Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
+        new Good([new RequestDef(brigdeEndpoint)])
+    }
+
+    @Override
+    Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
+        if (res.status == HTTP_OK) {
+            return new Good(Option.apply(info.withUserData(res.content.trim())))
+        } else {
+            return new Bad(new Failure("onSubscribeResponse response status ${res.status} $res"))
+        }
+    }
+
+
+    @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo info) {
-        def json = slurper.parseText(action.params? action.params.trim(): "{}")
+        def params = slurper.parseText(action?.params ?: "{}")
         switch (action.name) {
-            case "getAllData":
-                return new Good(new ActionResponse([new ActionRequest([new RequestDef("${ctx.parameters().endpoint}")])]))
-            case "setTemperature":
+            case "setOnByName":
+                params = updateBridgeAndLightId(anctionParams, info)
+            /*case "setOnByID":
                 def urls = [
-                  ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
-                  ["deviceId": json.deviceId]
+                        ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
+                        ["deviceId": json.deviceId]
                 ]
                 def params = ["target_temperature_c": json.temp]
                 return philipsApiActionResponse(urls, params)
-                break
-            case "setTemperatureInFahrenheit":
+            case "setOffByName":
+            case "setOffByID":
+                def urls = [
+                        ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
+                        ["deviceId": json.deviceId]
+                ]
+                def params = ["target_temperature_c": json.temp]
+                return philipsApiActionResponse(urls, params)
+            case "setBrightnessByName":
+            case "setBrightnessByNameId":
                 def urls = [
                   ["root": "${ctx.parameters().endpoint}/devices/${ctx.parameters().productType}s"],
                   ["deviceId": json.deviceId]
                 ]
                 def params = ["target_temperature_f": json.temp]
                 return philipsApiActionResponse(urls, params)
-                break
-            case "setHome":
+            case "setColorHSByName":
+            case "setColorHSById":
                 def urls = [
                   ["root": "${ctx.parameters().endpoint}/structures"],
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "home"]
                 return philipsApiActionResponse(urls, params)
-                break
-            case "setAway":
+            case "getStateByName":
+            case "getStateById":
                 def urls = [
                   ["root": "${ctx.parameters().endpoint}/structures"],
                   ["structureId": json.structureId]
                 ]
                 def params = ["away": "away"]
                 return philipsApiActionResponse(urls, params)
-                break
+            case "getAllStates":
+                def urls = [
+                        ["root": "${ctx.parameters().endpoint}/structures"],
+                        ["structureId": json.structureId]
+                ]
+                def params = ["away": "away"]*/
+                return philipsApiActionResponse(urls, params)
             default:
                 return new Bad(new Failure("unsupported action for philips:" + action.name))
         }
@@ -103,7 +130,7 @@ class MyCloudConnector extends CloudConnector {
                         return new Good(new Event(ctx.now(),updateBrigde(json) , EventType.user))
 
                     default:
-                        if (req.url.contains(brigdeEndpoint)){
+                        if (req.url.st(brigdeEndpoint)){
                             return new Good(new Event(ctx.now(),updateLight(json) , EventType.user))
                         } else {
                             return new Bad(new Failure("[${info.did}] onFetchResponse response to unknown req" + req))
@@ -114,10 +141,17 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
-    private def refreshReq(DeviceInfo dInfo) {
+    private def Map updateBridgeAndLightId(Map params, DeviceInfo dInfo) {/*
+        def storedData = slurper.parseText(dInfo.userData().getOrElse("{}"))
+        def bridgeId =
+        def lightId = storedData.lights.get(params.lightName)?.*/
+
+    }
+
+    private def List<RequestDef> refreshReq(DeviceInfo dInfo) {
         [new RequestDef(brigdeEndpoint)] + refreshLightReq(dInfo)
     }
-    private def refreshLightReq(DeviceInfo dInfo) {
+    private def List<RequestDef> refreshLightReq(DeviceInfo dInfo) {
         data = slurper.parseText(dInfo.userData().getOrElse("{}"))
         data.bridges.collectEntries{ name, bridgeId ->
             new RequestDef("${brigdeEndpoint}/${bridgeId}/lights")
@@ -126,18 +160,33 @@ class MyCloudConnector extends CloudConnector {
 
     private def updateBrigde(Map json, DeviceInfo dInfo) {
         def storedData = slurper.parseText(dInfo.userData().getOrElse("{}"))
-        def bridges = json.collect{bridge -> [(bridge.name):(bridge.id)] }
-        JsonOutput.toJson(storedData.put("bridges", bridges))
+        def bridgeNameToId = [:]
+        json.collect{bridge -> bridgeNameToId.put(bridge.name, bridge.id) }
+        JsonOutput.toJson(storedData.put("bridgeNameToId", bridgeNameToId))
     }
-    private def updateLight(Map json, DeviceInfo dInfo) {
+    private def updateLight(Map json, String bridgeId, DeviceInfo dInfo) {
         def storedData = slurper.parseText(dInfo.userData().getOrElse("{}"))
-        def lights = storedData.lights
+        def lightNameToIds = storedData?.lightNameToId ?: [:]
+        def lightIdToBridgeIds = storedData?.lightIdToBridgeId ?: [:]
         def i = 0
         while (json.get(i.toString()) != null){
-            lights.put(i.toString(), json.get(i.toString()).name)
+            def lightId = i.toString()
+            def lightName = json.get(lightId).name
 
+            def bridgeIds = lightIdToBridgeIds.get(lightId) ?: []
+            bridgeIds.push(bridgeId)
+            lightIdToBridgeIds.put(lightId, bridgeIds.unique())
+
+            def lightIds = lightNameToIds.get(lightName) ?: []
+            lightIds.push(lightId)
+            lightNameToIds.put(lightName, lightIds.unique())
+            
+            i++
         }
-        JsonOutput.toJson(storedData.put("lights", lights))
+
+        storedData.put("lightNameToId", bridgeLightNameToId)
+        storedData.put("lightIdToBridgeId", lightIdToBridgeId)
+        JsonOutput.toJson(storedData)
     }
 
 

@@ -82,7 +82,7 @@ class MyCloudConnectorSpec extends Specification {
 
 	def "create events from fetch response (single device)"() {
 		when:
-		def msg = readFile(this, "thermostatExample.json")
+		def msg = readFile(this, "lights.json")
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def req = new RequestDef(endpoint)
 		def res = sut.onFetchResponse(ctx, req, info, fetchedResponse)
