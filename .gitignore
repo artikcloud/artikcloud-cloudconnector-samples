@@ -12,6 +12,6 @@ etc/
 .pem
 .jks
 .pkcs12
-
+.idea/*
 .idea/
 *.iml
