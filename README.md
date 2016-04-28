@@ -1,7 +1,7 @@
 ARTIK Cloud Cloud Connector examples
 ==============================
 
-[![Build Status](https://travis-ci.org/artickoud/artickoud-cloudconnector-samples.svg?branch=master)](https://travis-ci.org/artickoud/artickoud-cloudconnector-samples)
+[![Build Status](https://travis-ci.org/artikcloud/artikcloud-cloudconnector-samples.svg?branch=master)](https://travis-ci.org/artikcloud/artikcloud-cloudconnector-samples)
 
 Cloud Connector examples. The examples have been tested and work in production.
 
@@ -13,7 +13,7 @@ Build
 ```
 
 Each sample (sub-project) has the same structures as in the template folder of the SDK.
-More instructions and informations are available in [SDK/template/README.md](https://github.com/artickoud/artickoud-cloudconnector-sdk/blob/master/template/README.md)
+More instructions and informations are available in [SDK/template/README.md](https://github.com/artikcloud/artikcloud-cloudconnector-sdk/blob/master/template/README.md)
  
 Links
 -----
