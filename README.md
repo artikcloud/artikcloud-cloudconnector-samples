@@ -21,4 +21,4 @@ Links
 * [Using Cloud Connectors](https://developer.artik.cloud/documentation/connect-the-data/using-cloud-connectors.html) gives the overview of the Cloud Connector concept.
 * [Your first Cloud Connector](https://developer.artik.cloud/documentation/tutorials/your-first-cloud-connector.html) explains the developer workflow and Cloud Connector code, using Moves as an example.
 * [CloudConnector API Doc](http://artikcloud.github.io/artikcloud-cloudconnector-sdk/apidoc/) lists functions and structures, and explains goals and usages.
-* [CloudConnector SDK](ttps://github.com/artikcloud/artikcloud-cloudconnector-sdk) the SDK to create and test CloudConnector.
+* [CloudConnector SDK](https://github.com/artikcloud/artikcloud-cloudconnector-sdk) the SDK to create and test CloudConnector.
