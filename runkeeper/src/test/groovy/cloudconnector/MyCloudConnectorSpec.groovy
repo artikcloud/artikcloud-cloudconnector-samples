@@ -1,4 +1,4 @@
-package io.samsungsami.runkeeper
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 

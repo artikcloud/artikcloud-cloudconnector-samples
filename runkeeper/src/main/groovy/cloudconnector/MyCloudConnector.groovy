@@ -1,4 +1,4 @@
-package io.samsungsami.runkeeper
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
@@ -116,7 +116,7 @@ class MyCloudConnector extends CloudConnector {
 					}
 				}
 
-				new Event(ts, JsonOutput.toJson(item))
+				new Event(ts.longValue(), JsonOutput.toJson(item))
 			}.findAll { event -> 
 				event.ts >= startTs && event.ts < endTs
 			}

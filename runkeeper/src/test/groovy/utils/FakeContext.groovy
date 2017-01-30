@@ -3,9 +3,9 @@ package utils
 import scala.Option
 import cloud.artik.cloudconnector.api_v1.*
 import org.joda.time.*
-import io.samsungsami.runkeeper.MyCloudConnector
+import cloudconnector.MyCloudConnector
 
-class FakeContext implements Context {
+class FakeContext extends cloud.artik.cloudconnector.testkit.FakeContext {
     String clientId(){
         "clientId"
     }

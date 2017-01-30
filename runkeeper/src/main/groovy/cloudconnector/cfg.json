@@ -1,8 +1,8 @@
 {
   "authorizationUrl":"https://runkeeper.com/apps/authorize",
   "accessTokenUrl":"https://runkeeper.com/apps/token",
-  "clientId":"<insert your client is here>",
-  "clientSecret":"<insert your client secret here>",
+  "clientId":"<insert client id>",
+  "clientSecret":"<insert client secret>",
   "authType" : "OAuth2",
   "scope":["default"],
   "statusAcceptNotification":200,
@@ -13,7 +13,7 @@
   },
   "polling": [
     {
-      "cron": "* * * *",
+      "cron": "0 0 * * * *",
       "action": {
         "name": "getFitnessData",
         "parameters": {
@@ -22,7 +22,7 @@
       }
     },
     {
-      "cron": "*/12 * * *",
+      "cron": "0 0 */12 * * *",
       "action": {
         "name": "getSleepData",
         "parameters": {
@@ -31,7 +31,7 @@
       }
     },
     {
-      "cron": "* * * *",
+      "cron": "0 0 * * * *",
       "action": {
         "name": "getDiabeteData",
         "parameters": {
@@ -40,7 +40,7 @@
       }
     },
     {
-      "cron": "* * * *",
+      "cron": "0 0 * * * *",
       "action": {
         "name": "getGeneralMeasurements",
         "parameters": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "cron": "0 * * *",
+      "cron": "0 0 0 * * *",
       "action": {
         "name": "getWeightData",
         "parameters": {
