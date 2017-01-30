@@ -1,0 +1,356 @@
+import javax.measure.unit.SI
+import groovy.json.JsonSlurper
+import groovy.util.logging.*
+
+import com.samsung.sami.manifest.Manifest
+import com.samsung.sami.manifest.fields.*
+import static com.samsung.sami.manifest.fields.StandardFields.*
+
+public class JawboneManifest implements Manifest {
+
+    //COMMON FIELDS
+    static final CATEGORY = TEXT.alias("category")
+    static final TIME = new FieldDescriptor("timestamp", SI.SECOND, Integer.class)
+    static final TIME_CREATED = TIME.alias("time_created")
+    static final TIME_UPDATED = TIME.alias("time_updated")
+    static final TIME_COMPLETED = TIME.alias("time_completed")
+    static final TITLE = TEXT.alias("title")
+    static final EVENT_ID = ID.alias("event_id")
+    static final USER_ID = ID.alias("user_id")
+    static final TIME_ZONE = TEXT.alias("tz")
+    static final PLACE_NAME = TEXT.alias("place_name")
+    static final PLACE_ACC = new FieldDescriptor("place_acc", Integer.class)
+    static final PLACE_LAT = LATITUDE.alias("place_lat")
+    static final PLACE_LON = LONGITUDE.alias("place_lon")
+    static final TYPE = TEXT.alias("type")
+    static final SUB_TYPE = new FieldDescriptor("sub_type", Integer.class)
+    static final NOTE = TEXT.alias("note")
+
+    //SLEEP FIELDS
+    static final ASLEEP_TIME = TIME.alias("asleep_time")
+    static final AWAKE_TIME = TIME.alias("awake_time")
+    static final SUNRISE = TIME.alias("sunrise")
+    static final SUNSET = TIME.alias("sunset")
+
+    //MOVE FIELDS
+    static final ACTIVE_TIME = TIME.alias("active_time")
+    static final INACTIVE_TIME = TIME.alias("inactive_time")
+    static final WO_COUNT = TIME.alias("wo_count")
+    static final WO_LONGEST = TIME.alias("wo_longest")
+    static final WO_TIME = TIME.alias("wo_time")
+    static final WO_ACTIVE_TIME = TIME.alias("wo_active_time")
+    static final STEPS = TIME.alias("steps")
+    static final MOVE_DISTANCE = DISTANCE.alias("distance")
+    static final BG_CALORIES = new FieldDescriptor("bg_calories", Double.class)
+    static final CALORIES = new FieldDescriptor("calories", Double.class)
+    static final BMR = new FieldDescriptor("bmr", Double.class)
+    static final BMR_DAY = new FieldDescriptor("bmr_day", Double.class)
+    static final LONGEST_ACTIVE = TIME.alias("longest_active")
+    static final LONGEST_IDLE = TIME.alias("longest_idle")
+
+    //BODY FIELDS
+    static final BODY_WEIGHT = WEIGHT.alias("weight")
+    static final LEAN_MASS = new FieldDescriptor("lean_mass", Double.class) //Lean mass percentage.
+    static final BODY_FAT = new FieldDescriptor("body_fat", Double.class) //Body fat percentage.
+    static final BMI = new FieldDescriptor("bmi", Double.class) //Body mass index.
+
+    //WORKOUT FIELDS
+    static final WORKOUT_TIME = TIME.alias("time")
+    static final BG_ACTIVE_TIME = TIME.alias("bg_active_time")
+    static final METERS = new FieldDescriptor("meters", Integer.class)
+    static final KM = DISTANCE.alias("km")
+    static final INTENSITY =  new FieldDescriptor("intensity", Integer.class)
+    static final BMR_CALORIES = new FieldDescriptor("bmr_calories", Double.class)
+    static final ROUTE = TEXT.alias("route")
+    static final IMAGE = TEXT.alias("image")
+    static final SNAPSHOT_IMAGE = TEXT.alias("snapshot_image")
+
+    // MEAL FIELDS
+    static final NUM_DRINKS =  new FieldDescriptor("num_drinks", Integer.class)
+    static final NUM_WATER =  new FieldDescriptor("num_water", Integer.class)
+    static final NUM_FOODS = new FieldDescriptor("num_foods", Integer.class)
+    static final ONLY_WATERS = new FieldDescriptor("only_waters", Boolean.class)
+    static final NUM_MEALITEMS_GREEN = new FieldDescriptor("num_mealitems_green", Integer.class)
+    static final NUM_MEALITEMS_YELLOW = new FieldDescriptor("num_mealitems_yellow", Integer.class)
+    static final NUM_MEALITEMS_RED =  new FieldDescriptor("num_mealitems_red", Integer.class)
+    static final NUM_MEALITEMS_WITH_SCORE = new FieldDescriptor("num_mealitems_with_score", Integer.class)
+    static final FIBER = new FieldDescriptor("fiber", Double.class)
+    static final POLYUNSATURATED_FAT = new FieldDescriptor("polyunsaturated_fat", Double.class)
+    static final POTASSIUM = new FieldDescriptor("potassium", Double.class)
+    static final FAT = new FieldDescriptor("fat", Double.class)
+    static final CARBOHYDRATE = new FieldDescriptor("carbohydrate", Double.class)
+    static final SATURATED_FAT = new FieldDescriptor("saturated_fat", Double.class)
+    static final PROTEIN = new FieldDescriptor("protein", Double.class)
+    static final MONOUNSATURATED_FAT = new FieldDescriptor("monounsaturated_fat", Double.class)
+    static final SODIUM = new FieldDescriptor("sodium", Double.class)
+    static final VITAMIN_C = new FieldDescriptor("vitamin_c", Double.class)
+    static final VITAMIN_A = new FieldDescriptor("vitamin_a", Double.class)
+    static final UNSATURATED_FAT = new FieldDescriptor("unsaturated_fat", Double.class)
+    static final SUGAR = new FieldDescriptor("sugar", Double.class)
+    static final CALCIUM = new FieldDescriptor("calcium", Double.class)
+    static final IRON = new FieldDescriptor("iron", Double.class)
+    static final CHOLESTEROL = new FieldDescriptor("cholesterol", Double.class)
+    static final CAFFEINE = new FieldDescriptor("caffeine", Double.class)
+    static final BARCODE = COUNT.alias("barcode")
+
+    // MOOD DATA
+    // => Contained in subtype
+
+    // GENERIC DATA
+    // => Not implemented : it is unnecessary for the moment. It regards custom Jawbone Application data.
+
+    // SLEEP MODE DATA
+    static final SLEEP_MODE = new FieldDescriptor("sleep_mode", Boolean.class)
+
+    // WATCH MODE DATA
+    static final WATCH_MODE = new FieldDescriptor("watch_mode", Boolean.class)
+
+
+    public Object getValue(Object json, String path)
+    {
+        Object value = json
+        for(String key : path.tokenize('.'))
+            value = value?.get(key)
+        return value
+    }
+
+    @Override
+    List<Field> normalize(String input) {
+
+
+        def slurper = new JsonSlurper()
+        def json = slurper.parseText(input)
+        def fields = []
+        def rows = [
+                common: [
+                        [CATEGORY,  'category'],
+                        [USER_ID, 'measuregrp.meta.user_xid'],
+                        [TIME_CREATED, 'measuregrp.data.time_created'],
+                        [TIME_UPDATED, 'measuregrp.data.time_updated'],
+                        [TIME_COMPLETED,  'measuregrp.data.time_completed'],
+                        [TITLE,  'measuregrp.data.title'],
+                        [EVENT_ID,  'measuregrp.data.xid'],
+                        [TIME_ZONE,  'measuregrp.data.details.tz'],
+                        [PLACE_NAME,  'measuregrp.data.place_name'],
+                        [PLACE_ACC,  'measuregrp.data.place_acc'],
+                        [PLACE_LAT, 'measuregrp.data.place_lat'],
+                        [PLACE_LON,  'measuregrp.data.place_lon'],
+                        [NOTE,  'measuregrp.data.note'],
+                        [TYPE,  'measuregrp.data.type'],
+                        [SUB_TYPE, 'measuregrp.data.sub_type'],
+                ],
+
+                sleep:[
+                        [ASLEEP_TIME, 'measuregrp.data.details.asleep_time'],
+                        [AWAKE_TIME, 'measuregrp.data.details.awake_time'],
+                        [SUNRISE, 'measuregrp.data.details.sunrise'],
+                        [SUNSET,  'measuregrp.data.details.sunset']
+                ],
+                move:[
+                        [ACTIVE_TIME,  'measuregrp.data.details.active_time'],
+                        [INACTIVE_TIME,  'measuregrp.data.details.inactive_time'],
+                        [LONGEST_ACTIVE,  'measuregrp.data.details.longest_active'],
+                        [LONGEST_IDLE,  'measuregrp.data.details.longest_idle'],
+                        [SUNRISE,  'measuregrp.data.details.sunrise'],
+                        [SUNSET,  'measuregrp.data.details.sunset'],
+                        [BG_CALORIES,  'measuregrp.data.details.bg_calories'],
+                        [WO_COUNT,  'measuregrp.data.details.wo_count'],
+                        [WO_LONGEST,  'measuregrp.data.details.wo_longest'],
+                        [WO_TIME,  'measuregrp.data.details.wo_time'],
+                        [WO_ACTIVE_TIME,  'measuregrp.data.details.wo_active_time'],
+                        [MOVE_DISTANCE, 'measuregrp.data.details.distance'],
+                        [STEPS,  'measuregrp.data.details.steps'],
+                        [CALORIES,  'measuregrp.data.details.calories'],
+                        [BMR, 'measuregrp.data.details.bmr'],
+                        [BMR_DAY, 'measuregrp.data.details.bmr_day']
+                        //TODO : hourly_totals (Data broken out by hour (values as above).
+                        // => Not enough time to implement it. It is a nested collection.
+                ],
+                body:[
+                        [LEAN_MASS, 'measuregrp.data.lean_mass'],
+                        [BODY_WEIGHT, 'measuregrp.data.weight'],
+                        [BODY_FAT, 'measuregrp.data.body_fat'],
+                        [BMI,  'measuregrp.data.bmi']
+                ],
+                workout:[
+                        [ROUTE,  'measuregrp.data.route'],
+                        [IMAGE,  'measuregrp.data.image'],
+                        [SNAPSHOT_IMAGE,  'measuregrp.data.snapshot_image'],
+                        [STEPS,  'measuregrp.data.details.steps'],
+                        [WORKOUT_TIME,  'measuregrp.data.details.time'],
+                        [BG_ACTIVE_TIME,  'measuregrp.data.details.bg_active_time'],
+                        [METERS,  'measuregrp.data.details.meters'],
+                        [KM,  'measuregrp.data.details.km'],
+                        [INTENSITY,  'measuregrp.data.details.intensity'],
+                        [CALORIES,  'measuregrp.data.details.calories'],
+                        [CALORIES,  'measuregrp.data.details.calories'],
+                        [BG_CALORIES,  'measuregrp.data.details.bg_calories'],
+                        [BMR,  'measuregrp.data.details.bmr'],
+                        [BMR_CALORIES, 'measuregrp.data.details.bmr_calories'],
+                ],
+                meal:[
+                        [NUM_DRINKS,  'measuregrp.data.details.num_drinks'],
+                        [NUM_WATER,  'measuregrp.data.details.num_water'],
+                        [NUM_FOODS,  'measuregrp.data.details.num_foods'],
+                        [ONLY_WATERS,  'measuregrp.data.details.only_waters'],
+                        [NUM_MEALITEMS_GREEN,  'measuregrp.data.details.num_mealitems_green'],
+                        [NUM_MEALITEMS_YELLOW,  'measuregrp.data.details.num_mealitems_yellow'],
+                        [NUM_MEALITEMS_RED,  'measuregrp.data.details.num_mealitems_red'],
+                        [FIBER,  'measuregrp.data.details.fiber'],
+                        [POLYUNSATURATED_FAT,  'measuregrp.data.details.polyunsaturated_fat'],
+                        [POTASSIUM,  'measuregrp.data.details.potassium'],
+                        [FAT,  'measuregrp.data.details.fat'],
+                        [CARBOHYDRATE,  'measuregrp.data.details.carbohydrate'],
+                        [SATURATED_FAT,  'measuregrp.data.details.saturated_fat'],
+                        [PROTEIN,  'measuregrp.data.details.protein'],
+                        [MONOUNSATURATED_FAT,  'measuregrp.data.details.monounsaturated_fat'],
+                        [SODIUM,  'measuregrp.data.details.sodium'],
+                        [VITAMIN_A,  'measuregrp.data.details.vitamin_a'],
+                        [VITAMIN_C,  'measuregrp.data.details.vitamin_c'],
+                        [UNSATURATED_FAT,  'measuregrp.data.details.unsaturated_fat'],
+                        [SUGAR,  'measuregrp.data.details.sugar'],
+                        [CALCIUM,  'measuregrp.data.details.calcium'],
+                        [IRON,  'measuregrp.data.details.iron'],
+                        [CHOLESTEROL,  'measuregrp.data.details.cholesterol'],
+                        [CAFFEINE,  'measuregrp.data.details.caffeine'],
+                        [BARCODE,  'measuregrp.data.details.barcode'],
+                        [CALORIES,  'measuregrp.data.details.calories']
+                ],
+                sleep_mode:[
+                        [SLEEP_MODE, 'measuregrp.state']
+                ],
+                watch_mode:[
+                        [WATCH_MODE, 'measuregrp.state']
+                ],
+        ]
+        fillFields(rows["common"], json, fields)
+        if (json?.category && json.category in rows)
+            fillFields(rows[json.category], json, fields)
+        return fields
+
+
+    }
+
+    public void fillFields(def rows, def json, def fields)
+    {
+        for(List row : rows)
+        {
+            def value = getValue(json, row[1])
+
+            if(value == null || (value instanceof String && value.empty))
+                continue;
+
+            // Only the PLACE_LAT and PLACE_LON values have to be parsed from a String
+
+            if( ((row[0] == PLACE_LAT) || (row[0] == PLACE_LON)) && (value instanceof String) )
+                fields.add(new Field(row[0], Double.parseDouble(value)))
+            else
+            {
+                if(value instanceof BigDecimal && ((FieldDescriptor)row[0]).valueClass == Double)
+                    fields.add(new Field(row[0], ((BigDecimal)value).doubleValue() ))
+                else if(value instanceof Integer && ((FieldDescriptor)row[0]).valueClass == Double)
+                    fields.add(new Field(row[0], (double)value ))
+                else
+                {
+                    if(((FieldDescriptor)row[0]).valueClass != value.class)
+                        continue;
+
+                    fields.add(new Field(row[0], value ))
+                }
+            }
+        }
+    }
+
+    @Override
+    List<FieldDescriptor> getFieldDescriptors() {
+        return [
+                //COMMON FIELDS,
+                CATEGORY,
+                TIME,
+                TIME_CREATED,
+                TIME_UPDATED,
+                TIME_COMPLETED,
+                TITLE,
+                EVENT_ID,
+                USER_ID,
+                TIME_ZONE,
+                PLACE_NAME,
+                PLACE_ACC,
+                PLACE_LAT,
+                PLACE_LON,
+                TYPE,
+                SUB_TYPE,
+                NOTE,
+
+                //SLEEP FIELDS,
+                ASLEEP_TIME,
+                AWAKE_TIME,
+                SUNRISE,
+                SUNSET,
+
+                //MOVE FIELDS,
+                ACTIVE_TIME,
+                INACTIVE_TIME,
+                WO_COUNT,
+                WO_LONGEST,
+                WO_TIME,
+                WO_ACTIVE_TIME,
+                STEPS,
+                MOVE_DISTANCE,
+                BMR,
+                BMR_DAY,
+                BG_CALORIES,
+                CALORIES,
+
+                //BODY FIELDS,
+                LEAN_MASS,
+                BODY_FAT,
+                BMI,
+
+                //WORKOUT FIELDS,
+                WORKOUT_TIME,
+                BG_ACTIVE_TIME,
+                METERS,
+                KM,
+                INTENSITY,
+                BMR_CALORIES,
+                ROUTE,
+                IMAGE,
+                SNAPSHOT_IMAGE,
+
+                // MEAL FIELDS,
+                NUM_DRINKS,
+                NUM_WATER,
+                NUM_FOODS,
+                ONLY_WATERS,
+                NUM_MEALITEMS_GREEN,
+                NUM_MEALITEMS_YELLOW,
+                NUM_MEALITEMS_RED,
+                NUM_MEALITEMS_WITH_SCORE,
+                FIBER,
+                POLYUNSATURATED_FAT,
+                POTASSIUM,
+                FAT,
+                CARBOHYDRATE,
+                SATURATED_FAT,
+                PROTEIN,
+                MONOUNSATURATED_FAT,
+                SODIUM,
+                VITAMIN_C,
+                VITAMIN_A,
+                UNSATURATED_FAT,
+                SUGAR,
+                CALCIUM,
+                IRON,
+                CHOLESTEROL,
+                CAFFEINE,
+                BARCODE,
+
+                // SLEEP FIELDS
+                SLEEP_MODE,
+
+                // WATCH FIELDS
+                WATCH_MODE
+        ]
+    }
+}

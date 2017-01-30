@@ -1,14 +1,14 @@
-package io.samsungsami.jawbone
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.joda.time.*
 import org.scalactic.*
+import scala.Option
 
 import static java.net.HttpURLConnection.*
 
-//TODO implement unsubscription
 //@CompileStatic
 class MyCloudConnector extends CloudConnector {
     def API_ENDPOINT_URL = "https://jawbone.com/nudge/api/v.1.1/"
@@ -32,8 +32,8 @@ class MyCloudConnector extends CloudConnector {
         params.putAll(req.queryParams())
         switch (phase) {
             case Phase.refreshToken:
-                params.put("client_id", ctx.clientId)
-                params.put("client_secret", ctx.clientSecret)
+                params.put("client_id", ctx.clientId())
+                params.put("client_secret", ctx.clientSecret())
                 //TODO check if params should be in QueryString or Body ??
                 //doc: https://jawbone.com/up/developer/authentication
                 return new Good(req.withQueryParams(params).withMethod(HttpMethod.Post))
@@ -47,19 +47,27 @@ class MyCloudConnector extends CloudConnector {
         }
     }
 
+
     @Override
     def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
         def req = new Good([
-                new RequestDef(PUBSUB_ENDPOINT_URL).
-                        withQueryParams([
-                                "webhook" : String.format("%s%s/thirdpartynotifications?samiDeviceId=%s", ctx.parameters().get("webhookUrl"),  ctx.cloudId(), info.did())
-                        ]).
-                        withContent("", "application/x-www-form-urlencoded; charset=UTF-8").
-                        withMethod(HttpMethod.Post)
+                new RequestDef(PUBSUB_ENDPOINT_URL).withMethod(HttpMethod.Delete),
+                new RequestDef("${API_ENDPOINT_URL}users/@me")
         ])
         return req
     }
 
+    @Override
+    def Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
+        if (req.url().endsWith("@me")) {
+            def json = slurper.parseText(res.content)
+            new Good(Option.apply(info.withExtId(json.meta.user_xid)))
+        } else {
+            new Good(Option.apply(null))
+        }
+    }
+
+    // useless but keep for backward compatibility security
     @Override
     def Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
         return new Good([new RequestDef(PUBSUB_ENDPOINT_URL).withMethod(HttpMethod.Delete)])
@@ -67,8 +75,20 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+        if (req.url.endsWith("thirdpartynotifications/postsubscription")) {
+            return new Good(new NotificationResponse([]))
+        }
+        def content = req.content().trim()
+        def json = slurper.parseText(content)
+
         def did = req.queryParams().get("samiDeviceId")
-        if (did == null) {
+        def selector = (did != null)
+            ? new ByDid(did)
+            : (json?.events?.length?:0 > 0)
+            ? new ByExtId(json.events[0].user_xid)
+            : null
+
+        if (selector == null) {
             ctx.debug("Bad notification (where is did in following req : ) " + req)
             return new Bad(new Failure("Impossible to recover device id from token request."))
         }
@@ -80,9 +100,6 @@ class MyCloudConnector extends CloudConnector {
         The secret hash is a SHA-256 of the concatenated string of your client ID followed by the app secret.
          */
         def jawboneCallbackSecretHash = CryptographicHelper.sha256(ctx.clientId() + ctx.clientSecret())
-
-        def content = req.content().trim()
-        def json = slurper.parseText(content)
         def PUSH_EVENT = ["enter_sleep_mode", "exit_sleep_mode", "enter_stopwatch_mode", "exit_stopwatch_mode"]
         ctx.debug("json from callback : " + json)
         for(e in json.events){
@@ -101,7 +118,7 @@ class MyCloudConnector extends CloudConnector {
 
         ctx.debug("Data provided : " + dataToFetch)
 
-        return new Good(new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), dataToFetch, dataToPush)]))
+        return new Good(new NotificationResponse([new ThirdPartyNotification(selector, dataToFetch, dataToPush)]))
     }
 
     // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)

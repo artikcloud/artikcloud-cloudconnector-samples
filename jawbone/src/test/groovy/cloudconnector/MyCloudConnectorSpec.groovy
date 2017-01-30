@@ -1,4 +1,4 @@
-package io.samsungsami.jawbone
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import org.joda.time.*
@@ -31,7 +31,7 @@ class MyCloudConnectorSpec extends Specification {
 		def expectedApi1 = new RequestDef(sut.API_ENDPOINT_URL + "moves/qzkzPoF6LjwyxHC_TpGsIJGJTS9rxqKR").addQueryParams(['type':"move"])
 		def expectedApi2 = new RequestDef(sut.API_ENDPOINT_URL + "body_events/4lQSlf6UA8f_S9hzOrhyjHp-HnylKDz5").addQueryParams(['type':"body"])
 		def expectedResponse = new NotificationResponse([
-				new ThirdPartyNotification(new ByDeviceId(did), [expectedApi1, expectedApi2])
+				new ThirdPartyNotification(new ByDid(did), [expectedApi1, expectedApi2])
 		])
 
 		then:
@@ -86,7 +86,7 @@ class MyCloudConnectorSpec extends Specification {
 				'''{"action":"enter_stopwatch_mode","secret_hash":"2e920c710603fea850e4204c14a99aea48c6a6beddaaddfa49ffe953b5e04aca","timestamp":1399434951,"user_xid":"RGaCBFg9CsB83FsEcMY44A"}'''
 		]
 		def expectedResponse = new NotificationResponse([
-				new ThirdPartyNotification(new ByDeviceId(did), [], expectedData)
+				new ThirdPartyNotification(new ByDid(did), [], expectedData)
 		])
 
 		then:
