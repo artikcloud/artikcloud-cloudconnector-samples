@@ -1,4 +1,4 @@
-package io.samsungsami.instagram
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
@@ -102,8 +102,8 @@ class MyCloudConnectorSpec extends Specification {
       def res2 = sut.onFetchResponse(ctx, requestApi2, dev2, responseApi2)
       then:
       resNotif.get() == new NotificationResponse([
-        new ThirdPartyNotification(new ByExternalId(dev1.extId.get()), [ requestApi1 ]),
-        new ThirdPartyNotification(new ByExternalId(dev2.extId.get()), [ requestApi2 ])
+        new ThirdPartyNotification(new ByExtId(dev1.extId.get()), [ requestApi1 ]),
+        new ThirdPartyNotification(new ByExtId(dev2.extId.get()), [ requestApi2 ])
       ])
       cmpEvents(res1.get(), [event01])
       cmpEvents(res2.get(), [event02, event03])
