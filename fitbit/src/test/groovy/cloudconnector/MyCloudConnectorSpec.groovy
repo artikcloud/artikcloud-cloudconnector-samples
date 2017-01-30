@@ -1,4 +1,4 @@
-package io.samsungsami.fitbit
+package cloudconnector
 
 import spock.lang.*
 import scala.Option
@@ -46,7 +46,7 @@ class MyCloudConnectorSpec extends Specification {
 	def "computeAuthHeader should compute the good hash (Oauth2 basic header)"() {
 		when:
 		//the Base64 encoded string, Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ=, is decoded as "client_id:client secret"
-		def expectedResult =  "Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ="
+		def expectedResult = "Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ="
 		def res = sut.computeAuthHeader("client_id", "client secret")
 		then:
 		res == expectedResult
@@ -59,8 +59,8 @@ class MyCloudConnectorSpec extends Specification {
 		then:
 		res.isGood()
 		res.get() == new NotificationResponse([
-				new ThirdPartyNotification(new ByDeviceId("id1"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"]),]),
-				new ThirdPartyNotification(new ByDeviceId("id2"), [
+				new ThirdPartyNotification(new ByExtId("228S74"), [new RequestDef(apiEndpoint + "foods/log/date/2010-03-01.json").withHeaders(["remember_date": "2010-03-01"]),]),
+				new ThirdPartyNotification(new ByDid("id2"), [
 						new RequestDef(apiEndpoint + "activities/date/2011-03-01.json").withHeaders(["remember_date": "2011-03-01"]),
 						new RequestDef(apiEndpoint + "activities/heart/date/2011-03-01/1d.json").withHeaders(["remember_date": "2011-03-01"])
 				]),
@@ -103,6 +103,18 @@ class MyCloudConnectorSpec extends Specification {
 		//1267487999999L=Mon, 01 Mar 2010 23:59:59 GMT
 		def timestamp=1267487999999L
 		def events = [new Event(timestamp, readFile(this, "events/foods.json"))]
+		cmpEvents(res.get(), events)
+	}
+
+	def "fetch sleeps"() {
+		when:
+		def req = new RequestDef(apiEndpoint + "sleep/log/date/2016-04-28.json").withHeaders(["remember_date": "2016-04-28"])
+		def resp = new Response(HttpURLConnection.HTTP_OK, "application/json", readFile(this, "apiSleep.json"))
+		def res = sut.onFetchResponse(ctx, req, device, resp)
+		then:
+		res.isGood()
+		def timestamp=1461887999999L
+		def events = [new Event(timestamp, readFile(this, "events/sleep.json"))]
 		cmpEvents(res.get(), events)
 	}
 

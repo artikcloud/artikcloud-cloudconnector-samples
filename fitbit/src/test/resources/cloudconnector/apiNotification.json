@@ -4,7 +4,7 @@
         "date": "2010-03-01",
         "ownerId": "228S74",
         "ownerType": "user",
-        "subscriptionId": "sami-id1"
+        "subscriptionId": "owner-228S74"
     },
     {
         "collectionType": "activities",
@@ -14,4 +14,3 @@
         "subscriptionId": "sami-id2"
     }
 ]
-

@@ -1,7 +1,8 @@
-
-package io.samsungsami.fitbit
+package cloudconnector
 
 import scala.Option
+
+import javax.management.Notification
 
 import static java.net.HttpURLConnection.*
 
@@ -14,7 +15,6 @@ import groovy.json.JsonOutput
 import cloud.artik.cloudconnector.api_v1.*
 import org.apache.commons.codec.binary.Base64;
 
-//TODO implement unsubscription (it's a workaround for https://samihub.atlassian.net/browse/SAMI-3607)
 class MyCloudConnector extends CloudConnector {
     JsonSlurper slurper = new JsonSlurper()
     static final mdateFormat = DateTimeFormat.forPattern("yyyy-MM-dd").withZoneUTC()
@@ -31,8 +31,8 @@ class MyCloudConnector extends CloudConnector {
         ctx.parameters().get("baseUrl")
     }
 
-    def pubsubUrl(Context ctx, String did) {
-        baseUrl(ctx) + "apiSubscriptions/sami-" + did + ".json"
+    def pubsubUrl(Context ctx, String id) {
+        baseUrl(ctx) + "apiSubscriptions/" + id + ".json"
     }
 
     def profileUrl(Context ctx) {
@@ -54,17 +54,21 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
         new Good([
-                new RequestDef(pubsubUrl(ctx, info.did())).
-                        withHeaders(["X-Fitbit-Subscriber-Id": ctx.parameters().get("SubscriberId")]).
-                        withContent("", "application/x-www-form-urlencoded; charset=UTF-8").
-                        withMethod(HttpMethod.Post),
-                new RequestDef(profileUrl(ctx))
+            new RequestDef(pubsubUrl(ctx, "sami-" + info.did())).withMethod(HttpMethod.Delete),
+            new RequestDef(pubsubUrl(ctx, "owner-" + info.extId().get())).
+                withHeaders(["X-Fitbit-Subscriber-Id": ctx.parameters().get("SubscriberId")]).
+                withContentType("application/x-www-form-urlencoded; charset=UTF-8").
+                withMethod(HttpMethod.Post),
+            new RequestDef(profileUrl(ctx))
         ])
     }
 
     @Override
-    Or<List<RequestDef>, Failure> unsubscribe(Context ctx, DeviceInfo info) {
-        new Good([new RequestDef(pubsubUrl(ctx, info.did())).withMethod(HttpMethod.Delete)])
+    Or<List<RequestDef>, Failure> unsubscribeLast(Context ctx, DeviceInfo info) {
+        new Good([
+            new RequestDef(pubsubUrl(ctx, "owner-" + info.extId().get())).withMethod(HttpMethod.Delete),
+            new RequestDef(pubsubUrl(ctx, "sami-" + info.did())).withMethod(HttpMethod.Delete),
+        ])
     }
 
     @Override
@@ -82,18 +86,19 @@ class MyCloudConnector extends CloudConnector {
             } else {
                 return new Bad(new Failure("Impossible to get user profile information from fitbit, got status http status : ${res.status()}) with content: ${res.content()}"))
             }
-        } else if (req.url().contains("apiSubscriptions")) {
-            if(res.status() == HTTP_OK) {
-                //Returned if the given user is already subscribed to the stream.
-                return new Good(Option.apply(null))
-            } else if(res.status() == HTTP_CREATED) {
-                //Returned if a new subscription was created in response to your request.
+        } else if (req.url().contains("apiSubscriptions") && req.method() == HttpMethod.Post) { //delete should not failed the subscription
+            if(res.status() == HTTP_OK || res.status() == HTTP_CREATED) {
+                //def extId = slurper.parseText(res.content).ownerId
+                //return new Good(Option.apply(info.withExtId(extId)))
                 return new Good(Option.apply(null))
             } else if(res.status() == HTTP_CONFLICT) {
                 //Returned if the given user is already subscribed to this stream using a different subscription ID (already subscribed sami-device)
-                return new Bad(new Failure("Impossible to perform subscription because subscription already exists (conflict)"))
+                //return new Bad(new Failure("Impossible to perform subscription because subscription already exists (conflict)"))
+
+                // during the migration the subscription could failed with conflict until the first subscriber remove the active sami-xxx subscription
+                return new Good(Option.apply(null))
             } else {
-                //Returned if the given user is already subscribed to this stream using a different subscription ID (already subscribed sami-device)
+                // failed if error to setup subscription (bad credentials, ...)
                 return new Bad(new Failure("Impossible to perform subscription error code = " + res.status()))
             }
         } else {
@@ -163,11 +168,20 @@ class MyCloudConnector extends CloudConnector {
     }
 
     def createNotificationFromResult(Context ctx, java.lang.Object e) {
-        String did = e.subscriptionId.substring("sami-".length());
-        String collectionType = e.collectionType;
-        String date = e.date;
-        def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep).withHeaders(["remember_date": date])}
-        new ThirdPartyNotification(new ByDeviceId(did), requestsToDo)
+        if (e.subscriptionId.startsWith("sami-")) {
+          //deprecated should not exists after migration to use of externalId
+          String did = e.subscriptionId.substring("sami-".length());
+          String collectionType = e.collectionType;
+          String date = e.date;
+          def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep).withHeaders(["remember_date": date])}
+          new ThirdPartyNotification(new ByDid(did), requestsToDo)
+        } else if (e.subscriptionId.startsWith("owner-")) {
+          String extId = e.ownerId; // should be same value as in subscriptionId
+          String collectionType = e.collectionType;
+          String date = e.date;
+          def requestsToDo = apiEndpoint(ctx, collectionType, date).collect {ep -> new RequestDef(ep).withHeaders(["remember_date": date])}
+          new ThirdPartyNotification(new ByExtId(extId), requestsToDo)
+        }
     }
 
     def Or<NotificationResponse, Failure> answerToChallengeRequest(RequestDef req, String verifyCode){
@@ -180,11 +194,32 @@ class MyCloudConnector extends CloudConnector {
         return new Good(new NotificationResponse([], new Response(HTTP_NOT_FOUND, "text/plain", "")))
     }
 
+    def getLastDaysData(Context ctx) {
+        def nbDayRetrieve = ctx.parameters().get("nbDayRetrieved").toInteger()
+        def startDate = new Date(ctx.now()).minus(nbDayRetrieve)
+
+        def daysToRetrieves = (0..nbDayRetrieve)
+        ctx.debug(daysToRetrieves)
+        def url = daysToRetrieves.collectMany{e ->
+            def date = mdateFormat.print(startDate.plus(e).getTime())
+            [
+                    baseUrl(ctx) + "sleep" + "/date/" + date + ".json",
+                    baseUrl(ctx) + "body" + "/date/" + date + ".json",
+                    baseUrl(ctx) + "foods/log" + "/date/" + date + ".json",
+                    baseUrl(ctx) + "activities/heart/date/" + date  + "/1d.json"
+            ].collect{u -> new RequestDef(u).withHeaders(["remember_date": date])}
+        }
+        url
+    }
+
     @Override
     def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
-        if(req.queryParams().containsKey("verify"))
+        if (req.url().endsWith("postsubscription")) {
+            def json = slurper.parseText(req.content())
+            return new Good(new NotificationResponse([new ThirdPartyNotification(new ByDid(json.did), getLastDaysData(ctx))]))
+        } else if(req.queryParams().containsKey("verify")) {
             return answerToChallengeRequest(req, ctx.parameters().get("endpointVerificationCode"))
-        if (req.contentType().startsWith("application/json")) {
+        } else if (req.contentType().startsWith("application/json")) {
             def json = slurper.parseText(req.content)
             return new Good(new NotificationResponse(json.collect { e -> createNotificationFromResult(ctx, e) }))
         } else if (req.contentType().startsWith("multipart/form-data")) {
@@ -205,7 +240,6 @@ class MyCloudConnector extends CloudConnector {
         switch(res.status) {
             case HTTP_OK:
                 def tz
-                def dateStr = req.headers().get("remember_date")
                 if (info.userData().isEmpty()) {
                     ctx.debug("No user data has been found: using UTC timezone instead of user defined timezone.")
                     tz = DateTimeZone.UTC
@@ -213,6 +247,7 @@ class MyCloudConnector extends CloudConnector {
                     def tzId = info.userData().get()
                     tz = DateTimeZone.forID(tzId)
                 }
+                def dateStr = req.headers().get("remember_date")
                 def ts = getTimestampFromDate(DateTime.parse(dateStr, mdateFormat.withZone(tz)), tz)
 
                 def content = res.content().trim()
@@ -221,6 +256,10 @@ class MyCloudConnector extends CloudConnector {
                     return new Good(Empty.list())
                 } else if (res.contentType().startsWith("application/json")) {
                     def json = slurper.parseText(content)
+                    // filter json to remove 'minuteData' (too big)
+                    if (json?.sleep != null) {
+                        json.sleep = json.sleep.collect{ it.remove('minuteData'); it}
+                    }
                     return new Good([new Event(ts, JsonOutput.toJson(json))])
                 }
                 return new Bad(new Failure("unsupported response ${res} ... ${res.contentType()}"))
