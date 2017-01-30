@@ -1,8 +1,8 @@
 {
   "authorizationUrl": "https://foursquare.com/oauth2/authorize",
   "accessTokenUrl": "https://foursquare.com/oauth2/access_token",
-  "clientId": "<insert your client id here>",
-  "clientSecret": "<insert your client secret here>",
+  "clientId":"<insert client id>",
+  "clientSecret":"<insert client secret>",
   "authType" : "OAuth2",
   "statusAcceptNotification": 200,
   "accessTokenMethod": "post",

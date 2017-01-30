@@ -1,4 +1,4 @@
-package io.samsungsami.foursquare
+package cloudconnector
 
 import org.scalactic.*
 import org.joda.time.format.DateTimeFormat
@@ -69,7 +69,7 @@ class MyCloudConnector extends CloudConnector {
         checkins.collect { e ->
             def eid = e.user.id
             def dataToPush = JsonOutput.toJson(e)
-            new ThirdPartyNotification(new ByExternalId(eid), [], [dataToPush])
+            new ThirdPartyNotification(new ByExtId(eid), [], [dataToPush])
         }
     }
 
