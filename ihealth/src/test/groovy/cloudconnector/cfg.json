@@ -1,8 +1,8 @@
 {
     "authorizationUrl":"https://api.ihealthlabs.com:8443/OpenApiV2/OAuthv2/userauthorization/",
     "accessTokenUrl":"https://api.ihealthlabs.com:8443/OpenApiV2/OAuthv2/userauthorization/",
-    "clientId":"0536458765584e08aef72d371a985082",
-    "clientSecret":"b39beb21940848f892e8a93f66221ada",
+    "clientId":"<insert client id>",
+    "clientSecret":"<insert client secret>",
     "authType" : "OAuth2",
     "scope":[
       "OpenApiActivity",

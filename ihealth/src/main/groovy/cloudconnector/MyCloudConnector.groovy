@@ -1,8 +1,4 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of cloud.artik.cloudconnector.api.CloudConnector
-package io.samsungsami.ihealth
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -64,7 +60,7 @@ class MyCloudConnector extends CloudConnector {
                     start_time: epochInSeconds.toString(),
                     end_time: (epochInSeconds + 1).toString()
             ])
-            new ThirdPartyNotification(new ByExternalId(extId), [reqToDo])
+            new ThirdPartyNotification(new ByExtId(extId), [reqToDo])
         }
         new Good(new NotificationResponse(notif))
     }
