@@ -1,4 +1,4 @@
-package io.samsungsami.withings
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -83,17 +83,17 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		results[0].isGood()
-		results[0].get().thirdPartyNotifications[0].selector == new ByDeviceId(did)
+		results[0].get().thirdPartyNotifications[0].selector == new ByDid(did)
 		results[0].get().thirdPartyNotifications[0].requestsOfData == [mesureReq]
-		results[0].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [mesureReq])])
+		results[0].get() == new NotificationResponse([new ThirdPartyNotification(new ByDid(did), [mesureReq])])
 		results[1].get().thirdPartyNotifications[0].requestsOfData == [mesureReq]
-		results[1].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [mesureReq])])
+		results[1].get() == new NotificationResponse([new ThirdPartyNotification(new ByDid(did), [mesureReq])])
 		results[2].get().thirdPartyNotifications[0].requestsOfData[0] == activityReq
 		results[2].get().thirdPartyNotifications[0].requestsOfData[1] == mesureActivityReq
 		results[2].get().thirdPartyNotifications[0].requestsOfData == [activityReq, mesureActivityReq]
-		results[2].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [activityReq, mesureActivityReq])])
+		results[2].get() == new NotificationResponse([new ThirdPartyNotification(new ByDid(did), [activityReq, mesureActivityReq])])
 		results[3].get().thirdPartyNotifications[0].requestsOfData == [sleepReq, mesureReq]
-		results[3].get() == new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), [sleepReq, mesureReq])])
+		results[3].get() == new NotificationResponse([new ThirdPartyNotification(new ByDid(did), [sleepReq, mesureReq])])
 	}
 
 	def "fetch data after from activity notification"() {

@@ -1,4 +1,4 @@
-package io.samsungsami.withings
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -158,7 +158,7 @@ class MyCloudConnector extends CloudConnector {
             ctx.debug("Bad notification, impossible to build query from :" + req)
             return new Bad(new Failure("impossible to build query for app Id = " + appliId))
         }
-        new Good(new NotificationResponse([new ThirdPartyNotification(new ByDeviceId(did), requestsToDo)]))
+        new Good(new NotificationResponse([new ThirdPartyNotification(new ByDid(did), requestsToDo)]))
     }
 
     @Override
