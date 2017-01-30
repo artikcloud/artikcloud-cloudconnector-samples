@@ -1,8 +1,4 @@
-// Sample CloudConnector, that can be used as a boostrap to write a new CloudConnector.
-// Every code is commented, because everything is optional.
-// The class can be named as you want no additional import allowed
-// See the javadoc/scaladoc of cloud.artik.cloudconnector.api.CloudConnector
-package io.samsungsami.underarmour
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -74,7 +70,7 @@ class MyCloudConnector extends CloudConnector {
             case "application.actigraphies":
                 def thirdPardyNotifications = json.collect { notification ->
                     def userId = notification._links.user[0].id
-                    def deviceSelector = new ByExternalId(userId)
+                    def deviceSelector = new ByExtId(userId)
                     def urlEnd = notification._links.actigraphy[0].href
                     new ThirdPartyNotification(deviceSelector, [new RequestDef("${ctx.parameters()['endPointUrl']}${urlEnd}").addQueryParams(['underArmourTs':notification.ts])])
                 }

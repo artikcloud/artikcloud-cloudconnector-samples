@@ -1,4 +1,4 @@
-package io.samsungsami.underarmour
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -72,10 +72,10 @@ class MyCloudConnectorSpec extends Specification {
 
   		then:
     		res.isGood()
-			res.get().thirdPartyNotifications[0].selector == new ByExternalId(euid)
+			res.get().thirdPartyNotifications[0].selector == new ByExtId(euid)
 			res.get().thirdPartyNotifications[0].requestsOfData[0] == execetedReq
 			res.get() == new NotificationResponse([
-				new ThirdPartyNotification(new ByExternalId(euid), [execetedReq])
+				new ThirdPartyNotification(new ByExtId(euid), [execetedReq])
 			])
     }
 

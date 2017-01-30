@@ -1,7 +1,7 @@
 {
   "authType" : "OAuth2",
-  "clientId":"4yxbhsjxexuuh5tcw5j4cwhk5c7jjgnk",
-  "clientSecret":"ZSqczAT9cMpsWD7wyNPUCfXAANxrfe6e4yHY3AtVAHA",
+  "clientId":"<insert client id>",
+  "clientSecret":"<insert client secret>",
   "authorizationUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize/",
   "accessTokenUrl":"https://www.mapmyfitness.com/v7.1/oauth2/uacf/access_token/",
   "scope":[ "read" ],
@@ -9,7 +9,7 @@
   "accessTokenMethod": "post",
   "parameters": {
     "endPointUrl": "https://api.ua.com",
-    "notificationCallback": "https://test0.alchim31.net:9083/cloudconnectors/0000/thirdpartynotifications",
-    "sharedSecret": "ARTIK Cloud shared $ecret"
+    "notificationCallback": "<insert notification call back url>",
+    "sharedSecret": "<insert a shared secret>"
   }
 }
