@@ -1,4 +1,4 @@
-package io.samsungsami.openWeatherMap
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonOutput
@@ -59,7 +59,7 @@ class MyCloudConnector extends CloudConnector {
 
     @Override
     def Or<ActionResponse, Failure> onAction(Context ctx, ActionDef action, DeviceInfo dInfo) {
-        def dSelector = new ByDeviceId(dInfo.did)
+        def dSelector = new ByDid(dInfo.did)
         def json = slurper.parseText(action.params)
         switch (action.name) {
             case "getCurrentWeatherByCity":
@@ -110,7 +110,7 @@ class MyCloudConnector extends CloudConnector {
                 if (json.countryCode != null) {
                     city = city + "," + json.countryCode
                 }
-                req = req.addQueryParams(["q": city, "daysToForecast": (json?.daysToForecast), "mustSummary": (json?.mustSummary ?: false)])
+                req = req.addQueryParams(["q": (city).toString(), "daysToForecast": (json?.daysToForecast).toString(), "mustSummary": (json?.mustSummary ?: false).toString()])
                 return new Good(new ActionResponse([new ActionRequest([req])]))
             default:
                 break
@@ -122,32 +122,35 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<List<Event>, Failure> onFetchResponse(Context ctx, RequestDef req, DeviceInfo info, Response res) {
         DateTime now = new DateTime(DateTimeZone.UTC);
-        def commonJson = [:]
-
 
         switch (res.status) {
             case HTTP_OK:
                 switch (req.url) {
                     case currentWeatherUrl:
+                        def commonJson = [:]
                         def date = ymdDateFormat.print(now)
                         commonJson += ["type": "current", "date": date]
                         def json = slurper.parseText(res.content())
                         return new Good(eventsForOneTimeFrame(json, now.millis, commonJson))
                     case forecastWeatherUrl:
+                        def commonJson = [:]
                         def json = slurper.parseText(res.content())
-                        def daysToForecast = req.queryParams().get("daysToForecast").toInteger()
-                        def mustSummary = req.queryParams().get("mustSummary")?.toBoolean() ?: false
-                        def filter = ymdDateFormat.print(now.plusDays(daysToForecast))
-                        def list = json?.list?.findAll({ it?.dt_txt?.startsWith(filter) } ?: false) ?: []
-                        def events = null
-                        if (mustSummary) {
-                            commonJson += weatherJsonTransFormation(json?.city) + ["type": "summary"]
-                            events = weatherSummary(list, now.millis, commonJson)
-                        } else {
-                            commonJson += weatherJsonTransFormation(json?.city) + ["type": "forecast"]
-                            events = list.collectMany { prediction -> eventsForOneTimeFrame(prediction, now.millis, commonJson) }
+                        if (json != null) {
+                            def daysToForecast = req.queryParams().get("daysToForecast").toInteger()
+                            def mustSummary = req.queryParams().get("mustSummary")?.toBoolean() ?: false
+                            def filter = ymdDateFormat.print(now.plusDays(daysToForecast))
+                            def list = json?.list?.findAll({ it?.dt_txt?.startsWith(filter) } ?: false) ?: []
+                            def events = null
+                            if (mustSummary) {
+                                commonJson = weatherJsonTransFormation(json?.city) + ["type": "summary"]
+                                events = weatherSummary(list, now.millis, commonJson)
+                            } else {
+                                commonJson = weatherJsonTransFormation(json?.city) + ["type": "forecast"]
+                                events = list.collectMany { prediction -> eventsForOneTimeFrame(prediction, now.millis, commonJson) }
+                            }
+                            return new Good(events)
                         }
-                        return new Good(events)
+                        return new Bad(new Failure("receiving summary Responsse ${res} with empty json"))
                     default:
                         return new Bad(new Failure("receiving Responsse ${res} fron unknown request ${req}"))
                 }

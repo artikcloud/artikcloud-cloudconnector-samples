@@ -1,4 +1,4 @@
-package io.samsungsami.openWeatherMap
+package cloudconnector
 
 import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper

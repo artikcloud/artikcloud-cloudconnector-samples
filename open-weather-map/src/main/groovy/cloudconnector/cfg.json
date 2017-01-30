@@ -1,13 +1,13 @@
 {
   "authorizationUrl":"https://api.openWeatherMap.com/oauth2/authorize",
   "accessTokenUrl":"https://api.openWeatherMap.com/oauth2/token",
-  "clientId":"42",
-  "clientSecret":"42",
+  "clientId":"<insert client id>",
+  "clientSecret":"<insert client secret>",
   "authType" : "none",
   "scope":["read_station"],
   "statusAcceptNotification":200,
   "accessTokenMethod": "post",
   "parameters": {
-    "apiKey":"42"
+    "apiKey":"<insert api Key>"
   }
 }
