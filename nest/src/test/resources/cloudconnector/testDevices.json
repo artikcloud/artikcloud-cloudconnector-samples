@@ -1,0 +1,38 @@
+{
+  "devices": {
+    "thermostats": {
+      "did1": {
+        "device_id": "did1",
+        "structure_id": "sid0",
+        "name": "dname1"
+      },
+      "did2": {
+        "device_id": "did2",
+        "structure_id": "sid0",
+        "name": "dname2"
+      }
+    },
+    "smoke_co_alarms": {},
+    "cameras": {}
+  },
+  "structures": {
+    "sid0": {
+      "structure_id": "sid0",
+      "thermostats": [
+        "did1", "did2"
+      ],
+      "smoke_co_alarms": [],
+      "cameras": [],
+      "devices": {},
+      "name": "sName"
+    },
+    "sid1": {
+      "structure_id": "sid1",
+      "thermostats": [],
+      "smoke_co_alarms": [],
+      "cameras": [],
+      "devices": {},
+      "name": "sName"
+    }
+  }
+}

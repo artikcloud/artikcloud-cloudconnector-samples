@@ -12,9 +12,28 @@ You may have to change some configuration parameters for your case.
 
 - This connector offers you the actions(for thermostat) as following :
   - `getAllData()`
-  - `setTemperature(String deviceId, Number temp)`
-  - `setAway(String structureId)` ("A structure represents a physical building.")
-  - `setHome(String structureId)`
+  - `refresh()`
+  - `setTemperatureByDeviceName(String deviceName, Number temp)`
+  - `setTemperatureByDeviceId(String deviceId, Number temp)`
+  - `setTemperatureInFahrenheitByDeviceName(String deviceName, Number temp)`
+  - `setTemperatureInFahrenheitByDeviceId(String deviceId, Number temp)`
+  - `setAwayByStructureName(String structureName)` ("A structure represents a physical building.")
+  - `setAwayByStructureId(String structureId)` 
+  - `setHomeByStructureName(String structureName)`
+  - `setHomeByStructureId(String structureId)`
+  - `setOffByDeviceId(String deviceId)`
+  - `setOffByDeviceName(String deviceName)`
+  - `setHeatModeByDeviceId(String deviceId)`
+  - `setHeatModeByDeviceName(String deviceName)`
+  - `setCoolModeByDeviceId(String deviceId)`
+  - `setCoolModeByDeviceName(String deviceName)`
+  - `setHeatCoolModeByDeviceId(String deviceId)`
+  - `setHeatCoolModeByDeviceName(String deviceName)`
+
+- For actions by device name:
+  - the device (resp. structure) name should be compared case sensitive and if nothing found, case insensitive
+  - if case insensitive nothing found neither, apply action to all devices/buildings of user 
+  - a wildcard device (resp. structure) name="*" should be equivalent to all device (resp structure) names
 
 References:
 
