@@ -1,8 +1,8 @@
 {
     "authorizationUrl":"https://api.moves-app.com/oauth/v1/authorize",
     "accessTokenUrl":"https://api.moves-app.com/oauth/v1/access_token",
-    "clientId":"aaaa",
-    "clientSecret":"bbbb",
+    "clientId":"<insert client id>",
+    "clientSecret":"<insert client secret>",
     "authType" : "OAuth2",
     "scope":[ "default", "activity", "location" ],
     "accessTokenUrlMapper":{

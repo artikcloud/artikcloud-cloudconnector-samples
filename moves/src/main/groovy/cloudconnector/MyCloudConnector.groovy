@@ -1,4 +1,4 @@
-package io.samsungsami.moves
+package cloudconnector
 
 import org.scalactic.*
 import org.joda.time.format.DateTimeFormat
@@ -26,8 +26,14 @@ class MyCloudConnector extends CloudConnector {
 
 	@Override
 	def Or<NotificationResponse, Failure> onNotification(Context ctx, RequestDef req) {
+		if (req.url.endsWith("thirdpartynotifications/postsubscription")) {
+			new Good(new NotificationResponse([]))
+		}
 		def json = slurper.parseText(req.content)
 		def extId = json.userId.toString()
+		if (extId == null){
+			return new Bad(new Failure("Received move notification without userId: " + json))
+		}
 		def storyLineFiltered = json.storylineUpdates.findAll{ reasonToFetchSummaryData.contains(it.reason) }
 		def datesFromStoryLines = storyLineFiltered.collect { e ->
 			//We try to recover a valid Date from the storyLine event, and use it to fetch summary data.
@@ -43,7 +49,8 @@ class MyCloudConnector extends CloudConnector {
 		def requestsToDo = datesFromStoryLines.collect{ dateStr ->
 			new RequestDef(summaryEndpoint(dateStr)).withQueryParams(queryParams)
 		}
-		new Good(new NotificationResponse([new ThirdPartyNotification(new ByExternalId(extId), requestsToDo)]))
+		new Good(new NotificationResponse([new ThirdPartyNotification(new ByExtId(extId), requestsToDo)]))
+
 	}
 
 	@Override

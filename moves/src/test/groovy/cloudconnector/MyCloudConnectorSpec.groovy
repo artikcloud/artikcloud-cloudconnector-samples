@@ -1,4 +1,4 @@
-package io.samsungsami.moves
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
@@ -37,7 +37,7 @@ class MyCloudConnectorSpec extends Specification {
         then:
         res.isGood()
         res.get() == new NotificationResponse([
-            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExtId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/user/summary/daily/20121213").withQueryParams(["timeZone": "UTC"]),
                 new RequestDef(apiEndpoint + "/user/summary/daily/20141213").withQueryParams(["timeZone": "UTC"])
             ]),
