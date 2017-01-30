@@ -1,4 +1,4 @@
-package io.samsungsami.twitter
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
@@ -24,8 +24,8 @@ class MyCloudConnectorSpec extends Specification {
         when:
         def action = new ActionDef(Option.apply("sdid"), "ddid", System.currentTimeMillis(), "bar", '{"value":"foo"}')
         def fakeDevice = new DeviceInfo(
-            "ddid", 
-            Option.apply("extId"), 
+            "ddid",
+            Option.apply("extId"),
             new Credentials(AuthType.OAuth2, "", "", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option()
         )
         def actionRes = sut.onAction(ctx, action, fakeDevice)
@@ -50,7 +50,7 @@ class MyCloudConnectorSpec extends Specification {
         def twitterAuthorization = sut.generateTwitterAuthorization(oauthParams)
         then:
         //for twitter, signature should be URL-encoded
-        twitterAuthorization == 'OAuth oauth_consumer_key="<inser your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<insert your user token>", oauth_version="1.0"'
+        twitterAuthorization == 'OAuth oauth_consumer_key="<insert your client id>", oauth_nonce="a6f0df7089eade26d2c965e83b807414", oauth_signature="NpzMqta0hlTMnP1irJ91l4eRlOU%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459410365", oauth_token="<insert your user token>", oauth_version="1.0"'
     }
 
     def "test function addTwitterHeader"() {
@@ -89,18 +89,18 @@ class MyCloudConnectorSpec extends Specification {
                             .withMethod(HttpMethod.Post)
                             .withContent("status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk", "application/x-www-form-urlencoded")
         def info = parser.parseText(readFile(this, "deviceInfo.json"))
-        def device = new DeviceInfo("deviceId", 
-                                    Empty.option(), 
+        def device = new DeviceInfo("deviceId",
+                                    Empty.option(),
                                     new Credentials(
-                                        AuthType.OAuth1, 
-                                        "<inser your user token secret>", 
-                                        "<inser your user token>", 
-                                        Empty.option(), 
-                                        Option.apply("bearer"), 
-                                        Empty.list(), 
+                                        AuthType.OAuth1,
+                                        "<inser your user token secret>",
+                                        "<inser your user token>",
+                                        Empty.option(),
+                                        Option.apply("bearer"),
+                                        Empty.list(),
                                         Empty.option()
-                                    ), 
-                                    ctx.cloudId(), 
+                                    ),
+                                    ctx.cloudId(),
                                     Empty.option()
                                     )
         def res = sut.signAndPrepare(ctx, req, device, Phase.undef)
@@ -112,8 +112,8 @@ class MyCloudConnectorSpec extends Specification {
         when:
         def action = new ActionDef(Option.apply("sdid"), "ddid", System.currentTimeMillis(), "updateStatus", '{"status":"Maybe he\'ll finally find his keys. #peterfalk"}')
         def fakeDevice = new DeviceInfo(
-            "ddid", 
-            Option.apply("extId"), 
+            "ddid",
+            Option.apply("extId"),
             new Credentials(AuthType.OAuth1, "", "", Empty.option(), Option.apply("bearer"), ctx.scope(), Empty.option()), ctx.cloudId(), Empty.option()
         )
         def actionRes = sut.onAction(ctx, action, fakeDevice)
@@ -127,7 +127,7 @@ class MyCloudConnectorSpec extends Specification {
                         .withMethod(HttpMethod.Post).withContentType("application/x-www-form-urlencoded")
                         .withBodyParams([status: "Maybe he\'ll finally find his keys. #peterfalk"])
                 ]
-            )    
+            )
         ])
     }
 

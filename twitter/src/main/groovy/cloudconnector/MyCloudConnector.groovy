@@ -1,4 +1,4 @@
-package io.samsungsami.twitter
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
