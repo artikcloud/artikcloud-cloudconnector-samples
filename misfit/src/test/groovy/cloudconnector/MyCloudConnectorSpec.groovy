@@ -1,4 +1,4 @@
-package io.samsungsami.misfit
+package cloudconnector
 
 import static java.net.HttpURLConnection.*
 
@@ -54,15 +54,15 @@ class MyCloudConnectorSpec extends Specification {
         then:
         res.isGood()
         res.get() == new NotificationResponse([
-            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExtId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef12345"),
                 new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-01-01", "end_date": "2014-01-01", "detail": "true"])
             ]),
-            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExtId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/goals/abcdef123456"),
                 new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "2014-02-03", "end_date": "2014-02-03", "detail": "true"])
             ]),
-            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExtId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/activity/sleeps/12345sleep")
             ])
         ])
@@ -75,7 +75,7 @@ class MyCloudConnectorSpec extends Specification {
         then:
         res.isGood()
         res.get() == new NotificationResponse([
-            new ThirdPartyNotification(new ByExternalId(device.extId.get()), [
+            new ThirdPartyNotification(new ByExtId(device.extId.get()), [
                 new RequestDef(apiEndpoint + "/device")
             ])
         ])

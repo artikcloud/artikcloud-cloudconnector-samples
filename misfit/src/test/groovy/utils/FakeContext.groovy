@@ -3,7 +3,7 @@ package utils
 import scala.Option
 import cloud.artik.cloudconnector.api_v1.*
 
-class FakeContext implements Context {
+class FakeContext extends cloud.artik.cloudconnector.testkit.FakeContext {
     String clientId(){
         "clientId"
     }

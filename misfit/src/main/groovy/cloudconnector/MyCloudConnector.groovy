@@ -1,4 +1,4 @@
-package io.samsungsami.misfit
+package cloudconnector
 
 import org.scalactic.*
 import org.joda.time.format.DateTimeFormat
@@ -91,7 +91,7 @@ class MyCloudConnector extends CloudConnector {
 					def date = mdateFormat.print(new DateTime(extractTimestamp(collection, ctx.now())))
 					reqs = reqs + new RequestDef(endpoint + extId + "/activity/summary").withQueryParams(["start_date" : date, "end_date" : date, "detail": "true"])
 				}
-				new ThirdPartyNotification(new ByExternalId(extId), reqs)
+				new ThirdPartyNotification(new ByExtId(extId), reqs)
 			}
 		}
 	}
@@ -178,7 +178,7 @@ class MyCloudConnector extends CloudConnector {
 		} else if (json.datetime){
 			DateTime.parse(json.datetime, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
 		} else if (json.updatedAt){
-			DateTime.parse(json.updatedAt, ISODateTimeFormat.dateTimeNoMillis()).getMillis()
+			DateTime.parse(json.updatedAt, ISODateTimeFormat.dateTime()).getMillis()
 		} else if (json.lastSyncTime){
 			(json.lastSyncTime as long) * 1000L
 		} else {
