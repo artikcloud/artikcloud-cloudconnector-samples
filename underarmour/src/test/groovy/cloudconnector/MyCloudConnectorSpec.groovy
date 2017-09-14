@@ -103,7 +103,7 @@ class MyCloudConnectorSpec extends Specification {
 		def req = new RequestDef(null).addQueryParams(["underArmourTs":ts])
 		def fetchedResponse = new Response(HttpURLConnection.HTTP_OK, "application/json", msg)
 		def res = sut.onFetchResponse(ctx, req, null , fetchedResponse)
-		def expectedSleepEvent = new Event(1425251540687,'''{"sleep":{"type":"metric", "awake":550, "totalSleep":23424, "lightSleep":13319, "deepSleep":10105"startDate":1397610566000, "endDate":1397635690000}}''')
+		def expectedSleepEvent = new Event(1425251540687,'''{"sleep":{"type":"metric", "awake":550, "totalSleep":23424, "lightSleep":13319, "deepSleep":10105,"startDate":1397610566000, "endDate":1397635690000}}''')
 		def expectedHeartRate = [
 				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "resting":54, "startDate":1397631600000, "endDate":1397717999000}}'''),
 				new Event(1425251540687,'''{"heartrate":{"type":"aggregates", "resting":50, "startDate":1397718000000, "endDate":1397804399000}}''')
@@ -121,21 +121,9 @@ class MyCloudConnectorSpec extends Specification {
 				new Event(1425251540687,'''{"steps":{"type":"metric", "count":42, "startDate":1397718000000, "endDate":1397804400000, "timestamp":1397798}}'''),
 				expectedHeartRate[1]
 		]
-
 		then:
 		res.isGood()
-		res.get()[1] == expectedEvents[1]
-		res.get()[2] == expectedEvents[2]
-		res.get()[3] == expectedEvents[3]
-		res.get()[4] == expectedEvents[4]
-		res.get()[5] == expectedEvents[5]
-		res.get()[6] == expectedEvents[6]
-		res.get()[7] == expectedEvents[7]
-		res.get()[8] == expectedEvents[8]
-		res.get()[9] == expectedEvents[9]
-		res.get()[10] == expectedEvents[10]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		cmpTasks(res.get(), expectedEvents)
 	}
 
 	def "fetch actigraphies with workouts"() {
@@ -155,11 +143,6 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		res.isGood()
-		res.get()[1] == expectedEvents[1]
-		res.get()[2] == expectedEvents[2]
-		res.get()[3] == expectedEvents[3]
-		res.get()[4] == expectedEvents[4]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		cmpTasks(res.get(), expectedEvents)
 	}
 }

@@ -9,7 +9,16 @@
           "valueClass": "String",
           "isCollection": false,
           "description": "step's message type",
-          "tags": []
+          "tags": [],
+          "metaData": [
+            {
+              "type": "VALUES_STRING",
+              "value": [
+                "workout",
+                "metric"
+              ]
+            }
+          ]
         },
         {
           "name": "count",
@@ -56,7 +65,15 @@
           "valueClass": "String",
           "isCollection": false,
           "description": "underamour source type for heartRate",
-          "tags": []
+          "tags": [],
+          "metaData": [
+            {
+              "type": "VALUES_STRING",
+              "value": [
+                "aggregates"
+              ]
+            }
+          ]
         },
         {
           "name": "resting",
@@ -93,7 +110,15 @@
           "valueClass": "String",
           "isCollection": false,
           "description": "underamour source type for sleep",
-          "tags": []
+          "tags": [],
+          "metaData": [
+            {
+              "type": "VALUES_STRING",
+              "value": [
+                "metric"
+              ]
+            }
+          ]
         },
         {
           "name": "awake",
