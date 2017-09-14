@@ -67,15 +67,7 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		res[0].isGood()
-		res.size() == expectedEvents.size()
-		res[0].get() == expectedEvents[0].get()
-		res[1].get() == expectedEvents[1].get()
-		res[2].get() == expectedEvents[2].get()
-		res[3].get() == expectedEvents[3].get()
-		res[4].get() == expectedEvents[4].get()
-		res[5].get() == expectedEvents[5].get()
-		res.size() == expectedEvents.size()
-		res == expectedEvents
+		normalize(res) == normalize(expectedEvents)
 	}
 
 	def "create events from fetch currentTime"() {
@@ -88,7 +80,7 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		res.isGood()
-		res.get()[0].payload() == expectedEvents
+		normalize(res.get()[0].payload()) == normalize(expectedEvents)
 	}
 
 	def "do not send empty object after fetch"() {
@@ -101,7 +93,7 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		res.isGood()
-		res.get()[0].payload() == expectedEvents
+		normalize(res.get()[0].payload()) == normalize(expectedEvents)
 	}
 
 	def "summary events"() {
@@ -114,7 +106,7 @@ class MyCloudConnectorSpec extends Specification {
 				new Event(ts, '''{"type":"summary","night":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"morning":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"afternoon":{"temp_min":275,"temp_max":276,"icon":"10d","main":"Rain","wind":{"text":"breezy","speed":4.92,"beaufort":3},"text":"light rain."},"evening":{"temp_min":274,"temp_max":275,"icon":"10n","main":"Rain","wind":{"text":"breezy","speed":4.135,"beaufort":3},"text":"light rain followed by moderate rain.","icon_later":"10n","main_later":"Rain"}}'''),
 		]
 		then:
-		res == expectedEvents
+		cmpTasks(res, expectedEvents)
 	}
 
 //UPDATE timestamp day in prediciton.json and test to replay this test
