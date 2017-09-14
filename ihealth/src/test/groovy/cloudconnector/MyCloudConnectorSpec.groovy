@@ -89,8 +89,6 @@ class MyCloudConnectorSpec extends Specification {
 
 		then:
 		res.isGood()
-		res.get()[0] == expectedEvents[0]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		cmpTasks(res.get(), expectedEvents)
 	}
 }
