@@ -54,14 +54,14 @@ class MyCloudConnectorSpec extends Specification {
         //20121213 at 23h59:59 = 1355443199 seconds
         def timestamp_20121213=1355443199999L
         def events = [
-            new Event(timestamp_20121213, readFile(this, "events/summary/20121213/transport.json")),
-            new Event(timestamp_20121213, readFile(this, "events/summary/20121213/underground.json")),
             new Event(timestamp_20121213, readFile(this, "events/summary/20121213/walking.json")),
             new Event(timestamp_20121213, readFile(this, "events/summary/20121213/walking_on_treadmill.json")),
+            new Event(timestamp_20121213, readFile(this, "events/summary/20121213/transport.json")),
+            new Event(timestamp_20121213, readFile(this, "events/summary/20121213/underground.json")),
             new Event(timestamp_20121213, readFile(this, "events/summary/20121213/zumba.json")),
             new Event(timestamp_20121213, """{"caloriesIdle":1000}""")
         ]
-        cmpEvents(res.get(), events)
+        cmpTasks(res.get(), events)
     }
 
     def "fetch summary 20121213"() {
@@ -77,7 +77,7 @@ class MyCloudConnectorSpec extends Specification {
             new Event(timestamp_20141213, readFile(this, "events/summary/20141213/walking_on_treadmill.json")),
             new Event(timestamp_20141213, """{"caloriesIdle":1785}""")
         ]
-        cmpEvents(res.get(), events)
+        cmpTasks(res.get(), events)
     }
 
 }
