@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "name": "synchronizeDevices",
+      "description": "synchronizeDevices",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getAllData",
+      "description": "getAllData",
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "fields": [],
+  "messageFormat": "json"
+}

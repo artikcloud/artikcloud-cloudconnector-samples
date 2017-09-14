@@ -1,0 +1,18 @@
+{
+  "accessTokenMethod" : "post",
+  "accessTokenUrl" : "https://api.netatmo.com/oauth2/token",
+  "authType" : "OAuth2",
+  "authorizationUrl" : "https://api.netatmo.com/oauth2/authorize",
+  "clientId" : "<insert client id>",
+  "clientSecret" : "<insert client secret>",
+  "extSdtidsMapper" : {
+    "thermostat" : "<insert sub-device device type ID>"
+  },
+  "parameters" : {
+  },
+  "scope" : [
+    "read_thermostat",
+    "write_thermostat"
+  ],
+  "statusAcceptNotification" : 200
+}

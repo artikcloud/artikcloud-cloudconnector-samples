@@ -1,0 +1,246 @@
+{
+  "fields": [
+    {
+      "name": "temp",
+      "type": "TEMPERATURE",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": [],
+      "unit": "SI.CELSIUS"
+    },
+    {
+      "name": "setpointTemp",
+      "type": "TEMPERATURE",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": [],
+      "unit": "SI.CELSIUS"
+    },
+    {
+      "name": "mode",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "program",
+            "away",
+            "hg",
+            "manual",
+            "off",
+            "max"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batteryLevel",
+      "type": "LEVEL",
+      "valueClass": "Double",
+      "isCollection": false,
+      "tags": [],
+      "unit": "NonSI.PERCENT",
+      "metaData": [
+        {
+          "type": "MIN_VALUE_DOUBLE",
+          "value": 0
+        },
+        {
+          "type": "MIN_VALUE_STRICT",
+          "value": false
+        },
+        {
+          "type": "MAX_VALUE_DOUBLE",
+          "value": 100
+        },
+        {
+          "type": "MAX_VALUE_STRICT",
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "batteryStatus",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "full",
+            "high",
+            "medium",
+            "low",
+            "very low"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wifiStatus",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "bad",
+            "average",
+            "good"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "radioStatus",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "low",
+            "high",
+            "full signal",
+            "medium"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "radioStatusValue",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "wifiStatusValue",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "isCollection": false,
+      "tags": []
+    },
+    {
+      "name": "battery_vp",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "isCollection": false,
+      "tags": []
+    }
+  ],
+  "actions": [
+    {
+      "name": "getData",
+      "description": "getData",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setTemperature",
+      "description": "setTemperature",
+      "parameters": [
+        {
+          "name": "temp",
+          "type": "TEMPERATURE",
+          "valueClass": "Double",
+          "unit": "SI.CELSIUS"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setTemperatureDuring",
+      "description": "setTemperatureDuring",
+      "isStandard": false,
+      "type": "CUSTOM",
+      "parameters": [
+        {
+          "name": "temp",
+          "type": "TEMPERATURE",
+          "valueClass": "Double",
+          "unit": "SI.CELSIUS"
+        },
+        {
+          "name": "duration",
+          "type": "CUSTOM",
+          "valueClass": "Double",
+          "unitSymbol": "min"
+        }
+      ]
+    },
+    {
+      "name": "setMode",
+      "description": "Changes thermostat mode",
+      "parameters": [
+        {
+          "name": "mode",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "metaData": [
+            {
+              "type": "VALUES_STRING",
+              "value": [
+                "program",
+                "away",
+                "hg",
+                "manual",
+                "off",
+                "max"
+              ]
+            }
+          ]
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setProgramMode",
+      "description": "setProgramMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setAwayMode",
+      "description": "setAwayMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setHgMode",
+      "description": "setHgMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setManualMode",
+      "description": "setManualMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setOffMode",
+      "description": "setOffMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setMaxMode",
+      "description": "setMaxMode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "messageFormat": "json"
+}
