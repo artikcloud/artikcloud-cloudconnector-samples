@@ -108,7 +108,7 @@ class MyCloudConnectorSpec extends Specification {
         def res2 = sut.onFetchResponse(ctx, request2, device, response2)
         then:
         res2.isGood()
-        cmpEvents(res2.get(), [event02])
+        cmpTasks(res2.get(), [event02])
     }
 
     def "fetch goals 3"() {
@@ -120,7 +120,7 @@ class MyCloudConnectorSpec extends Specification {
         def res3 = sut.onFetchResponse(ctx, request3, device, response3)
         then:
         res3.isGood()
-        cmpEvents(res3.get(), [event03])
+        cmpTasks(res3.get(), [event03])
     }
 
     def "fetch sleeps"() {
@@ -134,9 +134,9 @@ class MyCloudConnectorSpec extends Specification {
         def res4 = sut.onFetchResponse(ctx, request4, device, response4)
         then:
         res4.isGood()
-        cmpEvents(res4.get(), [event0401, event0402, event0403])
+        cmpTasks(res4.get(), [event0401, event0402, event0403])
     }
-    
+
     def "fetch summary"(){
         when:
         def request5 = new RequestDef(apiEndpoint + "/activity/summary").withQueryParams(["start_date": "1970-01-17", "end_date": "1970-01-17", "detail": "true"])
@@ -145,7 +145,7 @@ class MyCloudConnectorSpec extends Specification {
         def res5 = sut.onFetchResponse(ctx, request5, device, response5)
         then:
         res5.isGood()
-        cmpEvents(res5.get(), [event05])
+        cmpTasks(res5.get(), [event05])
     }
 
     def "fetch device"(){
@@ -156,6 +156,6 @@ class MyCloudConnectorSpec extends Specification {
         def res = sut.onFetchResponse(ctx, request, device, response)
         then:
         res.isGood()
-        cmpEvents(res.get(), [event01])
+        cmpTasks(res.get(), [event01])
     }
 }
