@@ -1,0 +1,38 @@
+{
+	"brightness": 1.0,
+	"color": {
+		"hue": 0.0,
+		"kelvin": 3500,
+		"rgb": {
+			"r": 255,
+			"g": 255,
+			"b": 255
+		},
+		"saturation": 0.0
+	},
+	"connected": false,
+	"group": {
+		"id": "499a19dd87a74fe917bb428fe38bb59a",
+		"name": "RdC"
+	},
+	"id": "lqshlghqlshglhlsdfglj",
+	"label": "Salon",
+	"last_seen": "2016-09-09T06:50:00.000+01:00",
+	"location": {
+		"id": "0e4c88242181b394e885754996f9c219",
+		"name": "Home"
+	},
+	"power": "on",
+	"product": {
+		"capabilities": {
+			"has_color": true,
+			"has_variable_color_temp": true
+		},
+		"company": "LIFX",
+		"identifier": "lifx_color_a19",
+		"name": "Color 1000"
+	},
+	"seconds_since_seen": 16090.032218774,
+	"state": "off",
+	"uuid": "qsbtersybsdy-qztmkvjqstvshy5sdysy-sbmkvsty4q5r4tq4vsr6t"
+}

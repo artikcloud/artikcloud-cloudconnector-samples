@@ -1,0 +1,39 @@
+apply plugin: 'groovy'
+apply plugin: 'codenarc'
+
+group = 'cloudconnector'
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compile fileTree(dir: '../libs/main', include: '*.jar')
+  testCompile fileTree(dir: '../libs/test', include: '*.jar')
+}
+
+codenarc {
+    toolVersion = "0.24"
+    configFile = rootProject.file("config/codenarc/ruleset.groovy")
+}
+
+test {
+  testLogging {
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
+    showStandardStreams = false
+  }
+}
+sourceSets {
+  test {
+    resources {
+      srcDirs = ["$projectDir/src/main/resources", "$projectDir/src/test/resources", "$projectDir/src/main/groovy"]
+    }
+  }
+}
+task runTestServer(type:JavaExec) {
+  main = System.getProperty("exec.mainClass") ?: "utils.MyCloudConnectorRun"
+  args = ["cloudconnector"]
+  systemProperties(System.getProperties())
+  classpath = sourceSets.main.groovy.sourceDirectories + sourceSets.test.runtimeClasspath
+}

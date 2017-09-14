@@ -1,0 +1,38 @@
+{
+	"brightness": 1.0,
+	"color": {
+		"hue": 240,
+		"kelvin": 3500,
+		"rgb": {
+			"r": 0,
+			"g": 0,
+			"b": 255
+		},
+		"saturation": 1.0
+	},
+	"connected": true,
+	"group": {
+		"id": "499a19dd87a74fe917bb428fe38bb59a",
+		"name": "RdC"
+	},
+	"id": "pojepgjjfgpj",
+	"label": "Manger",
+	"last_seen": "2016-09-09T06:50:00.000+01:00",
+	"location": {
+		"id": "0e4c88242181b394e885754996f9c219",
+		"name": "Home"
+	},
+	"power": "on",
+	"product": {
+		"capabilities": {
+			"has_color": true,
+			"has_variable_color_temp": true
+		},
+		"company": "LIFX",
+		"identifier": "lifx_original_a21",
+		"name": "Original 1000"
+	},
+	"seconds_since_seen": 16090.032133187,
+	"state": "on",
+	"uuid": "efqggzzef-rgsg-sgsgqsgswg-dwhsdfghdswhg-qsgqsgqsrgf"
+}

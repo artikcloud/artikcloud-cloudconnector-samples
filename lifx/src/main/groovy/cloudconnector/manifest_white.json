@@ -1,0 +1,246 @@
+{
+  "fields": [
+    {
+      "name": "id",
+      "type": "ID",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "ID of the light",
+      "tags": []
+    },
+    {
+      "name": "uuid",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "UUID of the light",
+      "tags": []
+    },
+    {
+      "name": "label",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "Label of the light",
+      "tags": []
+    },
+    {
+      "name": "state",
+      "type": "STATE",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "state of the light",
+      "tags": []
+    },
+    {
+      "name": "connected",
+      "type": "CUSTOM",
+      "valueClass": "Boolean",
+      "isCollection": false,
+      "description": "Wether the light is connected or not",
+      "tags": []
+    },
+    {
+      "name": "power",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "Does the light have power",
+      "tags": []
+    },
+    {
+      "name": "brightness",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "description": "Brightness of the light. Value between 0 and 1",
+      "tags": []
+    },
+    {
+      "name": "group",
+      "children": [
+        {
+          "name": "id",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "ID of the group this light belongs to",
+          "tags": []
+        },
+        {
+          "name": "name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "Name of the group this light belongs to",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "location",
+      "children": [
+        {
+          "name": "id",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "ID of the location this light belongs to",
+          "tags": []
+        },
+        {
+          "name": "name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "Name of the location this light belongs to",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "last_seen",
+      "type": "CUSTOM",
+      "valueClass": "String",
+      "isCollection": false,
+      "description": "Date this light was last seen",
+      "tags": []
+    },
+    {
+      "name": "seconds_since_seen",
+      "type": "CUSTOM",
+      "valueClass": "Double",
+      "isCollection": false,
+      "description": "Seconds since this light was last seen",
+      "tags": []
+    },
+    {
+      "name": "product",
+      "children": [
+        {
+          "name": "name",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "Name of this product",
+          "tags": []
+        },
+        {
+          "name": "company",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "Name of the company making this product",
+          "tags": []
+        },
+        {
+          "name": "identifier",
+          "type": "CUSTOM",
+          "valueClass": "String",
+          "isCollection": false,
+          "description": "Identifier of the product",
+          "tags": []
+        },
+        {
+          "name": "capabilities",
+          "children": [
+            {
+              "name": "has_color",
+              "type": "CUSTOM",
+              "valueClass": "Boolean",
+              "isCollection": false,
+              "description": "Wether this product can change color or not",
+              "tags": []
+            },
+            {
+              "name": "has_variable_color_temp",
+              "type": "CUSTOM",
+              "valueClass": "Boolean",
+              "isCollection": false,
+              "description": "Wether this product can change color temperature or not",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "getLightData",
+      "description": "Get data and state for this light.",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setOn",
+      "description": "Allows the user to turn the light on.",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setOff",
+      "description": "Allows the user to turn off the light.",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "toggle",
+      "description": "Allows the user to toggle the light.",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setBrightness",
+      "description": "Allows the user to set the brightness.",
+      "parameters": [
+        {
+          "name": "brightness",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setEffect",
+      "description": "Turn on an effect.",
+      "parameters": [
+        {
+          "name": "effect",
+          "description": "Effect to trigger. Can be breathe or pulse",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "period",
+          "description": "The time in seconds for one cyles of the effect",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        },
+        {
+          "name": "cycles",
+          "description": "The number of times to repeat the effect",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        },
+        {
+          "name": "persist",
+          "description": "If false set the light back to its previous value when effect ends, if true leave the last effect color",
+          "type": "CUSTOM",
+          "valueClass": "Boolean"
+        },
+        {
+          "name": "power_on",
+          "description": "If true, turn the bulb on if it is not already on",
+          "type": "CUSTOM",
+          "valueClass": "Boolean"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "messageFormat": "json"
+}

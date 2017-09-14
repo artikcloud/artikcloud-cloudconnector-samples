@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false" >
+    <root level="DEBUG">
+        <appender class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%highlight(%d{ISO8601} | %-5level | %thread | %logger{1} |) %m%n</pattern>
+            </encoder>
+        </appender>
+    </root>
+    <logger name="akka" level="WARN"/>
+    <logger name="play.api.libs.ws.ssl.ConfigSSLContextBuilder" level="ERROR"/>
+</configuration>

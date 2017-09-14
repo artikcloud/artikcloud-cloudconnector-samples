@@ -1,0 +1,66 @@
+[
+  {
+    "id": "pojepgjjfgpj",
+    "uuid": "efqggzzef-rgsg-sgsgqsgswg-dwhsdfghdswhg-qsgqsgqsrgf",
+    "label": "Manger",
+    "connected": true,
+    "power": "on",
+    "color": {
+      "hue": 240,
+      "saturation": 1.0,
+      "kelvin": 3500
+    },
+    "brightness": 1.0,
+    "group": {
+      "id": "499a19dd87a74fe917bb428fe38bb59a",
+      "name": "RdC"
+    },
+    "location": {
+      "id": "0e4c88242181b394e885754996f9c219",
+      "name": "Home"
+    },
+    "product": {
+      "name": "Original 1000",
+      "identifier": "lifx_original_a21",
+      "company": "LIFX",
+      "capabilities": {
+        "has_color": true,
+        "has_variable_color_temp": true
+      }
+    },
+    "last_seen": "2016-09-09T06:50:00.000+01:00",
+    "seconds_since_seen": 16090.032133187
+  },
+  {
+    "id": "lqshlghqlshglhlsdfglj",
+    "uuid": "qsbtersybsdy-qztmkvjqstvshy5sdysy-sbmkvsty4q5r4tq4vsr6t",
+    "label": "Salon",
+    "connected": false,
+    "power": "on",
+    "color": {
+      "hue": 0.0,
+      "saturation": 0.0,
+      "kelvin": 3500
+    },
+    "brightness": 1.0,
+    "group": {
+      "id": "499a19dd87a74fe917bb428fe38bb59a",
+      "name": "RdC"
+    },
+    "location": {
+      "id": "0e4c88242181b394e885754996f9c219",
+      "name": "Home"
+    },
+    "product": {
+      "name": "Color 1000",
+      "identifier": "lifx_color_a19",
+      "company": "LIFX",
+      "capabilities": {
+        "has_color": true,
+        "has_variable_color_temp": true
+      }
+    },
+    "last_seen": "2016-09-09T06:50:00.000+01:00",
+    "seconds_since_seen": 16090.032218774
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "authType" : "OAuth2",
+  "accessTokenMethod" : "post",
+  "accessTokenUrl" : "https://cloud.lifx.com/oauth/token",
+  "authorizationUrl" : "https://cloud.lifx.com/oauth/authorize",
+  "clientId":"<insert client id>",
+  "clientSecret":"<insert client secret>",
+  "scope":[
+    "remote_control:all"
+  ],
+
+  "parameters": {
+    "prefix": "LIFX "
+  },
+  "extSdtidsMapper": {
+    "colorLight": "<insert sub-device device type ID>",
+    "whiteLight": "<insert sub-device device type ID>"
+  }
+}

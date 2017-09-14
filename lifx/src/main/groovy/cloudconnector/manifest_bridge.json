@@ -1,0 +1,200 @@
+{
+  "fields": [],
+  "actions": [
+    {
+      "name": "synchronizeDevices",
+      "description": "Create, delete, and update artik devices to mirror LIFX devices",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "getLightData",
+      "description": "Get data and state for lights as specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setOn",
+      "description": "Allows the user to turn on the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setOff",
+      "description": "Allows the user to turn off the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "toggle",
+      "description": "Allows the user to toggle the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setBrightness",
+      "description": "Allows the user to set the brightnessfor the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "brightness",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setColor",
+      "description": "Allows the user to set the color for the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "color",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setEffect",
+      "description": "sub devices action: Turn on an effect for the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "effect",
+          "description": "Effect to trigger. Can be breathe or pulse",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "color",
+          "description": "Color to use for the effect",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "from_color",
+          "description": "The color to start the effect from",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "period",
+          "description": "The time in seconds for one cyles of the effect",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        },
+        {
+          "name": "cycles",
+          "description": "The number of times to repeat the effect",
+          "type": "CUSTOM",
+          "valueClass": "Double"
+        },
+        {
+          "name": "persist",
+          "description": "If false set the light back to its previous value when effect ends, if true leave the last effect color",
+          "type": "CUSTOM",
+          "valueClass": "Boolean"
+        },
+        {
+          "name": "power_on",
+          "description": "If true, turn the bulb on if it is not already on",
+          "type": "CUSTOM",
+          "valueClass": "Boolean"
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "setColorRGB",
+      "description": "Set the color for the lights specified by selector (by default, all).",
+      "parameters": [
+        {
+          "name": "selector",
+          "type": "CUSTOM",
+          "valueClass": "String"
+        },
+        {
+          "name": "colorRGB",
+          "valueClass": null,
+          "children": [
+            {
+              "name": "green",
+              "type": "COLOR_GREEN_COMPONENT",
+              "valueClass": "Integer",
+              "children": null,
+              "unit": null,
+              "isCollection": false
+            },
+            {
+              "name": "blue",
+              "type": "COLOR_BLUE_COMPONENT",
+              "valueClass": "Integer",
+              "children": null,
+              "unit": null,
+              "isCollection": false
+            },
+            {
+              "name": "red",
+              "type": "COLOR_RED_COMPONENT",
+              "valueClass": "Integer",
+              "children": null,
+              "unit": null,
+              "isCollection": false
+            }
+          ],
+          "unit": null,
+          "isCollection": false
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "messageFormat": "json"
+}
