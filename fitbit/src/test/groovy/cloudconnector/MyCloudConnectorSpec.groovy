@@ -77,7 +77,7 @@ class MyCloudConnectorSpec extends Specification {
 		//1299023999999s = Tue, 01 Mar 2011 23:59:59 GMT in UTC
 		def timestamp=1299023999999L
 		def events = [new Event(timestamp, readFile(this, "events/activities.json"))]
-		cmpEvents(res.get(), events)
+		cmpTasks(res.get(), events)
 	}
 
 	def "fetch activity with custom user timezone (America/Los_Angeles)"() {
@@ -90,7 +90,7 @@ class MyCloudConnectorSpec extends Specification {
 		//1299052799999s =  Wed, 02 Mar 2011 07:59:59 GMT = Tue, 01 Mar 2011 23:59:59 America/Los_Angeles
 		def timestamp=1299052799999L
 		def events = [new Event(timestamp, readFile(this, "events/activities.json"))]
-		cmpEvents(res.get(), events)
+		cmpTasks(res.get(), events)
 	}
 
 	def "fetch food"() {
@@ -103,7 +103,7 @@ class MyCloudConnectorSpec extends Specification {
 		//1267487999999L=Mon, 01 Mar 2010 23:59:59 GMT
 		def timestamp=1267487999999L
 		def events = [new Event(timestamp, readFile(this, "events/foods.json"))]
-		cmpEvents(res.get(), events)
+		cmpTasks(res.get(), events)
 	}
 
 	def "fetch sleeps"() {
@@ -115,7 +115,7 @@ class MyCloudConnectorSpec extends Specification {
 		res.isGood()
 		def timestamp=1461887999999L
 		def events = [new Event(timestamp, readFile(this, "events/sleep.json"))]
-		cmpEvents(res.get(), events)
+		cmpTasks(res.get(), events)
 	}
 
 }
