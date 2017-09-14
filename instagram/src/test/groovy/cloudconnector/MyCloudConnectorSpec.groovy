@@ -105,7 +105,7 @@ class MyCloudConnectorSpec extends Specification {
         new ThirdPartyNotification(new ByExtId(dev1.extId.get()), [ requestApi1 ]),
         new ThirdPartyNotification(new ByExtId(dev2.extId.get()), [ requestApi2 ])
       ])
-      cmpEvents(res1.get(), [event01])
-      cmpEvents(res2.get(), [event02, event03])
+      cmpTasks(res1.get(), [event01])
+      cmpTasks(res2.get(), [event02, event03])
     }
 }
