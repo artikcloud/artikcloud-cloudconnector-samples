@@ -1,7 +1,7 @@
 {
-  "authorizationUrl":"https://oauth.withings.com/account/authorize",
-  "accessTokenUrl":"https://oauth.withings.com/account/access_token",
-  "requestTokenUrl":"https://oauth.withings.com/account/request_token",
+  "authorizationUrl":"https://developer.health.nokia.com/account/authorize",
+  "accessTokenUrl":"https://developer.health.nokia.com/account/access_token",
+  "requestTokenUrl":"https://developer.health.nokia.com/account/request_token",
   "clientId":"<insert client id>",
   "clientSecret":"<insert client secret>",
   "authType" : "OAuth1",
@@ -12,7 +12,7 @@
     "external_id":"userid"
   },
   "parameters": {
-    "notificationBaseUrl": "<insert notification base url>",
-    "formerUrl": "<insert former url>"
+    "notificationBaseUrl": "https://fb78b9c1.ngrok.io/cloudconnectors/",
+    "formerUrl": "https://api.samsungsami.io/cloudconnectors/"
   }
 }

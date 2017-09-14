@@ -8,163 +8,220 @@ import static com.samsung.sami.manifest.fields.StandardFields.*
 
 public class WithingsDeviceManifest implements Manifest {
 
-    // Custom FieldDesc for BODY data
-    static final ID_INTEGER = new FieldDescriptor("idInt", Integer.class) // TODO: Move this to standard fields
-    static final WITHINGS_GROUP_ID = ID_INTEGER.alias("groupId")
-    static final WITHINGS_CATEGORY = new FieldDescriptor("category", Integer.class)
-    static final WITHINGS_ATTRIB = new FieldDescriptor("attrib", Integer.class)
-    static final WITHINGS_FAT_FREE_MASS = WEIGHT.alias("fatFreeMass")
-    static final WITHINGS_FAT_RATIO = new FieldDescriptor("fatRatio", Double.class)
-    static final WITHINGS_FAT_MASS_WEIGHT = WEIGHT.alias("fatMassWeight")
-    static final WITHINGS_BLOOD_OXYGEN_LEVEL = new FieldDescriptor("bloodOxygenLevel", Integer.class)
+	// Custom FieldDesc for BODY data
+	static final ID_INTEGER = new FieldDescriptor("idInt", Integer.class) // TODO: Move this to standard fields
+	static final WITHINGS_GROUP_ID = ID_INTEGER.alias("groupId")
+	static final WITHINGS_CATEGORY = new FieldDescriptor("category", Integer.class)
+	static final WITHINGS_ATTRIB = new FieldDescriptor("attrib", Integer.class)
+	static final WITHINGS_FAT_FREE_MASS = WEIGHT.alias("fatFreeMass")
+	static final WITHINGS_FAT_RATIO = new FieldDescriptor("fatRatio", Double.class)
+	static final WITHINGS_FAT_MASS_WEIGHT = WEIGHT.alias("fatMassWeight")
+	static final WITHINGS_BLOOD_OXYGEN_LEVEL = new FieldDescriptor("bloodOxygenLevel", Integer.class)
 
-    // FieldDescriptor for ACTIVITY DATA
-    static final WITHINGS_STEPS = new FieldDescriptor("steps", Integer.class)
-    // Commented ones are standard fields, defined at sami-manifests
-    // static final WITHINGS_DISTANCE = new FieldDescriptor("distance"...)
-    // static final WITHINGS_CALORIES =  = new FieldDescriptor("calories"...)
-    static final WITHINGS_ELEVATION = new FieldDescriptor("elevation", SI.METER, Double.class);
-    static final WITHINGS_SOFT = new FieldDescriptor("softActivityDuration", SI.SECOND, Integer.class);
-    static final WITHINGS_MODERATE = new FieldDescriptor("moderateActivityDuration", SI.SECOND, Integer.class);
-    static final WITHINGS_INTENSE = new FieldDescriptor("intenseActivityDuration", SI.SECOND, Integer.class);
+	// FieldDescriptor for ACTIVITY DATA
+	static final WITHINGS_STEPS = new FieldDescriptor("steps", Integer.class)
+	// Commented ones are standard fields, defined at sami-manifests
+	// static final WITHINGS_DISTANCE = new FieldDescriptor("distance"...)
+	// static final WITHINGS_CALORIES =  = new FieldDescriptor("calories"...)
+	static final WITHINGS_ELEVATION = new FieldDescriptor("elevation", SI.METER, Double.class);
+	static final WITHINGS_SOFT = new FieldDescriptor("softActivityDuration", SI.SECOND, Integer.class);
+	static final WITHINGS_MODERATE = new FieldDescriptor("moderateActivityDuration", SI.SECOND, Integer.class);
+	static final WITHINGS_INTENSE = new FieldDescriptor("intenseActivityDuration", SI.SECOND, Integer.class);
 
-    // FieldDescriptor for SLEEP DATA
-    static final WITHINGS_START_DATE = new FieldDescriptor("startDate", SI.SECOND, Long.class)
-    static final WITHINGS_STATE = new FieldDescriptor("state", Integer.class)
-    static final WITHINGS_END_DATE = new FieldDescriptor("endDate", SI.SECOND, Long.class)
-    static final WITHINGS_SLEEP = new FieldDescriptor("sleep", WITHINGS_START_DATE, WITHINGS_STATE, WITHINGS_END_DATE)
+	// FieldDescriptor for SLEEP DATA
+	static final WITHINGS_START_DATE = new FieldDescriptor("startDate", SI.SECOND, Long.class)
+	static final WITHINGS_STATE = new FieldDescriptor("state", Integer.class)
+	static final WITHINGS_END_DATE = new FieldDescriptor("endDate", SI.SECOND, Long.class)
+	static final WITHINGS_SLEEP = new FieldDescriptor("sleep", WITHINGS_START_DATE, WITHINGS_STATE, WITHINGS_END_DATE)
 
-    @Override
-    List<Field> normalize(String input) {
-        def slurper = new JsonSlurper()
-        def json = slurper.parseText(input)
+	static final WITHINGS_TEMPERATURE = TEMPERATURE.alias("temperature")
+	static final WITHINGS_BODY_TEMPERATURE = TEMPERATURE.alias("bodyTemperature")
+	static final WITHINGS_SKIN_TEMPERATURE = TEMPERATURE.alias("skinTemperature")
 
-        def fields = []
+	static final WITHINGS_MUSCLE_MASS = MASS.alias("muscleMass")
+	static final WITHINGS_BONE_MASS = MASS.alias("boneMass")
 
-        switch (json.category) {
-            case "measure/getmeas": // Body data
-                extractFieldsFromBodyMeasure(json, fields)
-                break;
-            case "measure/getactivity": // Activity data
-                extractFieldsFromActivityMeasure(json, fields)
-                break;
-            case "sleep/get": // Sleep data
-                extractFieldsFromSleepMeasure(json, fields)
-                break;
-            default:
-                throw new RuntimeException("Invalid category: " + json.category)
-        }
+	static final WITHINGS_HYDRATION = RATIO.alias("hydration")
+	static final WITHINGS_PULSE_WAVE_VELOCITY = new FieldDescriptor("pulseWaveVelocity", SI.METRES_PER_SECOND, Double.class)
 
-        return fields
-    }
+	@Override
+	List<Field> normalize(String input) {
+		def slurper = new JsonSlurper()
+		def json = slurper.parseText(input)
 
-    static def extractFieldsFromBodyMeasure(def json, def fields) {
-        // Default fields (always present)
-        fields.add(new Field(WITHINGS_GROUP_ID, json.measuregrp.grpid)) // Not sure if int only or could be long
-        fields.add(new Field(WITHINGS_CATEGORY, (Integer) json.measuregrp.category))
-        fields.add(new Field(WITHINGS_ATTRIB, (Integer) json.measuregrp.attrib))
+		def fields = []
 
-        def measures = json.measuregrp.measures
-        for (measure in measures) {
-            def field = makeFieldFromBodyMeasure(measure.type, measure.unit, measure.value)
-            if (field != null)
-                fields.add(field)
-        }
-    }
+		switch (json.category) {
+			case "measure/getmeas": // Body data
+				extractFieldsFromBodyMeasure(json, fields)
+				break;
+			case "measure/getactivity": // Activity data
+				extractFieldsFromActivityMeasure(json, fields)
+				break;
+			case "sleep/get": // Sleep data
+				extractFieldsFromSleepMeasure(json, fields)
+				break;
+			default:
+				throw new RuntimeException("Invalid category: " + json.category)
+		}
+
+		return fields
+	}
+
+	static def extractFieldsFromBodyMeasure(def json, def fields) {
+		// Default fields (always present)
+		fields.add(new Field(WITHINGS_GROUP_ID, json.measuregrp.grpid)) // Not sure if int only or could be long
+		fields.add(new Field(WITHINGS_CATEGORY, (Integer) json.measuregrp.category))
+		fields.add(new Field(WITHINGS_ATTRIB, (Integer) json.measuregrp.attrib))
+
+		def measures = json.measuregrp.measures
+		for (measure in measures) {
+			def field = makeFieldFromBodyMeasure(measure.type, measure.unit, measure.value)
+			if (field != null)
+				fields.add(field)
+		}
+	}
 
 
-    static def makeFieldFromBodyMeasure(def type, def unit, def value) {
-        // Optional fields
-        switch (type) {
-            case 1: // Weight (kg)
-                return new Field(WEIGHT, SI.KILOGRAM.times(10**unit), (Double) value)
-                break
+	static def makeFieldFromBodyMeasure(def type, def unit, def value) {
+		// Optional fields
+		switch (type) {
+			case 1: // Weight (kg)
+				return new Field(WEIGHT, SI.KILOGRAM.times(10**unit), (Double) value)
+				break
 
-            case 4: // Height (meter)
-                return new Field(HEIGHT, SI.METER.times(10**unit), (Double) value)
-                break
+			case 4: // Height (meter)
+				return new Field(HEIGHT, SI.METER.times(10**unit), (Double) value)
+				break
 
-            case 5: // Fat Free Mass (kg)
-                return new Field(WITHINGS_FAT_FREE_MASS, SI.KILOGRAM.times(10**unit), (Double) value)
-                break
+			case 5: // Fat Free Mass (kg)
+				return new Field(WITHINGS_FAT_FREE_MASS, SI.KILOGRAM.times(10**unit), (Double) value)
+				break
 
-            case 6: // Fat Ratio (%)
-                return new Field(WITHINGS_FAT_RATIO, ((Double) value)*10**unit)
-                break
+			case 6: // Fat Ratio (%)
+				return new Field(WITHINGS_FAT_RATIO, ((Double) value)*10**unit)
+				break
 
-            case 8: // Fat Mass Weight (kg)
-                return new Field(WITHINGS_FAT_MASS_WEIGHT, SI.KILOGRAM.times(10**unit), (Double) value)
-                break
+			case 8: // Fat Mass Weight (kg)
+				return new Field(WITHINGS_FAT_MASS_WEIGHT, SI.KILOGRAM.times(10**unit), (Double) value)
+				break
 
-            case 9: // Diastolic Blood Pressure (mmHg)
-                return new Field(DIASTOLIC_BLOOD_PRESSURE, (Integer) value)
-                break
+			case 9: // Diastolic Blood Pressure (mmHg)
+				return new Field(DIASTOLIC_BLOOD_PRESSURE, (Integer) value)
+				break
 
-            case 10: // Systolic Blood Pressure (mmHg)
-                return new Field(SYSTOLIC_BLOOD_PRESSURE, (Integer) value)
-                break
+			case 10: // Systolic Blood Pressure (mmHg)
+				return new Field(SYSTOLIC_BLOOD_PRESSURE, (Integer) value)
+				break
 
-            case 11: // Heart Pulse (bpm)
-                return new Field(HEART_RATE, (Integer) value)
-                break
+			case 11: // Heart Pulse (bpm)
+				return new Field(HEART_RATE, (Integer)value)
+				break
 
-            case 54: // SP02(%)
-                return new Field(WITHINGS_BLOOD_OXYGEN_LEVEL, (Integer) value)
-                break
+			case 12: // Temperature
+				return new Field(WITHINGS_TEMPERATURE, (Double)value *10.0d**unit)
+				break
 
-            default:
-                return null
-        }
-    }
+			case 54: // SP02(%)
+				return new Field(WITHINGS_BLOOD_OXYGEN_LEVEL, (Integer) value)
+				break
 
-    static def extractFieldsFromActivityMeasure(def json, def fields) {
-        if (json.measuregrp.steps != null) {
-            fields.add( new Field(WITHINGS_STEPS, (Integer) json.measuregrp.steps) )
-        }
-        if (json.measuregrp.distance != null) {
-            fields.add( new Field(DISTANCE, (Double) json.measuregrp.distance) )
-        }
-        if (json.measuregrp.calories != null) {
-            fields.add( new Field(CALORIES, (Double) json.measuregrp.calories ) )
-        }
-        if (json.measuregrp.elevation != null) {
-            fields.add( new Field(WITHINGS_ELEVATION, (Double) json.measuregrp.elevation) )
-        }
-        if (json.measuregrp.soft != null) {
-            fields.add( new Field(WITHINGS_SOFT, (Integer) json.measuregrp.soft) )
-        }
-        if (json.measuregrp.moderate != null) {
-            fields.add( new Field(WITHINGS_MODERATE, (Integer) json.measuregrp.moderate) )
-        }
-        if (json.measuregrp.intense != null) {
-            fields.add( new Field(WITHINGS_INTENSE, (Integer) json.measuregrp.intense) )
-        }
+			case 71: // Body Temperature
+				return new Field(WITHINGS_BODY_TEMPERATURE, ((Double)value)*10.0d**unit)
+				break
 
-        return fields
-    }
+			case 73: // Skin Temperature
+				return new Field(WITHINGS_SKIN_TEMPERATURE, ((Double)value)*10.0d**unit)
+				break
 
-    static def extractFieldsFromSleepMeasure(def json, def fields) {
-        fields.add( new Field(WITHINGS_SLEEP,
-                new Field(WITHINGS_START_DATE, (Long) json.measuregrp.startdate),
-                new Field(WITHINGS_STATE, (Integer) json.measuregrp.state),
-                new Field(WITHINGS_END_DATE, (Long) json.measuregrp.enddate)
-        ) )
+			case 76: // Muscle Mass
+				return new Field(WITHINGS_MUSCLE_MASS, ((Double)value)*10.0d**unit)
+				break
 
-        return fields
-    }
+			case 77: // Hydration (in %, according to http://my.withings.com/static/faq/pdf/FAQ_en.pdf)
+				return new Field(WITHINGS_HYDRATION, ((Double)value)*10.0d**unit)
+				break
 
-    @Override
-    List<FieldDescriptor> getFieldDescriptors() {
-        return [
-                // Body data
-                WITHINGS_GROUP_ID, WITHINGS_CATEGORY, WITHINGS_ATTRIB, WEIGHT,
-                HEIGHT, WITHINGS_FAT_FREE_MASS, DIASTOLIC_BLOOD_PRESSURE,
-                SYSTOLIC_BLOOD_PRESSURE, HEART_RATE, WITHINGS_BLOOD_OXYGEN_LEVEL,
-                // Activity data
-                WITHINGS_STEPS, DISTANCE, CALORIES, WITHINGS_ELEVATION,
-                WITHINGS_SOFT, WITHINGS_MODERATE, WITHINGS_INTENSE,
-                // Sleep data
-                WITHINGS_SLEEP
-        ]
-    }
+			case 88: // Bone Mass
+				return new Field(WITHINGS_BONE_MASS, ((Double)value)*10.0d**unit)
+				break
+
+			case 91: // Pulse Wave Velocity (in m/s, according to https://www.withings.com/eu/en/products/pulse-wave-velocity)
+				return new Field(WITHINGS_PULSE_WAVE_VELOCITY, ((Double)value)*10.0d**unit )
+				break
+
+			default:
+				return null
+		}
+	}
+
+	static def extractFieldsFromActivityMeasure(def json, def fields) {
+		if (json.measuregrp.steps != null) {
+			fields.add( new Field(WITHINGS_STEPS, (Integer) json.measuregrp.steps) )
+		}
+		if (json.measuregrp.distance != null) {
+			fields.add( new Field(DISTANCE, (Double) json.measuregrp.distance) )
+		}
+		if (json.measuregrp.calories != null) {
+			fields.add( new Field(CALORIES, (Double) json.measuregrp.calories ) )
+		}
+		if (json.measuregrp.elevation != null) {
+			fields.add( new Field(WITHINGS_ELEVATION, (Double) json.measuregrp.elevation) )
+		}
+		if (json.measuregrp.soft != null) {
+			fields.add( new Field(WITHINGS_SOFT, (Integer) json.measuregrp.soft) )
+		}
+		if (json.measuregrp.moderate != null) {
+			fields.add( new Field(WITHINGS_MODERATE, (Integer) json.measuregrp.moderate) )
+		}
+		if (json.measuregrp.intense != null) {
+			fields.add( new Field(WITHINGS_INTENSE, (Integer) json.measuregrp.intense) )
+		}
+
+		return fields
+	}
+
+	static def extractFieldsFromSleepMeasure(def json, def fields) {
+		fields.add( new Field(WITHINGS_SLEEP,
+				new Field(WITHINGS_START_DATE, (Long) json.measuregrp.startdate),
+				new Field(WITHINGS_STATE, (Integer) json.measuregrp.state),
+				new Field(WITHINGS_END_DATE, (Long) json.measuregrp.enddate)
+				) )
+
+		return fields
+	}
+
+	@Override
+	List<FieldDescriptor> getFieldDescriptors() {
+		return [
+			// Body data
+			WITHINGS_GROUP_ID,
+			WITHINGS_CATEGORY,
+			WITHINGS_ATTRIB,
+			WEIGHT,
+			HEIGHT,
+			WITHINGS_FAT_FREE_MASS,
+			DIASTOLIC_BLOOD_PRESSURE,
+			SYSTOLIC_BLOOD_PRESSURE,
+			HEART_RATE,
+			WITHINGS_BLOOD_OXYGEN_LEVEL,
+			WITHINGS_TEMPERATURE,
+			WITHINGS_BODY_TEMPERATURE,
+			WITHINGS_SKIN_TEMPERATURE,
+			WITHINGS_MUSCLE_MASS,
+			WITHINGS_BONE_MASS,
+			WITHINGS_HYDRATION,
+			WITHINGS_PULSE_WAVE_VELOCITY,
+			// Activity data
+			WITHINGS_STEPS,
+			DISTANCE,
+			CALORIES,
+			WITHINGS_ELEVATION,
+			WITHINGS_SOFT,
+			WITHINGS_MODERATE,
+			WITHINGS_INTENSE,
+			// Sleep data
+			WITHINGS_SLEEP
+		]
+	}
 }

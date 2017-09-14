@@ -14,8 +14,8 @@ import static java.net.HttpURLConnection.*
 
 //@CompileStatic
 class MyCloudConnector extends CloudConnector {
-    def PUBSUB_ENDPOINT_URL = "https://wbsapi.withings.net/notify"
-    def API_ENDPOINT = "https://wbsapi.withings.net/"
+    def PUBSUB_ENDPOINT_URL = "https://api.health.nokia.com/notify"
+    def API_ENDPOINT = "https://api.health.nokia.com/"
     def MEASURE_ENDPOINT = API_ENDPOINT + "measure"
     def ACTIVITY_ENDPOINT = API_ENDPOINT + "v2/measure"
     def SLEEP_ENDPOINT = API_ENDPOINT + "v2/sleep"
@@ -45,7 +45,7 @@ class MyCloudConnector extends CloudConnector {
     @Override
     def Or<List<RequestDef>, Failure> subscribe(Context ctx, DeviceInfo info) {
         def callbackUrl = { int appliId -> ctx.parameters().get("notificationBaseUrl") + ctx.cloudId() + "/thirdpartynotifications?samiDeviceId=" + info.did() + "&appliId=" + appliId }
-        def formerCallbackUrl = { int appliId -> ctx.parameters().get("formerUrl") + "?samiDeviceId=" + info.did() + "&appliId=" + appliId }
+        def formerCallbackUrl = { int appliId -> ctx.parameters().get("formerUrl") + ctx.cloudId() + "/thirdpartynotifications?samiDeviceId=" + info.did() + "&appliId=" + appliId }
 
         def req = {int appliId, String name -> new RequestDef(PUBSUB_ENDPOINT_URL).withQueryParams(subscriptionParameters(SUBSCRIBE_ACTION, callbackUrl(appliId), appliId, name)) }
         def formerReq = { int appliId, String name -> new RequestDef(PUBSUB_ENDPOINT_URL).withQueryParams(subscriptionParameters("revoke", formerCallbackUrl(appliId), appliId, name)) }
@@ -95,10 +95,9 @@ class MyCloudConnector extends CloudConnector {
             return new Bad(new Failure("Invalid appli id : " + appliId))
         }
         def content = req.content.trim()
-        if (content == "AnyContentAsEmpty") { //resub notif
+        if ((content.size() == 0) || (content == "")) { //resub notif
             return new Good(new NotificationResponse([]))
         }
-
 
         def json = slurper.parseText(content)
         def startDate = json.startdate
@@ -222,9 +221,9 @@ class MyCloudConnector extends CloudConnector {
 
     def subscriptionParameters = { String action, String url, int appliId, String name ->
         [
-                "action"     : action,
+                "action"     : String.valueOf(action),
                 "appli"      : String.valueOf(appliId),
-                "callbackurl": url,
-                "comment"    : "Notifications to " + name + " for Samsung ARTIK Cloud Platform"]
+                "callbackurl": String.valueOf(url),
+                "comment"    : String.valueOf("Notifications to " + name + " for Samsung ARTIK Cloud Platform") ]
     }
 }
