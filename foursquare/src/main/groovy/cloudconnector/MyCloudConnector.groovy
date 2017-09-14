@@ -12,7 +12,7 @@ class MyCloudConnector extends CloudConnector {
     static mdateFormat = DateTimeFormat.forPattern('yyyy-MM-dd HH:mm:ss').withZoneUTC()
     static final CT_JSON = 'application/json'
     static final allowedKeys = [
-        "timeZoneOffset", 
+        "timeZoneOffset",
         "venue", "location", "lat", "long",
         "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
     ]
@@ -44,11 +44,11 @@ class MyCloudConnector extends CloudConnector {
             return new Bad(new Failure('Impossible to recover device id from request.'))
         }
         def notifications = generateNotificationsFromCheckins(checkin)
-        
+
         return new Good(new NotificationResponse(notifications))
-        
+
     }
-    
+
     // 5. Parse and check (authorisation) pushed data (data come from Notification and can be transformed)
     @Override
     def Or<List<Event>, Failure> onNotificationData(Context ctx, DeviceInfo info, String data) {

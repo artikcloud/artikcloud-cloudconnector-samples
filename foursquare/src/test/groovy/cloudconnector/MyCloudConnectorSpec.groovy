@@ -13,7 +13,6 @@ import cloud.artik.cloudconnector.api_v1.*
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 
-
 class MyCloudConnectorSpec extends Specification {
 
         def sut = new MyCloudConnector()
@@ -25,8 +24,8 @@ class MyCloudConnectorSpec extends Specification {
         def apiEndpoint = "https://api.foursquare.com/v2"
         def device = new DeviceInfo("deviceId", Option.apply(extId), new Credentials(AuthType.OAuth2, "", "abcdefg", Empty.option(), Option.apply("bearer"), [], Empty.option()), ctx.cloudId(), Empty.option())
         def allowedKeys = [
-            "createdAt", 
-            "timeZoneOffset", 
+            "createdAt",
+            "timeZoneOffset",
             "venue", "location", "lat", "lng",
             "name", "address", "city", "state", "country", "postalCode", "formattedAddress"
         ]
@@ -70,16 +69,14 @@ class MyCloudConnectorSpec extends Specification {
             def expectedNotificationGenerated = [
                 new ThirdPartyNotification(new ByExtId("1",),[],[
                     '''{"createdAt":1458147313,"entities":[],"id":"56e98ff1498ea418b2c6f1b5","shout":"I'm in your consumers, testing your push API!","timeZone":"UTC","timeZoneOffset":0,"type":"checkin","user":{"firstName":"Jimmy","gender":"male","id":"1","lastName":"Foursquare","photo":"https://is0.4sqi.net/userpix_thumbs/S54EHRPJAHQK0VHP.jpg","relationship":"self"},"venue":{"categories":[{"icon":"https://ss3.4sqi.net/img/categories/shops/technology.png","id":"4bf58dd8d108988d125941735","name":"Tech Startup","parents":["Professional & Other Places","Office"],"pluralName":"Tech Startups","primary":true,"shortName":"Tech Startup"}],"contact":{"facebook":"80690156072","facebookName":"Foursquare","facebookUsername":"foursquare","formattedPhone":"(646) 449-7700","phone":"6464497700","twitter":"foursquare"},"id":"4ef0e7cf7beb5932d5bdeb4e","location":{"address":"568 Broadway Fl 10","cc":"US","city":"New York","country":"United States","crossStreet":"at Prince St","formattedAddress":["568 Broadway Fl 10 (at Prince St)","New York, NY 10012"],"lat":40.72412842453194,"lng":-73.99726510047911,"postalCode":"10012","state":"NY"},"name":"Foursquare HQ","stats":{"checkinsCount":84644,"tipCount":299,"usersCount":11288},"storeId":"HQHQHQHQ","url":"https://foursquare.com","verified":true}}'''
-                ]), 
+                ]),
                 new ThirdPartyNotification(new ByExtId("987654321",),[],[
                     '''{"createdAt":1458123760,"id":"56e933f0498eb8032f11ba1e","timeZone":"Europe/Some City","timeZoneOffset":60,"type":"checkin","user":{"firstName":"Toto","gender":"male","id":"987654321","lastName":"Tata","photo":"https://is0.4sqi.net/userpix_thumbs/987654321-TXWAYFILSDZYFD3T.jpg","relationship":"self"},"venue":{"allowMenuUrlEdit":true,"categories":[{"icon":"https://ss3.4sqi.net/img/categories/shops/financial.png","id":"4bf58dd8d108988d10a951735","name":"Bank","parents":["Shop & Service"],"pluralName":"Banks","primary":true,"shortName":"Bank"}],"contact":{},"id":"4da8402b4df0af29b708bf87","location":{"address":"some address","cc":"FR","city":"Some City","country":"France","formattedAddress":["some address","75010 Some City"],"lat":108.86950328317372,"lng":2.354668378829956,"postalCode":"75010","state":"Some State"},"name":"Soci\\u00e9t\\u00e9 G\\u00e9n\\u00e9rale","stats":{"checkinsCount":64,"tipCount":0,"usersCount":16},"verified":false}}'''
                 ])
 
             ]
             then:
-            notificationGenerated[0] == expectedNotificationGenerated[0]
-            notificationGenerated[1] == expectedNotificationGenerated[1]
-            notificationGenerated == expectedNotificationGenerated
+            normalize(notificationGenerated) == normalize(expectedNotificationGenerated)
         }
 
         // renameJsonKey(obj) -< transformJson(obj, f) remove all empty values
@@ -105,16 +102,13 @@ class MyCloudConnectorSpec extends Specification {
             def expectedResponse = new NotificationResponse( expectedData.collect { data ->
                     new ThirdPartyNotification(new ByExtId(device.extId.get()), [], data)
             })
-                    
+
             then:
             res.isGood()
-            res.get().thirdPartyNotifications.dataProvided.size() == 2
-            res.get().thirdPartyNotifications.dataProvided[0] == expectedData[0]
-            res.get().thirdPartyNotifications.dataProvided[1] == expectedData[1]
-            res.get() == expectedResponse
-            
+            normalize(res.get()) == normalize(expectedResponse)
+
         }
-    
+
         def "create events from created data"() {
             when:
             def bodyEvent_ts = 1432027166000L
