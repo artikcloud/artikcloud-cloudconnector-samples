@@ -76,8 +76,29 @@
       "name": "target_temperature_c",
       "type": "CUSTOM",
       "valueClass": "Double",
+      "isCollection": false,
+      "tags": [
+        "target temperature"
+      ],
       "unit": "SI.CELSIUS",
-      "isCollection": false
+      "metaData": [
+        {
+          "type": "MIN_VALUE_DOUBLE",
+          "value": 9
+        },
+        {
+          "type": "MIN_VALUE_STRICT",
+          "value": false
+        },
+        {
+          "type": "MAX_VALUE_DOUBLE",
+          "value": 32
+        },
+        {
+          "type": "MAX_VALUE_STRICT",
+          "value": false
+        }
+      ]
     },
     {
       "name": "target_temperature_high_c",
@@ -116,21 +137,65 @@
     },
     {
       "name": "humidity",
-      "type": "CUSTOM",
+      "type": "LEVEL",
       "valueClass": "Double",
-      "isCollection": false
+      "isCollection": false,
+      "tags": [],
+      "unit": "NonSI.PERCENT",
+      "metaData": [
+        {
+          "type": "MIN_VALUE_DOUBLE",
+          "value": 0
+        },
+        {
+          "type": "MIN_VALUE_STRICT",
+          "value": false
+        },
+        {
+          "type": "MAX_VALUE_DOUBLE",
+          "value": 100
+        },
+        {
+          "type": "MAX_VALUE_STRICT",
+          "value": false
+        }
+      ]
     },
     {
       "name": "hvac_mode",
       "type": "CUSTOM",
       "valueClass": "String",
-      "isCollection": false
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "heat",
+            "cool",
+            "heat-cool",
+            "eco",
+            "off"
+          ]
+        }
+      ]
     },
     {
       "name": "hvac_state",
       "type": "CUSTOM",
       "valueClass": "String",
-      "isCollection": false
+      "isCollection": false,
+      "tags": [],
+      "metaData": [
+        {
+          "type": "VALUES_STRING",
+          "value": [
+            "heating",
+            "cooling",
+            "off"
+          ]
+        }
+      ]
     },
     {
       "name": "structure",
@@ -183,7 +248,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "SI.CELSIUS"
+          "unit": "SI.CELSIUS",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 9
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 32
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,
@@ -202,7 +285,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "SI.CELSIUS"
+          "unit": "SI.CELSIUS",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 9
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 32
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,
@@ -221,7 +322,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "NonSI.FAHRENHEIT"
+          "unit": "NonSI.FAHRENHEIT",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 50
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 90
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,
@@ -240,7 +359,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "NonSI.FAHRENHEIT"
+          "unit": "NonSI.FAHRENHEIT",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 50
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 90
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,
@@ -410,7 +547,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "SI.CELSIUS"
+          "unit": "SI.CELSIUS",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 9
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 32
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,
@@ -424,7 +579,25 @@
           "name": "temp",
           "type": "CUSTOM",
           "valueClass": "Double",
-          "unit": "NonSI.FAHRENHEIT"
+          "unit": "NonSI.FAHRENHEIT",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_DOUBLE",
+              "value": 50
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_DOUBLE",
+              "value": 90
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
         }
       ],
       "isStandard": false,

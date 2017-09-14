@@ -38,7 +38,9 @@ class MyCloudConnector extends CloudConnector {
             case Phase.subscribe:
             case Phase.unsubscribe:
             case Phase.fetch:
-                return new Good(req.addHeaders(["Authorization": "Bearer " + info.credentials.token]))
+                // passing token via header or queryparams (both solutions work)
+                // return new Good(req.addHeaders(["Authorization": "Bearer " + info.credentials.token, "Content-Type":"application/json"]))
+                return new Good(req.addHeaders(["Content-Type":"application/json"]).withQueryParams(["auth":info.credentials.token]) )
                 break
             case Phase.refreshToken:
             case Phase.getOauth2Token:
@@ -58,7 +60,7 @@ class MyCloudConnector extends CloudConnector {
     Or<Option<DeviceInfo>,Failure> onSubscribeResponse(Context ctx, RequestDef req,  DeviceInfo info, Response res) {
         if (res.status == HTTP_OK) {
             def json = slurper.parseText(res.content)
-            def deviceList = json?.devices?.get("${ctx.parameters().productType}s")?.values() as List
+            def deviceList = json?.devices?.get("${ctx.parameters().productType}s".toString())?.values() as List
             def structureList = json?.structures?.values() as List
             def userData = generateName2IdsPairs(deviceList, 'devices', DEVICE_NAME_KEY, DEVICE_ID_KEY) +
                             generateName2IdsPairs(structureList, 'structures', STRUCTURE_NAME_KEY, STRUCTURE_ID_KEY)
@@ -72,7 +74,7 @@ class MyCloudConnector extends CloudConnector {
     def Or<Task, Failure> onNotification(Context ctx, RequestDef req) {
         if (req.url.endsWith("thirdpartynotifications/postsubscription")) {
             def json = slurper.parseText(req.content())
-            return new Good(new NotificationResponse([new ThirdPartyNotification(new ByDid(json.did), 
+            return new Good(new NotificationResponse([new ThirdPartyNotification(new ByDid(json.did),
                 [new RequestDef(ENDPOINT).withHeaders(["X-Artik-Action": 'synchronizeDevices'])]
             )]))
         } else {
@@ -105,7 +107,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["target_temperature_c": json.temp]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -122,7 +124,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["target_temperature_f": json.temp]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -139,7 +141,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["hvac_mode": "off"]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -156,7 +158,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["hvac_mode": "heat"]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -173,7 +175,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["hvac_mode": "cool"]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -190,7 +192,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["hvac_mode": "heat-cool"]
                 def goodRequestsOrBad = combine(deviceIdList.collect { id ->
                     def urlNodes = [
-                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s"],
+                      ["root": "${ENDPOINT}/devices/${ctx.parameters().productType}s".toString()],
                       ["deviceId": id]
                     ]
                     nestApiRequest(urlNodes, params, action.name)
@@ -205,7 +207,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["away": "home"]
                 def goodRequestsOrBad = combine(structureIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/structures"],
+                      ["root": "${ENDPOINT}/structures".toString()],
                       ["structureId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -220,7 +222,7 @@ class MyCloudConnector extends CloudConnector {
                 def params = ["away": "away"]
                 def goodRequestsOrBad = combine(structureIdList.collect { id ->
                     def urls = [
-                      ["root": "${ENDPOINT}/structures"],
+                      ["root": "${ENDPOINT}/structures".toString()],
                       ["structureId": id]
                     ]
                     nestApiRequest(urls, params, action.name)
@@ -240,7 +242,7 @@ class MyCloudConnector extends CloudConnector {
             return new Bad(new Failure("[${info.did}] onFetchResponse got status http status : ${res.status()}) with content: ${res.content()}"))
         }
         def json = slurper.parseText(res?.content?:"{}")
-        def deviceList = json?.devices?.get("${ctx.parameters().productType}s")?.values() as List
+        def deviceList = json?.devices?.get("${ctx.parameters().productType}s".toString())?.values() as List
         def structureList = json?.structures?.values() as List
         switch(req.headers()['X-Artik-Action']) {
             case 'getAllData':
@@ -342,7 +344,7 @@ class MyCloudConnector extends CloudConnector {
         }
         def urlNodes = urlKeyAndNodes.collect { keyAndParam ->
             keyAndParam.values()[0]
-        }      
+        }
         def request = new RequestDef(urlNodes.join("/"))
                         .withMethod(HttpMethod.Put)
                         .withContent(JsonOutput.toJson(contentParams), "application/json")
@@ -400,7 +402,7 @@ class MyCloudConnector extends CloudConnector {
         }
         return idList
     }
-    
+
     private def outputJson(json) {
         JsonOutput.toJson(
             applyToMessage(json, { k, v ->

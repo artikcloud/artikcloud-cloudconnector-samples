@@ -76,10 +76,8 @@ class MyCloudConnectorSpec extends Specification {
 			new Event(ts, '''{"ambient_temperature_c":24,"away_temperature_high_c":24,"away_temperature_low_c":9,"can_cool":false,"can_heat":true,"device_id":"aDeviceId","fan_timer_active":false,"fan_timer_timeout":"1970-01-01T00:00:00.000Z","has_fan":false,"has_leaf":false,"humidity":35,"hvac_mode":"heat","hvac_state":"off","is_online":true,"is_using_emergency_heat":false,"last_connection":"2016-04-19T10:02:40.028Z","name":"Office","name_long":"Office Thermostat","structure_id":"aStructureId","target_temperature_c":21.5,"target_temperature_high_c":24,"target_temperature_low_c":20}''', EventType.data, Option.apply('aDeviceId'))
 			]
 		then:
-		res.isGood()
-		res.get()[0] == expectedEvents[0]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		res.isGood() == true
+		cmpTasks(res.get(), expectedEvents)
 	}
 
 	def "create events from fetch response (single device) --- synchronizeDevices"() {
@@ -112,11 +110,8 @@ class MyCloudConnectorSpec extends Specification {
 			new Event(ts,'''{"ambient_temperature_c":21.5,"away_temperature_high_c":21.5,"away_temperature_low_c":17.5,"can_cool":true,"can_heat":true,"device_id":"qfyiJNo0IldT2YlIVtYaHR","fan_timer_active":true,"fan_timer_timeout":"2016-10-31T23:59:59.000Z","has_fan":true,"has_leaf":true,"humidity":40,"hvac_mode":"heat","hvac_state":"heating","is_online":true,"is_using_emergency_heat":true,"last_connection":"2016-10-31T23:59:59.000Z","name":"Nowhere (downstairs)","name_long":"Nowhere Thermostat (downstairs)","structure_id":"VqFabWH21nwVyd4RWgJgNb292wa7hG_dUwo2i2SG7j3-BOLY0BA4sw","target_temperature_c":21.5,"target_temperature_high_c":21.5,"target_temperature_low_c":17.5}''', EventType.data, Option.apply('qfyiJNo0IldT2YlIVtYaHR'))
 		]
 		then:
-		res.isGood()
-		res.get()[0] == expectedEvents[0]
-		res.get()[1] == expectedEvents[1]
-		res.get().size() == expectedEvents.size()
-		res.get() == expectedEvents
+		res.isGood() == true
+		cmpTasks(res.get(), expectedEvents)
 	}
 
 	def "create events from fetch response (multiple devices) --- synchronizeDevices"() {
@@ -140,10 +135,10 @@ class MyCloudConnectorSpec extends Specification {
 	}
 
 	static def json = { obj -> JsonOutput.toJson(obj) }
-	static def req = { gStr, map, header -> 
+	static def req = { gStr, map, header ->
 		new RequestDef(gStr.toString())
 			.withMethod(HttpMethod.Put)
-			.withContent(JsonOutput.toJson(map), "application/json") 
+			.withContent(JsonOutput.toJson(map), "application/json")
 			.withHeaders(['X-Artik-Action': header])
 	}
 
@@ -210,7 +205,7 @@ class MyCloudConnectorSpec extends Specification {
 		def expected = expectedEvents.collect{ event -> new Event(10, json(event))}
 
 		result.isGood()
-		result.get() == expected
+		cmpTasks(result.get(), expected)
 
 		where:
 		request																			| expectedEvents
